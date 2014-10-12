@@ -173,6 +173,31 @@ function load_pshot(year,player,efficient,dleague) {
 	});
 }
 
+function load_pshotnew() {
+	$.ajax({
+	url: "http://www.austinclemens.com/cgi-bin/post.py",
+	type: "post",
+	datatype: "html",
+	data:   {
+		player1: "Dirk Nowitzki",
+		player2: "NONE",
+		player3: "NONE",
+		player4: "NONE",
+		player5: "NONE",
+		quarter: "all",
+		type: "regular season"
+		year: "2013"
+		efficiency: "0"
+		},
+	success: function(response){
+		var shot_data = $.csv.toArrays(response);
+		circlayer.removeChildren()
+		stage.add(circlayer)
+		drawcourt_pshot(shot_data,2013,"Dirk Nowitzki",0,0)
+	}
+	});
+}
+
 function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 	
 	layer.removeChildren()

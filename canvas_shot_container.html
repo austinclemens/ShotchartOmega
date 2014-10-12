@@ -3,14 +3,24 @@
         <script src="lib/jquery.min.js"></script>
         <script src="http://code.jquery.com/jquery-2.0.3.js"></script>
         <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+        <script src="lib/simple-expand.min.js"></script>
     <style>
     #container {
    width:900px;
    margin-left:auto;
    margin-right:auto;
-   margin-bottom:100px;
-   margin-top:50px;
+   margin-bottom:0px;
+   margin-top:0px;
 }
+
+    .expander {
+      color: #0099ff;
+      text-decoration: none;
+    }
+
+    a: visited {
+      color: #0099ff;
+    }
     </style>
     </head>
     <body style="padding:0">
@@ -52,21 +62,32 @@
 <button type="button" class="myButton" onClick="update()"><b>Run it!</b></button>
 <br>
 <hr noshade>
-</div>
-<div data-role="collapsible" id="container">
-<h1>Advanced</h1>
-<select id="player_select" class="myButton" style="width:200px">
+</div><div id="container"><a class="expander" href="#"><h3>Advanced Features (click me)</h3></a>
+<div class="content">
+<select id="player2_select" class="myButton" style="width:200px">
 <option selected>Player 2</option>
 </select>
-<select id="player_select" class="myButton" style="width:200px">
+<select id="player3_select" class="myButton" style="width:200px">
 <option selected>Player 3</option>
 </select><br>
-<select id="player_select" class="myButton" style="width:200px">
+<select id="player4_select" class="myButton" style="width:200px">
 <option selected>Player 4</option>
 </select>
-<select id="player_select" class="myButton" style="width:200px">
+<select id="player5_select" class="myButton" style="width:200px">
 <option selected>Player 5</option>
 </select><br>
+<select id="quarter_select" class="myButton" style="width:200px">
+<option selected value=0>All quarters</option>
+<option value=1>1st</option>
+<option value=1>2nd</option>
+<option value=1>3rd</option>
+<option value=1>4th</option>
+</select>
+<select id="quarter_select" class="myButton" style="width:200px">
+<option selected value=0>Regular Season</option>
+<option value=1>Post Season</option>
+</select>
+</div>
 </div>
 
 <div class="iframeWrapper" style="position: relative; padding-bottom: 74.25%; padding-top: 25px; height: 0;">
@@ -114,6 +135,8 @@ function draw_png() {
     result.src=ur;
     result.style.width = 900;
 }
+
+$('.expander').simpleexpand();
 
 </script>
     </body>
