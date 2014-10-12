@@ -1,0 +1,526 @@
+<html>
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+	<script src="lib/kinetic_v5.1.0.min.js"></script>
+	<script src="lib/jquery.csv-0.71.min.js"></script>
+</head>
+<style>body
+{
+	margin: 0;
+	padding: 0;
+} 
+</style>
+<body>
+
+<div id="container"></div>
+
+<script defer>
+var shapes=[]
+var group = new Kinetic.Group()
+var linecounter=1
+
+
+var width = window.innerWidth || 900
+
+var stage = new Kinetic.Stage({
+  container: 'container',
+  width: width,
+  height: (.745)*width,
+  scaleX:width/900,
+  scaleY:width/900,
+});
+
+var layer = new Kinetic.Layer({
+	hitGraphEnabled: true,
+	transformsEnabled: 'none',
+	listening: true,
+});
+
+var circlayer = new Kinetic.Layer({
+	hitGraphEnabled: true,
+	transformsEnabled: 'none',
+})
+
+var arclayer = new Kinetic.Layer({
+	hitGraphEnabled: false,
+	transformsEnabled: 'none',
+	listening: false,
+});
+
+var court = new Kinetic.Layer();
+
+stage.add(circlayer)
+
+nba_court_base()
+
+layer.on('click',function(evt){
+	var shape=evt.target;
+
+	var circle = new Kinetic.Circle({
+		x: shape.attrs.xcenter,
+		y: shape.attrs.ycenter,
+		radius: 0,
+		fillAlpha: .6,
+		fillRed: 30,
+		fillBlue: 30,
+		fillGreen: 30,
+		stroke: 'white',
+		strokeWidth:2,
+	});
+	group.add(circle)
+	circlayer.add(group)
+
+	var tween = new Kinetic.Tween({
+		node: circle, 
+		duration: 1,
+		easing: Kinetic.Easings.BackEaseOut,
+		radius: 90
+	});
+	tween.play()
+
+	setTimeout(function(){
+		var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-24,y:shape.attrs.ycenter-65,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#ffffff",strokeWidth:1,text: Math.round(shape.attrs.fg*100)+"%"})
+		group.add(text)
+		var text=new Kinetic.Text({align:'center',fontStyle:'bold',x:shape.attrs.xcenter-41,y:shape.attrs.ycenter-40,fontSize:17,fontFamily:'Helvetica',fill:'#ffffff',text: "shots made"})
+		group.add(text)
+
+		if (Math.round(shape.attrs.shotvol*100)>9) {
+			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-24,y:shape.attrs.ycenter+15,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#ffffff",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
+			group.add(text)
+		}
+		if (Math.round(shape.attrs.shotvol*100)<10) {
+			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-16,y:shape.attrs.ycenter+15,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#ffffff",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
+			group.add(text)
+		}
+
+		var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-45,y:shape.attrs.ycenter+40,fontSize:17,fontFamily:'Helvetica',fill:'#ffffff',text: "shot volume"})
+		group.add(text)
+
+		var circle = new Kinetic.Circle({
+			x: shape.attrs.xcenter,
+			y: shape.attrs.ycenter,
+			radius: 2,
+			opacity: 1,
+			stroke: 'white',
+			strokeWidth:1,
+			fill: '#7d7d7d'
+		})
+		group.add(circle)
+
+		var line=new Kinetic.Line({strokeWidth:1,dash: [5, 5],points:[shape.attrs.xcenter+3,shape.attrs.ycenter,shape.attrs.xcenter+90,shape.attrs.ycenter],stroke:'white'})
+		group.add(line)
+
+		var text=new Kinetic.Text({x:shape.attrs.xcenter+35,y:shape.attrs.ycenter-10,fontSize:9,fontFamily:'Helvetica',fill:'#ffffff',text: "5 feet"})
+		group.add(text)
+	},500)
+
+	stage.add(circlayer)
+
+})
+
+// circlayer.on('click',function(evt){
+// 		group.removeChildren()
+// 		circlayer.add(group)
+// })
+
+
+
+window.onload=function() {
+    load_pshot(get_param('year'),get_param('player'),get_param('type'),get_param('sport'))
+}
+
+function get_param(name) {
+    name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+	var regexS = "[\\?&]"+name+"=([^&#]*)";
+	var regex = new RegExp( regexS );
+	var results = regex.exec( window.location.href );
+	if( results == null )
+		return null;
+	else
+		return results[1];
+}
+
+function load_pshot(year,player,efficient,dleague) {
+	if (dleague=="NBADEV") {
+		console.log('entered')
+		var url="dleague_years/"+year+"/pshot_"+player+".csv"
+	} 
+	else if (dleague=="NCAA") {
+		var url="NCAA/"+year+"/pshot_"+player+".csv"
+	}
+	else {
+		var url="pshot_years/"+year+"/pshot_"+player+".csv"
+	}
+	$.ajax({
+    type: "GET",
+    url: url,
+    dataType: "text",
+    success: function(data) { 
+        var shot_data = $.csv.toArrays(data);
+        if (year==1996 && linecounter==0) {
+        	redraw_arc(1)
+        }
+        if (year!=1996 && linecounter==1) {
+        	redraw_arc(0)
+        }
+        if (dleague=="NCAA") {
+        	redraw_arc(2)
+        }
+        circlayer.removeChildren()
+        stage.add(circlayer)
+        drawcourt_pshot(shot_data,year,player,efficient,dleague)
+    	}
+	});
+}
+
+function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
+	
+	layer.removeChildren()
+
+	var max=shot_data[0][2]
+	var min=shot_data[shot_data.length-1][2]
+	var box_size=18
+
+	stage.add(layer)
+
+	for(var n = 0; n < 200; n++) {
+		if (shot_data[n][2]>0 && shot_data[n][6]>0.005){
+			var X = shot_data[n][1]*1.8+450+9 ;
+  			var Y = shot_data[n][0]*1.8+94.5+9 ;
+
+  			if (dleague=="NCAA") {
+				var X = shot_data[n][1]*1.8+450;
+  				var Y = shot_data[n][0]*1.8+94.5;
+  			}
+
+  			if(efficient=="efficiency") {
+  				fillcolor=choosecolor_pps(shot_data[n][7])
+  			}
+  			if(efficient=="basic") {
+  				fillcolor=choosecolor_pshot(shot_data[n][3])
+  			}
+
+			var box = new Kinetic.Rect({
+				cornerRadius: 3,
+				x: X,
+				y: Y,
+				xcenter: X,
+				ycenter: Y,
+				shadowColor: '#ACACAC',
+				shadowBlur: 30,
+				shadowOffset: {x:5,y:5},
+				width: 0,
+				height: 0,
+				shotvol: shot_data[n][8],
+				fg: shot_data[n][4],
+				fill: fillcolor,
+			});
+		}
+		layer.add(box);
+	}
+
+	var shapes=layer.getChildren()
+
+	for (var n=0; n < shapes.length; n++) {
+		var rect=shapes[n]
+		var maxwidth=choosesize(shot_data[n][2],min,max,20)
+
+		var tween = new Kinetic.Tween({
+			node: rect, 
+			duration: 2,
+			x:rect.attrs.x-(maxwidth/2),
+			y:rect.attrs.y-(maxwidth/2),
+			easing: Kinetic.Easings.ElasticEaseOut,
+			width:maxwidth,
+			height:maxwidth,
+		});
+		tween.play()
+	}
+
+	if (efficient=="basic") {
+		var text=new Kinetic.Text({x:560,y:631,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'< Average FG%'})
+		layer.add(text)
+	}
+	if (efficient=="efficiency") {
+		var text=new Kinetic.Text({x:560,y:631,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'> Average PPS'})
+		layer.add(text)
+	}
+	if (efficient=="basic") {
+		var text=new Kinetic.Text({x:255,y:632,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'> Average FG%'})
+		layer.add(text)
+	}
+	if (efficient=="efficiency") {
+		var text=new Kinetic.Text({x:255,y:632,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'> Average PPS'})
+		layer.add(text)
+	}
+
+	year2=parseInt(year)+1
+	var text=new Kinetic.Text({x:9,y:587,fontSize:30,fontFamily:'Arial',fill:'#444444',align:'left',text:player.replace(/%20/g," ")+" "+year+"-"+year2})
+	layer.add(text)
+
+	setTimeout(function(){shadow_layer(shot_data,min,max,efficient,dleague)},1200)
+}
+
+function shadow_layer(shot_data,min,max,efficient,dleague) {
+	for(var n = 0; n < 200; n++) {
+		if (shot_data[n][2]>0 && shot_data[n][6]>0.005){
+			var X = shot_data[n][1]*1.8+450+((18-choosesize(shot_data[n][2],min,max,20))/2) ;
+  			var Y = shot_data[n][0]*1.8+94.5+((18-choosesize(shot_data[n][2],min,max,20))/2) ;
+  			var Xcenter = shot_data[n][1]*1.8+450+9
+  			var Ycenter = shot_data[n][0]*1.8+94.5+9
+
+  			if(efficient=="efficiency") {
+  				fillcolor=choosecolor_pps(shot_data[n][7])
+  			}
+  			if(efficient=="basic") {
+  				fillcolor=choosecolor_pshot(shot_data[n][3])
+  			}
+
+  			if (dleague=="NCAA") {
+				var X = shot_data[n][1]*1.8+441+((18-choosesize(shot_data[n][2],min,max,20))/2);
+  				var Y = shot_data[n][0]*1.8+85.5+((18-choosesize(shot_data[n][2],min,max,20))/2);
+  				var Xcenter = shot_data[n][1]*1.8+450
+  				var Ycenter = shot_data[n][0]*1.8+94.5
+  			}
+
+			var box = new Kinetic.Rect({
+				cornerRadius: 3,
+				x: X,
+				y: Y,
+				xcenter: Xcenter,
+				ycenter: Ycenter,
+				width: choosesize(shot_data[n][2],min,max,20),
+				height: choosesize(shot_data[n][2],min,max,20),
+				fill: fillcolor,
+				shotvol: shot_data[n][8],
+				fg: shot_data[n][4],
+			});
+		}
+		layer.add(box);
+	}
+}
+
+
+function choosesize(shots,min,max,side_length) {
+	if (shots==0) {
+		return 0
+	}
+	if (min==0) {
+		var min=1
+	}
+	var shots=Math.log(shots)
+	var min=Math.log(min)
+	var max=Math.log(max)
+	var fraction=(shots-min)/(max-min)
+	var minsize=45
+	var differential=(Math.pow(side_length,2)-minsize)
+	var blah=Math.sqrt(fraction*differential+minsize)
+	return Math.round(blah);
+}
+
+function choosecolor_pshot(coef) {
+	if (coef>=.16) return '#ff0000';
+	if (coef>=.14 && coef<.16) return '#ff1e00';
+	if (coef>=.12 && coef<.14) return '#ff3c00';
+	if (coef>=.10 && coef<.12) return '#ff5a00';
+	if (coef>=.08 && coef<.10) return '#ff7800';
+	if (coef>=.06 && coef<.08) return '#ff9600';
+	if (coef>=.04 && coef<.06) return '#ffb400';
+	if (coef>=.02 && coef<.04) return '#ffd200';
+	if (coef>=.00 && coef<.02) return '#ffffbf';
+	if (coef>=-.02 && coef<.00) return '#ffffbf';
+	if (coef>=-.04 && coef<-.02) return '#00d2ff';
+	if (coef>=-.06 && coef<-.04) return '#00b4ff';
+	if (coef>=-.08 && coef<-.06) return '#0096ff';
+	if (coef>=-.10 && coef<-.08) return '#0078ff';
+	if (coef>=-.12 && coef<-.10) return '#005aff';
+	if (coef>=-.14 && coef<-.12) return '#003cff';
+	if (coef<-.14) return '#001eff';
+}
+
+function choosecolor_pps(coef) {
+	if (coef>=.40) return '#ff0000';
+	if (coef>=.35 && coef<.40) return '#ff1e00';
+	if (coef>=.30 && coef<.35) return '#ff3c00';
+	if (coef>=.25 && coef<.30) return '#ff5a00';
+	if (coef>=.20 && coef<.25) return '#ff7800';
+	if (coef>=.15 && coef<.20) return '#ff9600';
+	if (coef>=.10 && coef<.15) return '#ffb400';
+	if (coef>=.05 && coef<.10) return '#ffd200';
+	if (coef>=.00 && coef<.05) return '#ffffbf';
+	if (coef>=-.05 && coef<.00) return '#ffffbf';
+	if (coef>=-.10 && coef<-.05) return '#00d2ff';
+	if (coef>=-.15 && coef<-.10) return '#00b4ff';
+	if (coef>=-.20 && coef<-.15) return '#0096ff';
+	if (coef>=-.25 && coef<-.20) return '#0078ff';
+	if (coef>=-.30 && coef<-.25) return '#005aff';
+	if (coef>=-.35 && coef<-.30) return '#003cff';
+	if (coef<-.35) return '#001eff';
+}
+
+function redraw_arc(line) {
+
+	arclayer.removeChildren()
+
+	if (line==1) {
+		linecounter=1
+		var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:94.5,innerRadius:396,outerRadius:396,angle:180})
+		arclayer.add(arc)
+		var line=new Kinetic.Line({strokeWidth:3.6,points:[54,0,54,95.4],stroke:'white'})
+		arclayer.add(line)
+		var line=new Kinetic.Line({strokeWidth:3.6,points:[846,0,846,95.4],stroke:'white'})
+		arclayer.add(line)
+	}
+
+	if (line==0) {
+		linecounter=0
+		var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:94.5,innerRadius:427.5,outerRadius:427.5,angle:136,rotationDeg:22})
+		arclayer.add(arc)
+		var line=new Kinetic.Line({strokeWidth:3.6,points:[54,0,54,255.6],stroke:'white'})
+		arclayer.add(line)
+		var line=new Kinetic.Line({strokeWidth:3.6,points:[846,0,846,255.6],stroke:'white'})
+		arclayer.add(line)
+	}
+
+	if (line==2) {
+		var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:94.5,innerRadius:373.5,outerRadius:373.5,angle:180,rotationDeg:0})
+		arclayer.add(arc)
+		var line=new Kinetic.Line({strokeWidth:3.6,points:[76.5,0,76.5,120],stroke:'white'})
+		arclayer.add(line)
+		var line=new Kinetic.Line({strokeWidth:3.6,points:[823.5,0,823.5,120],stroke:'white'})
+		arclayer.add(line)
+	}
+
+	stage.add(arclayer)
+}
+
+function nba_court_base() {
+	var base=new Kinetic.Rect({x:0,y:0,width:900,height:620,fill:'#efefef'})
+	court.add(base)
+	var base=new Kinetic.Rect({x:342,y:0,width:216,height:342,fill:'#ebebeb'})
+	court.add(base)
+	var base=new Kinetic.Rect({x:306,y:0,width:36,height:342,fill:'#e0e0e0'})
+	court.add(base)
+	var base=new Kinetic.Rect({x:558,y:0,width:36,height:342,fill:'#e0e0e0'})
+	court.add(base)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[306,0,306,342],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[594,0,594,342],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[342,0,342,342],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[558,0,558,342],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[306,342,594,342],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[252,0,252,9],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[648,0,648,9],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[360,234,369,234],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[540,234,531,234],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[396,70.2,504,70.2],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[378,75.6,378,98.1],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[522,75.6,522,98.1],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[306,126,292.5,126],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[594,126,607.5,126],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[306,144,292.5,144],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[594,144,607.5,144],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[306,198,292.5,198],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[594,198,607.5,198],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[306,252,292.5,252],stroke:'white'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[594,252,607.5,252],stroke:'white'})
+	court.add(line)
+
+	var arc=new Kinetic.Arc({innerRadius:27,outerRadius:27,strokeWidth:3.6,stroke:'white',x:450,y:98.1,angle:360,rotationDeg:0})
+	court.add(arc)
+	var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:342,innerRadius:108,outerRadius:108,angle:180})
+	court.add(arc)
+	var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:98.1,innerRadius:72,outerRadius:72,angle:180})
+	court.add(arc)
+	var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:342,innerRadius:108,outerRadius:108,angle:180,dash:[22,22],rotationDeg:180})
+	court.add(arc)
+
+	var img = new Image()
+	img.src="Twitter_logo_sm.png"
+	img.onload = function() {
+		twit = new Kinetic.Image({
+			x: 765,
+        	y: 584,
+        	image: img,
+        	width: 17,
+        	height: 14
+        });
+        court.add(twit)
+        court.draw()
+    }
+    
+    var text=new Kinetic.Text({x:782,y:586,fontSize:13,fontFamily:'Helvetica',fill:'#888888',align:'right',text:'@AustinClemens2'})
+	court.add(text)
+	var text=new Kinetic.Text({x:698,y:604,fontSize:13,fontFamily:'Helvetica',fill:'#888888',align:'right',text:'www.nyloncalculus.com/shotchart'})
+	court.add(text)
+
+	var rect=new Kinetic.Rect({x:0,y:621,width:900,height:49.5,fill:'#ffffff'})
+	court.add(rect)
+	var line=new Kinetic.Line({strokeWidth:1.5,points:[0,621,900,621],stroke:'black'})
+	court.add(line)
+
+	var box = new Kinetic.Rect({cornerRadius: 3,x: 349,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+		width: 18,height: 18,fill: '#ff0000',
+	});
+	court.add(box)
+	var box = new Kinetic.Rect({cornerRadius: 3,x: 372,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+		width: 18,height: 18,fill: '#ff5a00',
+	});
+	court.add(box)
+	var box = new Kinetic.Rect({cornerRadius: 3,x: 395,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+		width: 18,height: 18,fill: '#ff9600',
+	});
+	court.add(box)
+	var box = new Kinetic.Rect({cornerRadius: 3,x: 418,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+		width: 18,height: 18,fill: '#ffd200',
+	});
+	court.add(box)
+	var box = new Kinetic.Rect({cornerRadius: 3,x: 441,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+		width: 18,height: 18,fill: '#ffffbf',
+	});
+	court.add(box)
+	var box = new Kinetic.Rect({cornerRadius: 3,x: 464,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+		width: 18,height: 18,fill: '#00f0ff',
+	});
+	court.add(box)
+	var box = new Kinetic.Rect({cornerRadius: 3,x: 487,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+		width: 18,height: 18,fill: '#00b4ff',
+	});
+	court.add(box)
+	var box = new Kinetic.Rect({cornerRadius: 3,x: 510,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+		width: 18,height: 18,fill: '#0078ff',
+	});
+	court.add(box)
+	var box = new Kinetic.Rect({cornerRadius: 3,x: 533,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+		width: 18,height: 18,fill: '#003cff',
+	});
+	court.add(box)
+
+	var text=new Kinetic.Text({x:429,y:651,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'Average'})
+	court.add(text)
+
+	stage.add(court)
+}
+
+</script>
+
+</body>
+</html>
