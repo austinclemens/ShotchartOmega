@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+    <title>Python-jQuery Example</title>
+    <script src="http://code.jquery.com/jquery-2.0.3.js"></script>
+    <script>
+        $(function()
+        {
+            $.ajax({
+                url: "http://www.austinclemens.com/cgi-bin/post.py",
+                type: "post",
+                datatype: "html",
+                data:   {
+                        a: "aa",
+                        b: "bb"
+                        },
+                success: function(response){
+                        $("#div").html(response);
+                }
+            });
+        });
+
+    </script>
+</head>
+<body>
+    <div id="div">Default Stuff</div>
+</body>
+
+
+
+
+
+# players 1 - 5
+# quarters 1, 2, 3, 4
+# playoffs/regular season
+# career?
+# year
+# efficiency
