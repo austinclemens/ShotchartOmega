@@ -20,7 +20,7 @@ var group = new Kinetic.Group()
 var linecounter=1
 
 
-var width = window.innerWidth || 900
+var width = window.innerWidth-30 || 900
 
 var stage = new Kinetic.Stage({
   container: 'container',
@@ -126,7 +126,7 @@ layer.on('click',function(evt){
 
 
 window.onload=function() {
-    load_pshot(get_param('year'),get_param('player'),get_param('type'),get_param('sport'))
+    load_pshotnew()
 }
 
 function get_param(name) {
@@ -185,15 +185,21 @@ function load_pshotnew() {
 		player4: "NONE",
 		player5: "NONE",
 		quarter: "all",
-		type: "regular season"
-		year: "2013"
+		type: "regular season",
+		year: "2013",
 		efficiency: "0"
 		},
 	success: function(response){
-		var shot_data = $.csv.toArrays(response);
+		console.log(response)
+		//console.log("HELLO")
+		//var shot_data = $.csv.toArrays(response[0]);
+		//console.log(shot_data)
+		var shot_data = eval("(" + response + ')');
+		console.log(shot_data)
+		redraw_arc(0)
 		circlayer.removeChildren()
 		stage.add(circlayer)
-		drawcourt_pshot(shot_data,2013,"Dirk Nowitzki",0,0)
+		drawcourt_pshot(shot_data,2013,"Dirk Nowitzki","basic",0)
 	}
 	});
 }
@@ -212,6 +218,8 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 		if (shot_data[n][2]>0 && shot_data[n][6]>0.005){
 			var X = shot_data[n][1]*1.8+450+9 ;
   			var Y = shot_data[n][0]*1.8+94.5+9 ;
+  			console.log(X)
+  			console.log(Y)
 
   			if (dleague=="NCAA") {
 				var X = shot_data[n][1]*1.8+450;
