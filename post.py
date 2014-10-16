@@ -170,9 +170,22 @@ if quarter==None:
 if efficiency==None:
 	efficiency="0"
 
+string="(player_name='%s')" % (player1)
+if player2!=None:
+	string="(player_name='%s' OR player_name='%s')" % (player1,player2)
+if player3!=None:
+	string="(player_name='%s' OR player_name='%s' OR player_name='%s')" % (player1,player2,player3)
+if player4!=None:
+	string="(player_name='%s' OR player_name='%s' OR player_name='%s' OR player_name='%s')" % (player1,player2,player3,player4)
+if player5!=None:
+	string="(player_name='%s' OR player_name='%s' OR player_name='%s' OR player_name='%s' OR player_name='%s')" % (player1,player2,player3,player4,player5)
+
 con=sqlite3.connect('/home2/austinc/%s_shot_data.db' % (year))
 cur=con.cursor()
-cur.execute("SELECT * FROM test WHERE player_name='%s' AND period=4" % (player1))
+if quarter=="all":
+	cur.execute("SELECT * FROM test WHERE %s" % (string))
+else:
+	cur.execute("SELECT * FROM test WHERE %s AND period=%s" % (string,quarter))
 #cur.execute("SELECT name FROM sqlite_master WHERE type='table';")
 #print "Content-Type: text/html\n\n"
 #print(cur.fetchall())

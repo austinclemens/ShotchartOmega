@@ -179,11 +179,11 @@ function load_pshotnew() {
 	type: "post",
 	datatype: "html",
 	data:   {
-		player1: "Dirk Nowitzki",
-		player2: "NONE",
-		player3: "NONE",
-		player4: "NONE",
-		player5: "NONE",
+		player1: "Anthony Morrow",
+		player2: "Russell Westbrook",
+		player3: "Kendrick Perkins",
+		player4: "Kevin Durant",
+		player5: "Serge Ibaka",
 		quarter: "all",
 		type: "regular season",
 		year: "2013",
@@ -199,7 +199,7 @@ function load_pshotnew() {
 		redraw_arc(0)
 		circlayer.removeChildren()
 		stage.add(circlayer)
-		drawcourt_pshot(shot_data,2013,"Dirk Nowitzki","basic",0)
+		drawcourt_pshot(shot_data,2013,"Kevin Durant","basic",0)
 	}
 	});
 }
@@ -288,7 +288,7 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 	}
 
 	year2=parseInt(year)+1
-	var text=new Kinetic.Text({x:9,y:587,fontSize:30,fontFamily:'Arial',fill:'#444444',align:'left',text:player.replace(/%20/g," ")+" "+year+"-"+year2})
+	var text=new Kinetic.Text({x:9,y:587,fontSize:30,fontFamily:'Arial',fill:'#444444',align:'left',text:player.replace(/%20/g," ")+" "+year+"-"+year2+", 4th quarters"})
 	layer.add(text)
 
 	setTimeout(function(){shadow_layer(shot_data,min,max,efficient,dleague)},1200)
