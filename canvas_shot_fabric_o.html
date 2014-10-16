@@ -239,9 +239,10 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 				y: Y,
 				xcenter: X,
 				ycenter: Y,
-				shadowColor: '#ACACAC',
-				shadowBlur: 30,
-				shadowOffset: {x:5,y:5},
+				shadowColor: '#ffffff',
+				shadowBlur: 40,
+				shadowOpacity: .5,
+				shadowOffset: {x:0,y:0},
 				width: 0,
 				height: 0,
 				shotvol: shot_data[n][8],
@@ -288,7 +289,7 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 	}
 
 	year2=parseInt(year)+1
-	var text=new Kinetic.Text({x:9,y:587,fontSize:30,fontFamily:'Arial',fill:'#444444',align:'left',text:player.replace(/%20/g," ")+" "+year+"-"+year2+", 4th quarters"})
+	var text=new Kinetic.Text({x:9,y:587,fontSize:30,fontFamily:'Arial',fill:'#ffffff',align:'left',text:player.replace(/%20/g," ")+" "+year+"-"+year2+", 4th quarters"})
 	layer.add(text)
 
 	setTimeout(function(){shadow_layer(shot_data,min,max,efficient,dleague)},1200)
@@ -428,13 +429,13 @@ function redraw_arc(line) {
 }
 
 function nba_court_base() {
-	var base=new Kinetic.Rect({x:0,y:0,width:900,height:620,fill:'#efefef'})
+	var base=new Kinetic.Rect({x:0,y:0,width:900,height:620,fill:'#909090'})
 	court.add(base)
-	var base=new Kinetic.Rect({x:342,y:0,width:216,height:342,fill:'#ebebeb'})
+	var base=new Kinetic.Rect({x:342,y:0,width:216,height:342,fill:'#707070'})
 	court.add(base)
-	var base=new Kinetic.Rect({x:306,y:0,width:36,height:342,fill:'#e0e0e0'})
+	var base=new Kinetic.Rect({x:306,y:0,width:36,height:342,fill:'#808080'})
 	court.add(base)
-	var base=new Kinetic.Rect({x:558,y:0,width:36,height:342,fill:'#e0e0e0'})
+	var base=new Kinetic.Rect({x:558,y:0,width:36,height:342,fill:'#808080'})
 	court.add(base)
 	var line=new Kinetic.Line({strokeWidth:3.6,points:[306,0,306,342],stroke:'white'})
 	court.add(line)
@@ -500,9 +501,9 @@ function nba_court_base() {
         court.draw()
     }
     
-    var text=new Kinetic.Text({x:782,y:586,fontSize:13,fontFamily:'Helvetica',fill:'#888888',align:'right',text:'@AustinClemens2'})
+    var text=new Kinetic.Text({x:782,y:586,fontSize:13,fontFamily:'Helvetica',fill:'#ffffff',align:'right',text:'@AustinClemens2'})
 	court.add(text)
-	var text=new Kinetic.Text({x:698,y:604,fontSize:13,fontFamily:'Helvetica',fill:'#888888',align:'right',text:'www.nyloncalculus.com/shotchart'})
+	var text=new Kinetic.Text({x:698,y:604,fontSize:13,fontFamily:'Helvetica',fill:'#ffffff',align:'right',text:'www.nyloncalculus.com/shotchart'})
 	court.add(text)
 
 	var rect=new Kinetic.Rect({x:0,y:621,width:900,height:49.5,fill:'#ffffff'})
