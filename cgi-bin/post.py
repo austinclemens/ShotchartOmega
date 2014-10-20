@@ -120,7 +120,7 @@ if player4!=None:
 if player5!=None:
 	string="(player_name='%s' OR player_name='%s' OR player_name='%s' OR player_name='%s' OR player_name='%s')" % (player1,player2,player3,player4,player5)
 
-con=sqlite3.connect('/home2/austinc/%s_shot_data.db' % (year))
+con=sqlite3.connect('.../home2/austinc/%s_shot_data.db' % (year))
 cur=con.cursor()
 if quarter=="all":
 	cur.execute("SELECT * FROM test WHERE %s" % (string))
@@ -131,23 +131,12 @@ else:
 #print(cur.fetchall())
 rows=cur.fetchall()
 
-print "Content-Type: text/html\n\n"
-
-print "query executed"
-
 with open("average_%s.csv" % (year),'rU') as csvfile:
 	reader=csv.reader(csvfile)
 	average_csv=[row for row in reader]
 
-print "average loaded"
-
 results_csv=chart(rows,average_csv)
-
-print "charted"
-
 results=json.dumps(results_csv)
-
-print "dumped"
 
 print "Content-Type: text/html\n\n"
 print results
