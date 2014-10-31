@@ -2,10 +2,9 @@
 
 import cgi
 import cgitb
-import sqlite3
-import sys
-import csv
+import mysql.connector
 import math
+import csv
 from operator import itemgetter
 import json
 
@@ -13,7 +12,7 @@ cgitb.enable()
 
 def chart(shots,average_data):
 	"""Creates the Goldberry chart (csv) for given player"""
-	shots_temp=[['',int(shot[18]),int(shot[17]),int(shot[20]),shot[12]] for shot in shots]
+	shots_temp=[['',int(shot[9]),int(shot[8]),int(shot[11]),shot[6]] for shot in shots]
 	for shot in shots_temp:
 		if shot[4]=="3PT Field Goal":
 			shot[4]=1
@@ -120,34 +119,31 @@ if player4!=None:
 if player5!=None:
 	string="(player_name='%s' OR player_name='%s' OR player_name='%s' OR player_name='%s' OR player_name='%s')" % (player1,player2,player3,player4,player5)
 
-con=sqlite3.connect('/home2/austinc/%s_shot_data.db' % (year))
+con=mysql.connector.connect(user='austinc_austinc', password='scriptpass1.', host='localhost', database='austinc_shots2013')
 cur=con.cursor()
 if quarter=="all":
-	cur.execute("SELECT * FROM test WHERE %s" % (string))
+	query = ("SELECT * FROM shots "
+	         "WHERE %s")
 else:
-	cur.execute("SELECT * FROM test WHERE %s AND period=%s" % (string,quarter))
+	query = ("SELECT * FROM shots "
+		     "WHERE %s AND period=%s")
+
 #cur.execute("SELECT name FROM sqlite_master WHERE type='table';")
 #print "Content-Type: text/html\n\n"
 #print(cur.fetchall())
-rows=cur.fetchall()
+cursor.execute(query,(string,quarter))
 
-print "Content-Type: text/html\n\n"
+rows=cursor.fetchall()
 
-print "query executed"
+con.close()
 
 with open("average_%s.csv" % (year),'rU') as csvfile:
 	reader=csv.reader(csvfile)
 	average_csv=[row for row in reader]
 
-print "average loaded"
-
 results_csv=chart(rows,average_csv)
 
-print "charted"
-
 results=json.dumps(results_csv)
-
-print "dumped"
 
 print "Content-Type: text/html\n\n"
 print results
