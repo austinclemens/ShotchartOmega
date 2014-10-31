@@ -142,7 +142,6 @@ function get_param(name) {
 
 function load_pshot(year,player,efficient,dleague) {
 	if (dleague=="NBADEV") {
-		console.log('entered')
 		var url="dleague_years/"+year+"/pshot_"+player+".csv"
 	} 
 	else if (dleague=="NCAA") {
@@ -190,12 +189,10 @@ function load_pshotnew() {
 		efficiency: "0"
 		},
 	success: function(response){
-		console.log(response)
 		//console.log("HELLO")
 		//var shot_data = $.csv.toArrays(response[0]);
 		//console.log(shot_data)
 		var shot_data = eval("(" + response + ")");
-		console.log(shot_data)
 		redraw_arc(0)
 		circlayer.removeChildren()
 		stage.add(circlayer)
@@ -218,8 +215,6 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 		if (shot_data[n][2]>0 && shot_data[n][6]>0.005){
 			var X = shot_data[n][1]*1.8+450+9 ;
   			var Y = shot_data[n][0]*1.8+94.5+9 ;
-  			console.log(X)
-  			console.log(Y)
 
   			if (dleague=="NCAA") {
 				var X = shot_data[n][1]*1.8+450;
