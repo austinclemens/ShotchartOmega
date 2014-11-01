@@ -25,7 +25,7 @@ var width = window.innerWidth-30 || 900
 var stage = new Kinetic.Stage({
   container: 'container',
   width: width,
-  height: (.745)*width,
+  height: (.775)*width,
   scaleX:width/900,
   scaleY:width/900,
 });
@@ -214,7 +214,7 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 	for(var n = 0; n < 200; n++) {
 		if (shot_data[n][2]>0 && shot_data[n][6]>0.005){
 			var X = shot_data[n][1]*1.8+450+9 ;
-  			var Y = shot_data[n][0]*1.8+94.5+9 ;
+  			var Y = shot_data[n][0]*1.8+144.5+9 ;
 
   			if (dleague=="NCAA") {
 				var X = shot_data[n][1]*1.8+450;
@@ -234,9 +234,9 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 				y: Y,
 				xcenter: X,
 				ycenter: Y,
-				shadowColor: '#ffffff',
-				shadowBlur: 0,
-				shadowOpacity: .5,
+				shadowColor: fillcolor,
+				shadowBlur: 80,
+				shadowOpacity: 1,
 				shadowOffset: {x:3,y:3},
 				width: 0,
 				height: 0,
@@ -266,26 +266,26 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 		tween.play()
 	}
 
-	if (efficient=="basic") {
-		var text=new Kinetic.Text({x:560,y:631,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'< Average FG%'})
-		layer.add(text)
-	}
-	if (efficient=="efficiency") {
-		var text=new Kinetic.Text({x:560,y:631,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'> Average PPS'})
-		layer.add(text)
-	}
-	if (efficient=="basic") {
-		var text=new Kinetic.Text({x:255,y:632,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'> Average FG%'})
-		layer.add(text)
-	}
-	if (efficient=="efficiency") {
-		var text=new Kinetic.Text({x:255,y:632,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'> Average PPS'})
-		layer.add(text)
-	}
+	// if (efficient=="basic") {
+	// 	var text=new Kinetic.Text({x:560,y:631,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'< Average FG%'})
+	// 	layer.add(text)
+	// }
+	// if (efficient=="efficiency") {
+	// 	var text=new Kinetic.Text({x:560,y:631,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'> Average PPS'})
+	// 	layer.add(text)
+	// }
+	// if (efficient=="basic") {
+	// 	var text=new Kinetic.Text({x:255,y:632,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'> Average FG%'})
+	// 	layer.add(text)
+	// }
+	// if (efficient=="efficiency") {
+	// 	var text=new Kinetic.Text({x:255,y:632,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'> Average PPS'})
+	// 	layer.add(text)
+	// }
 
-	year2=parseInt(year)+1
-	var text=new Kinetic.Text({x:9,y:587,fontSize:30,fontFamily:'Arial',fill:'#ffffff',align:'left',text:player.replace(/%20/g," ")+" "+year+"-"+year2+", 4th quarters"})
-	layer.add(text)
+	// year2=parseInt(year)+1
+	// var text=new Kinetic.Text({x:9,y:587,fontSize:30,fontFamily:'Arial',fill:'#ffffff',align:'left',text:player.replace(/%20/g," ")+" "+year+"-"+year2+", 4th quarters"})
+	// layer.add(text)
 
 	setTimeout(function(){shadow_layer(shot_data,min,max,efficient,dleague)},1200)
 }
@@ -294,7 +294,7 @@ function shadow_layer(shot_data,min,max,efficient,dleague) {
 	for(var n = 0; n < 200; n++) {
 		if (shot_data[n][2]>0 && shot_data[n][6]>0.005){
 			var X = shot_data[n][1]*1.8+450+((18-choosesize(shot_data[n][2],min,max,20))/2) ;
-  			var Y = shot_data[n][0]*1.8+94.5+((18-choosesize(shot_data[n][2],min,max,20))/2) ;
+  			var Y = shot_data[n][0]*1.8+144.5+((18-choosesize(shot_data[n][2],min,max,20))/2) ;
   			var Xcenter = shot_data[n][1]*1.8+450+9
   			var Ycenter = shot_data[n][0]*1.8+94.5+9
 
@@ -348,23 +348,17 @@ function choosesize(shots,min,max,side_length) {
 }
 
 function choosecolor_pshot(coef) {
-	if (coef>=.16) return '#ff0000';
-	if (coef>=.14 && coef<.16) return '#ff1e00';
-	if (coef>=.12 && coef<.14) return '#ff3c00';
-	if (coef>=.10 && coef<.12) return '#ff5a00';
-	if (coef>=.08 && coef<.10) return '#ff7800';
-	if (coef>=.06 && coef<.08) return '#ff9600';
-	if (coef>=.04 && coef<.06) return '#ffb400';
-	if (coef>=.02 && coef<.04) return '#ffd200';
-	if (coef>=.00 && coef<.02) return '#ffffbf';
-	if (coef>=-.02 && coef<.00) return '#ffffbf';
-	if (coef>=-.04 && coef<-.02) return '#00d2ff';
-	if (coef>=-.06 && coef<-.04) return '#00b4ff';
-	if (coef>=-.08 && coef<-.06) return '#0096ff';
-	if (coef>=-.10 && coef<-.08) return '#0078ff';
-	if (coef>=-.12 && coef<-.10) return '#005aff';
-	if (coef>=-.14 && coef<-.12) return '#003cff';
-	if (coef<-.14) return '#001eff';
+	if (coef>=.15) return '#a50026';
+	if (coef>=.12 && coef<.15) return '#d73027';
+	if (coef>=.09 && coef<.12) return '#f46d43';
+	if (coef>=.06 && coef<.09) return '#fdae61';
+	if (coef>=.03 && coef<.06) return '#fee090';
+	if (coef>=-.03 && coef<.03) return '#ffffbf';
+	if (coef>=-.06 && coef<-.03) return '#e0f3f8';
+	if (coef>=-.09 && coef<-.06) return '#abd9e9';
+	if (coef>=-.12 && coef<-.09) return '#74add1';
+	if (coef>=-.15 && coef<-.12) return '#4575b4';
+	if (coef<=-.15) return '#313695';
 }
 
 function choosecolor_pps(coef) {
@@ -393,30 +387,30 @@ function redraw_arc(line) {
 
 	if (line==1) {
 		linecounter=1
-		var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:94.5,innerRadius:396,outerRadius:396,angle:180})
+		var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:144.5,innerRadius:396,outerRadius:396,angle:180})
 		arclayer.add(arc)
-		var line=new Kinetic.Line({strokeWidth:3.6,points:[54,0,54,95.4],stroke:'white'})
+		var line=new Kinetic.Line({strokeWidth:3.6,points:[54,50,54,145.4],stroke:'white'})
 		arclayer.add(line)
-		var line=new Kinetic.Line({strokeWidth:3.6,points:[846,0,846,95.4],stroke:'white'})
+		var line=new Kinetic.Line({strokeWidth:3.6,points:[846,50,846,145.4],stroke:'white'})
 		arclayer.add(line)
 	}
 
 	if (line==0) {
 		linecounter=0
-		var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:94.5,innerRadius:427.5,outerRadius:427.5,angle:136,rotationDeg:22})
+		var arc=new Kinetic.Arc({strokeWidth:2,stroke:'white',x:450,y:144.5,innerRadius:427.5,outerRadius:427.5,angle:136,rotationDeg:22,shadowColor:'#ffffff',shadowBlur:100})
 		arclayer.add(arc)
-		var line=new Kinetic.Line({strokeWidth:3.6,points:[54,0,54,255.6],stroke:'white'})
+		var line=new Kinetic.Line({strokeWidth:2,points:[54,50,54,305.6],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 		arclayer.add(line)
-		var line=new Kinetic.Line({strokeWidth:3.6,points:[846,0,846,255.6],stroke:'white'})
+		var line=new Kinetic.Line({strokeWidth:2,points:[846,50,846,305.6],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 		arclayer.add(line)
 	}
 
 	if (line==2) {
-		var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:94.5,innerRadius:373.5,outerRadius:373.5,angle:180,rotationDeg:0})
+		var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:144.5,innerRadius:373.5,outerRadius:373.5,angle:180,rotationDeg:0})
 		arclayer.add(arc)
-		var line=new Kinetic.Line({strokeWidth:3.6,points:[76.5,0,76.5,120],stroke:'white'})
+		var line=new Kinetic.Line({strokeWidth:3.6,points:[76.5,50,76.5,170],stroke:'white'})
 		arclayer.add(line)
-		var line=new Kinetic.Line({strokeWidth:3.6,points:[823.5,0,823.5,120],stroke:'white'})
+		var line=new Kinetic.Line({strokeWidth:3.6,points:[823.5,50,823.5,170],stroke:'white'})
 		arclayer.add(line)
 	}
 
@@ -424,127 +418,157 @@ function redraw_arc(line) {
 }
 
 function nba_court_base() {
-	var base=new Kinetic.Rect({x:0,y:0,width:900,height:620,fill:'#909090'})
+	var base=new Kinetic.Rect({x:0,y:0,width:900,height:640,fill:'#909090'})
 	court.add(base)
-	var base=new Kinetic.Rect({x:342,y:0,width:216,height:342,fill:'#707070'})
+	var base=new Kinetic.Rect({x:342,y:50,width:216,height:342,fill:'#707070'})
 	court.add(base)
-	var base=new Kinetic.Rect({x:306,y:0,width:36,height:342,fill:'#808080'})
+	var base=new Kinetic.Rect({x:306,y:50,width:36,height:342,fill:'#808080'})
 	court.add(base)
-	var base=new Kinetic.Rect({x:558,y:0,width:36,height:342,fill:'#808080'})
+	var base=new Kinetic.Rect({x:558,y:50,width:36,height:342,fill:'#808080'})
 	court.add(base)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[306,0,306,342],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[306,50,306,392],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[594,0,594,342],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[594,50,594,392],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[342,0,342,342],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[342,50,342,392],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[558,0,558,342],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[558,50,558,392],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[306,342,594,342],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[306,392,594,392],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[252,0,252,9],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[252,50,252,59],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[648,0,648,9],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[648,50,648,59],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[360,234,369,234],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[360,284,369,284],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[540,234,531,234],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[540,284,531,284],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[396,70.2,504,70.2],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[396,120.2,504,120.2],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[378,75.6,378,98.1],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[378,125.6,378,148.1],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[522,75.6,522,98.1],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[522,125.6,522,148.1],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[306,126,292.5,126],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[306,176,292.5,176],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[594,126,607.5,126],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[594,176,607.5,176],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[306,144,292.5,144],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[306,194,292.5,194],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[594,144,607.5,144],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[594,194,607.5,194],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[306,198,292.5,198],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[306,248,292.5,248],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[594,198,607.5,198],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[594,248,607.5,248],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[306,252,292.5,252],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[306,302,292.5,302],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[594,252,607.5,252],stroke:'white'})
+	var line=new Kinetic.Line({strokeWidth:2,points:[594,302,607.5,302],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:3.6,points:[40,50,860,50],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
 
-	var arc=new Kinetic.Arc({innerRadius:27,outerRadius:27,strokeWidth:3.6,stroke:'white',x:450,y:98.1,angle:360,rotationDeg:0})
+	var arc=new Kinetic.Arc({innerRadius:27,outerRadius:27,strokeWidth:2,stroke:'white',x:450,y:148.1,angle:360,rotationDeg:0,shadowColor:'#ffffff',shadowBlur:100})
 	court.add(arc)
-	var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:342,innerRadius:108,outerRadius:108,angle:180})
+	var arc=new Kinetic.Arc({strokeWidth:2,stroke:'white',x:450,y:392,innerRadius:108,outerRadius:108,angle:180,shadowColor:'#ffffff',shadowBlur:100})
 	court.add(arc)
-	var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:98.1,innerRadius:72,outerRadius:72,angle:180})
+	var arc=new Kinetic.Arc({strokeWidth:2,stroke:'white',x:450,y:148.1,innerRadius:72,outerRadius:72,angle:180,shadowColor:'#ffffff',shadowBlur:100})
 	court.add(arc)
-	var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:342,innerRadius:108,outerRadius:108,angle:180,dash:[22,22],rotationDeg:180})
+	var arc=new Kinetic.Arc({strokeWidth:2,stroke:'white',x:450,y:392,innerRadius:108,outerRadius:108,angle:180,dash:[22,22],rotationDeg:180,shadowColor:'#ffffff',shadowBlur:100})
 	court.add(arc)
+
+	var arc=new Kinetic.Arc({strokeWidth:2,stroke:'white',x:450,y:144.5,innerRadius:427.5,outerRadius:427.5,angle:136,rotationDeg:22,shadowColor:'#ffffff',shadowBlur:100})
+	court.add(arc)
+	var line=new Kinetic.Line({strokeWidth:2,points:[54,50,54,305.6],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:2,points:[846,50,846,305.6],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
+	court.add(line)
 
 	var img = new Image()
 	img.src="Twitter_logo_sm.png"
 	img.onload = function() {
 		twit = new Kinetic.Image({
 			x: 765,
-        	y: 584,
+        	y: 622,
         	image: img,
         	width: 17,
-        	height: 14
+        	height: 14,
+        	shadowBlur:70,
+        	shadowColor:'#ffffff'
         });
         court.add(twit)
         court.draw()
     }
     
-    var text=new Kinetic.Text({x:782,y:586,fontSize:13,fontFamily:'Helvetica',fill:'#ffffff',align:'right',text:'@AustinClemens2'})
+    var text=new Kinetic.Text({x:782,y:624,fontSize:13,fontFamily:'Helvetica',fill:'#ffffff',align:'right',text:'@AustinClemens2'})
 	court.add(text)
-	var text=new Kinetic.Text({x:698,y:604,fontSize:13,fontFamily:'Helvetica',fill:'#ffffff',align:'right',text:'www.nyloncalculus.com/shotchart'})
+	var text=new Kinetic.Text({x:10,y:624,fontSize:13,fontFamily:'Helvetica',fill:'#ffffff',align:'right',text:'www.nyloncalculus.com/shotchart'})
 	court.add(text)
 
-	var rect=new Kinetic.Rect({x:0,y:621,width:900,height:49.5,fill:'#ffffff'})
-	court.add(rect)
-	var line=new Kinetic.Line({strokeWidth:1.5,points:[0,621,900,621],stroke:'black'})
-	court.add(line)
-
-	var box = new Kinetic.Rect({cornerRadius: 3,x: 349,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-		width: 18,height: 18,fill: '#ff0000',
-	});
-	court.add(box)
-	var box = new Kinetic.Rect({cornerRadius: 3,x: 372,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-		width: 18,height: 18,fill: '#ff5a00',
-	});
-	court.add(box)
-	var box = new Kinetic.Rect({cornerRadius: 3,x: 395,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-		width: 18,height: 18,fill: '#ff9600',
-	});
-	court.add(box)
-	var box = new Kinetic.Rect({cornerRadius: 3,x: 418,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-		width: 18,height: 18,fill: '#ffd200',
-	});
-	court.add(box)
-	var box = new Kinetic.Rect({cornerRadius: 3,x: 441,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-		width: 18,height: 18,fill: '#ffffbf',
-	});
-	court.add(box)
-	var box = new Kinetic.Rect({cornerRadius: 3,x: 464,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-		width: 18,height: 18,fill: '#00f0ff',
-	});
-	court.add(box)
-	var box = new Kinetic.Rect({cornerRadius: 3,x: 487,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-		width: 18,height: 18,fill: '#00b4ff',
-	});
-	court.add(box)
-	var box = new Kinetic.Rect({cornerRadius: 3,x: 510,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-		width: 18,height: 18,fill: '#0078ff',
-	});
-	court.add(box)
-	var box = new Kinetic.Rect({cornerRadius: 3,x: 533,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-		width: 18,height: 18,fill: '#003cff',
-	});
-	court.add(box)
-
-	var text=new Kinetic.Text({x:429,y:651,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'Average'})
+	var text=new Kinetic.Text({x:40,y:5,fontVariant:'small-caps',fontSize:17,fontFamily:'Verdana',fill:'#ffffff',align:'right',text:'Player(s)'})
 	court.add(text)
+	var text=new Kinetic.Text({x:350,y:5,fontVariant:'small-caps',fontSize:17,fontFamily:'Verdana',fill:'#ffffff',align:'right',text:'Details'})
+	court.add(text)
+	var text=new Kinetic.Text({x:700,y:5,fontVariant:'small-caps',fontSize:17,fontFamily:'Verdana',fill:'#ffffff',align:'right',text:'Key'})
+	court.add(text)
+
+	var box = new Kinetic.Rect({cornerRadius: 3,x: 700,y: 25,shadowColor: '#a50026',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#a50026'});
+	court.add(box)
+	var box = new Kinetic.Rect({cornerRadius: 3,x: 726,y: 25,shadowColor: '#fdae61',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#fdae61'});
+	court.add(box)
+	var box = new Kinetic.Rect({cornerRadius: 3,x: 752,y: 25,shadowColor: '#ffffbf',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#ffffbf'});
+	court.add(box)
+	var box = new Kinetic.Rect({cornerRadius: 3,x: 778,y: 25,shadowColor: '#abd9e9',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#abd9e9'});
+	court.add(box)
+	var box = new Kinetic.Rect({cornerRadius: 3,x: 804,y: 25,shadowColor: '#313695',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#313695'});
+	court.add(box)
+
+
+	// var rect=new Kinetic.Rect({x:0,y:621,width:900,height:49.5,fill:'#ffffff'})
+	// court.add(rect)
+	// var line=new Kinetic.Line({strokeWidth:1.5,points:[0,621,900,621],stroke:'black'})
+	// court.add(line)
+
+	// var box = new Kinetic.Rect({cornerRadius: 3,x: 349,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+	// 	width: 18,height: 18,fill: '#ff0000',
+	// });
+	// court.add(box)
+	// var box = new Kinetic.Rect({cornerRadius: 3,x: 372,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+	// 	width: 18,height: 18,fill: '#ff5a00',
+	// });
+	// court.add(box)
+	// var box = new Kinetic.Rect({cornerRadius: 3,x: 395,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+	// 	width: 18,height: 18,fill: '#ff9600',
+	// });
+	// court.add(box)
+	// var box = new Kinetic.Rect({cornerRadius: 3,x: 418,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+	// 	width: 18,height: 18,fill: '#ffd200',
+	// });
+	// court.add(box)
+	// var box = new Kinetic.Rect({cornerRadius: 3,x: 441,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+	// 	width: 18,height: 18,fill: '#ffffbf',
+	// });
+	// court.add(box)
+	// var box = new Kinetic.Rect({cornerRadius: 3,x: 464,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+	// 	width: 18,height: 18,fill: '#00f0ff',
+	// });
+	// court.add(box)
+	// var box = new Kinetic.Rect({cornerRadius: 3,x: 487,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+	// 	width: 18,height: 18,fill: '#00b4ff',
+	// });
+	// court.add(box)
+	// var box = new Kinetic.Rect({cornerRadius: 3,x: 510,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+	// 	width: 18,height: 18,fill: '#0078ff',
+	// });
+	// court.add(box)
+	// var box = new Kinetic.Rect({cornerRadius: 3,x: 533,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
+	// 	width: 18,height: 18,fill: '#003cff',
+	// });
+	// court.add(box)
+
+	// var text=new Kinetic.Text({x:429,y:651,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'Average'})
+	// court.add(text)
 
 	stage.add(court)
 }

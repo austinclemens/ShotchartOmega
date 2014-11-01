@@ -24,7 +24,7 @@ def chart(shots,average_data):
 	csv_data=[]
 	averagepps=1
 	for i,region in enumerate(player_data):
-		csv_data.append([region[0],region[1],region[2],float(region[3])-float(average_data[i][3]),float(region[3]),,float(region[4]),region[5]-averagepps,float(region[4])])
+		csv_data.append([region[0],region[1],region[2],float(region[3])-float(average_data[i][3]),float(region[3]),0,float(region[4]),region[5]-averagepps,float(region[4])])
 	sorted_chart=sorted(csv_data, key=itemgetter(2,6))
 	sorted_chart=sorted_chart[-201:]
 	sorted_chart.reverse()
@@ -83,13 +83,8 @@ player4=data.getfirst('player4')
 player5=data.getfirst('player5')
 
 year=data.getfirst('year')
-#print "Content-Type: text/html\n\n"
-#print year
-
 season=data.getfirst('type')
-
 efficiency=data.getfirst('efficiency')
-
 quarter=data.getfirst('quarter')
 
 if year==None:
@@ -119,13 +114,8 @@ if quarter=="all":
 	query = ("SELECT * FROM `shots` WHERE PLAYER_NAME='Dirk Nowitzki'")
 	cur.execute(query)
 else:
-	query = ("SELECT * FROM shots "
-		     "WHERE %s AND PERIOD=%s")
+	query = ("SELECT * FROM shots WHERE %s AND PERIOD=%s")
 	cur.execute(query,(string,quarter))
-
-#cur.execute("SELECT name FROM sqlite_master WHERE type='table';")
-#print "Content-Type: text/html\n\n"
-#print(cur.fetchall())
 
 rows=cur.fetchall()
 
