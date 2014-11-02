@@ -237,15 +237,31 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 				shadowColor: fillcolor,
 				shadowBlur: 80,
 				shadowOpacity: 1,
-				shadowOffset: {x:3,y:3},
 				width: 0,
 				height: 0,
 				shotvol: shot_data[n][8],
 				fg: shot_data[n][4],
 				fill: fillcolor,
 			});
+			var box2 = new Kinetic.Rect({
+				cornerRadius: 3,
+				x: X,
+				y: Y,
+				xcenter: X,
+				ycenter: Y,
+				shadowColor: '#f0f0f0',
+				shadowBlur: 20,
+				shadowOpacity: 1,
+				width: 0,
+				height: 0,
+				shotvol: shot_data[n][8],
+				fg: shot_data[n][4],
+				fill: fillcolor,
+			});
+
 		}
 		layer.add(box);
+		layer.add(box2)
 	}
 
 	var shapes=layer.getChildren()
@@ -418,13 +434,13 @@ function redraw_arc(line) {
 }
 
 function nba_court_base() {
-	var base=new Kinetic.Rect({x:0,y:0,width:900,height:640,fill:'#909090'})
+	var base=new Kinetic.Rect({x:0,y:0,width:900,height:640,fill:'#B0B0B0'})
 	court.add(base)
-	var base=new Kinetic.Rect({x:342,y:50,width:216,height:342,fill:'#707070'})
+	var base=new Kinetic.Rect({x:342,y:50,width:216,height:342,fill:'#A0A0A0'})
 	court.add(base)
-	var base=new Kinetic.Rect({x:306,y:50,width:36,height:342,fill:'#808080'})
+	var base=new Kinetic.Rect({x:306,y:50,width:36,height:342,fill:'#909090'})
 	court.add(base)
-	var base=new Kinetic.Rect({x:558,y:50,width:36,height:342,fill:'#808080'})
+	var base=new Kinetic.Rect({x:558,y:50,width:36,height:342,fill:'#909090'})
 	court.add(base)
 	var line=new Kinetic.Line({strokeWidth:2,points:[306,50,306,392],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)

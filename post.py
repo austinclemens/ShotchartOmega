@@ -45,34 +45,35 @@ def circle_chunk2(shots_temp):
 		x_center=box[0][0]+5
 		y_center=box[0][1]+5
 		num_shots=len([shot for shot in shots_temp if int(shot[1])>=box[0][0] and int(shot[1])<box[1][0] and int(shot[2])>=box[0][1] and int(shot[2])<box[1][1]])
-		dists=[]
-		dist_shots=[shot for shot in shots_temp if math.sqrt((x_center-shot[1])**2+(y_center-shot[2])**2)<50]
-		per_5box=len(dist_shots)/len(shots_temp)
-		for shot in dist_shots:
-			dist=math.sqrt((x_center-shot[1])**2+(y_center-shot[2])**2)
-			dists.append([dist,shot[3]])
-		sorted_dists = sorted(dists, key=lambda place:place[0])
-		shots_made_smooth=0
-		for shot in sorted_dists:
-			shots_made_smooth=shots_made_smooth+(shot[1]*(1/math.sqrt(shot[0])))
-		num_shots_smooth=0
-		for shot in sorted_dists:
-			num_shots_smooth=num_shots_smooth+(1/math.sqrt(shot[0]))
-		try:
-			smooth_fg=shots_made_smooth/num_shots_smooth
-		except: 
-			smooth_fg=0
-		three_regions=[13,14,15,16,4,5]
-		if int(box[2][0]) in three_regions:
-			pps_made_smooth=shots_made_smooth*1.5
-		if int(box[2][0]) not in three_regions:
-			pps_made_smooth=shots_made_smooth
-		try: 
-			smooth_pps=2*pps_made_smooth/num_shots_smooth
-		except:
-			smooth_pps=0
-		output.append([box[0][0],box[0][1],num_shots,smooth_fg,per_5box,smooth_pps])
-		# coord, coord, number of shots, smooth_fg, percent of shots within 5 feet, smooth_pps
+		if num_shots>0:
+			dists=[]
+			dist_shots=[shot for shot in shots_temp if math.sqrt((x_center-shot[1])**2+(y_center-shot[2])**2)<50]
+			per_5box=len(dist_shots)/len(shots_temp)
+			for shot in dist_shots:
+				dist=math.sqrt((x_center-shot[1])**2+(y_center-shot[2])**2)
+				dists.append([dist,shot[3]])
+			sorted_dists = sorted(dists, key=lambda place:place[0])
+			shots_made_smooth=0
+			for shot in sorted_dists:
+				shots_made_smooth=shots_made_smooth+(shot[1]*(1/math.sqrt(shot[0])))
+			num_shots_smooth=0
+			for shot in sorted_dists:
+				num_shots_smooth=num_shots_smooth+(1/math.sqrt(shot[0]))
+			try:
+				smooth_fg=shots_made_smooth/num_shots_smooth
+			except: 
+				smooth_fg=0
+			three_regions=[13,14,15,16,4,5]
+			if int(box[2][0]) in three_regions:
+				pps_made_smooth=shots_made_smooth*1.5
+			if int(box[2][0]) not in three_regions:
+				pps_made_smooth=shots_made_smooth
+			try: 
+				smooth_pps=2*pps_made_smooth/num_shots_smooth
+			except:
+				smooth_pps=0
+			output.append([box[0][0],box[0][1],num_shots,smooth_fg,per_5box,smooth_pps])
+			# coord, coord, number of shots, smooth_fg, percent of shots within 5 feet, smooth_pps
 	return output
 
 data = cgi.FieldStorage()
