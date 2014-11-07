@@ -109,6 +109,14 @@ if player4!=None:
 if player5!=None:
 	string="(PLAYER_NAME='%s' OR PLAYER_NAME='%s' OR PLAYER_NAME='%s' OR PLAYER_NAME='%s' OR PLAYER_NAME='%s')" % (player1,player2,player3,player4,player5)
 
+if year!='career':
+	string=string+" AND year=%s" % (year)
+
+if quarter!="all":
+	string=string+" AND quarter= %s" % (quarter)
+
+string=string+" AND season=%s" % (season)
+
 con=mysql.connector.connect(pool_name='general', pool_size=5, user='austinc_austinc', password='scriptpass1.', host='localhost', database='austinc_shots2013')
 cur=con.cursor()
 if quarter=="all":
