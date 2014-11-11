@@ -1,14 +1,14 @@
 #!/usr/bin/python
 
-import cgi
 import cgitb
-import mysql.connector
+import cgi
+import MySQLdb
 import math
 import csv
 from operator import itemgetter
 import json
 
-cgitb.enable() 
+cgitb.enable()
 
 def chart(shots,average_data):
 	"""Creates the Goldberry chart (csv) for given player"""
@@ -109,15 +109,7 @@ if player4!=None:
 if player5!=None:
 	string="(PLAYER_NAME='%s' OR PLAYER_NAME='%s' OR PLAYER_NAME='%s' OR PLAYER_NAME='%s' OR PLAYER_NAME='%s')" % (player1,player2,player3,player4,player5)
 
-if year!='career':
-	string=string+" AND year=%s" % (year)
-
-if quarter!="all":
-	string=string+" AND quarter= %s" % (quarter)
-
-string=string+" AND season=%s" % (season)
-
-con=mysql.connector.connect(pool_name='general', pool_size=5, user='austinc_austinc', password='scriptpass1.', host='localhost', database='austinc_shots2013')
+con=MySQLdb.connect(user='austinc_austinc', passwd='scriptpass1.', host='localhost', db='austinc_shots2013')
 cur=con.cursor()
 if quarter=="all":
 	query = ("SELECT * FROM `shots` WHERE PLAYER_NAME='Dirk Nowitzki'")
