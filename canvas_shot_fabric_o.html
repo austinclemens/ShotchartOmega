@@ -60,11 +60,11 @@ layer.on('click',function(evt){
 		x: shape.attrs.xcenter,
 		y: shape.attrs.ycenter,
 		radius: 0,
-		fillAlpha: .6,
+		fillAlpha: .7,
 		fillRed: 30,
 		fillBlue: 30,
 		fillGreen: 30,
-		stroke: 'white',
+		stroke: 'black',
 		strokeWidth:2,
 	});
 	group.add(circle)
@@ -178,11 +178,7 @@ function load_pshotnew() {
 	type: "post",
 	datatype: "html",
 	data:   {
-		player1: "Anthony Morrow",
-		player2: "Russell Westbrook",
-		player3: "Kendrick Perkins",
-		player4: "Kevin Durant",
-		player5: "Serge Ibaka",
+		player1: "Dirk Nowitzki",
 		quarter: "all",
 		type: "regular season",
 		year: "2013",
@@ -228,56 +224,64 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
   				fillcolor=choosecolor_pshot(shot_data[n][3])
   			}
 
-			var box = new Kinetic.Rect({
-				cornerRadius: 3,
+			// var box = new Kinetic.Rect({
+			// 	cornerRadius: 10,
+			// 	x: X,
+			// 	y: Y,
+			// 	xcenter: X,
+			// 	ycenter: Y,
+			// 	//shadowColor: '#000000',
+			// 	//shadowBlur: 10,
+			// 	// shadowOpacity: 1,
+			// 	width: 0,
+			// 	height: 0,
+			// 	stroke:'#000000',
+			// 	strokeWidth: 1,
+			// 	shotvol: shot_data[n][8],
+			// 	fg: shot_data[n][4],
+			// 	fill: fillcolor,
+			// });
+			var box = new Kinetic.Circle({
+				//cornerRadius: 10,
 				x: X,
 				y: Y,
 				xcenter: X,
 				ycenter: Y,
-				shadowColor: fillcolor,
-				shadowBlur: 80,
-				shadowOpacity: 1,
-				width: 0,
-				height: 0,
+				//shadowColor: '#000000',
+				//shadowBlur: 10,
+				// shadowOpacity: 1,
+				radius:0,
+				stroke:'#000000',
+				strokeWidth: 1,
 				shotvol: shot_data[n][8],
 				fg: shot_data[n][4],
 				fill: fillcolor,
 			});
-			var box2 = new Kinetic.Rect({
-				cornerRadius: 3,
-				x: X,
-				y: Y,
-				xcenter: X,
-				ycenter: Y,
-				shadowColor: '#f0f0f0',
-				shadowBlur: 20,
-				shadowOpacity: 1,
-				width: 0,
-				height: 0,
-				shotvol: shot_data[n][8],
-				fg: shot_data[n][4],
-				fill: fillcolor,
-			});
-
 		}
 		layer.add(box);
-		layer.add(box2)
 	}
 
 	var shapes=layer.getChildren()
 
 	for (var n=0; n < shapes.length; n++) {
 		var rect=shapes[n]
-		var maxwidth=choosesize(shot_data[n][2],min,max,20)
+		var maxwidth=choosesize(shot_data[n][2],min,max,18)
+
+		// var tween = new Kinetic.Tween({
+		// 	node: rect, 
+		// 	duration: 2,
+		// 	x:rect.attrs.x-(maxwidth/2),
+		// 	y:rect.attrs.y-(maxwidth/2),
+		// 	easing: Kinetic.Easings.ElasticEaseOut,
+		// 	width:maxwidth,
+		// 	height:maxwidth,
+		// });
 
 		var tween = new Kinetic.Tween({
 			node: rect, 
 			duration: 2,
-			x:rect.attrs.x-(maxwidth/2),
-			y:rect.attrs.y-(maxwidth/2),
 			easing: Kinetic.Easings.ElasticEaseOut,
-			width:maxwidth,
-			height:maxwidth,
+			radius:maxwidth/2,
 		});
 		tween.play()
 	}
@@ -303,7 +307,7 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 	// var text=new Kinetic.Text({x:9,y:587,fontSize:30,fontFamily:'Arial',fill:'#ffffff',align:'left',text:player.replace(/%20/g," ")+" "+year+"-"+year2+", 4th quarters"})
 	// layer.add(text)
 
-	setTimeout(function(){shadow_layer(shot_data,min,max,efficient,dleague)},1200)
+	//setTimeout(function(){shadow_layer(shot_data,min,max,efficient,dleague)},1200)
 }
 
 function shadow_layer(shot_data,min,max,efficient,dleague) {
@@ -510,8 +514,6 @@ function nba_court_base() {
         	image: img,
         	width: 17,
         	height: 14,
-        	shadowBlur:70,
-        	shadowColor:'#ffffff'
         });
         court.add(twit)
         court.draw()
@@ -522,23 +524,23 @@ function nba_court_base() {
 	var text=new Kinetic.Text({x:10,y:624,fontSize:13,fontFamily:'Helvetica',fill:'#ffffff',align:'right',text:'www.nyloncalculus.com/shotchart'})
 	court.add(text)
 
-	var text=new Kinetic.Text({x:40,y:5,fontVariant:'small-caps',fontSize:17,fontFamily:'Verdana',fill:'#ffffff',align:'right',text:'Player(s)'})
+	var text=new Kinetic.Text({x:40,y:5,fontSize:17,fontFamily:'Verdana',fill:'#ffffff',align:'right',text:'Player(s)'})
 	court.add(text)
-	var text=new Kinetic.Text({x:350,y:5,fontVariant:'small-caps',fontSize:17,fontFamily:'Verdana',fill:'#ffffff',align:'right',text:'Details'})
+	var text=new Kinetic.Text({x:350,y:5,fontSize:17,fontFamily:'Verdana',fill:'#ffffff',align:'right',text:'Details'})
 	court.add(text)
-	var text=new Kinetic.Text({x:700,y:5,fontVariant:'small-caps',fontSize:17,fontFamily:'Verdana',fill:'#ffffff',align:'right',text:'Key'})
+	var text=new Kinetic.Text({x:700,y:5,fontSize:17,fontFamily:'Verdana',fill:'#ffffff',align:'right',text:'Key'})
 	court.add(text)
 
-	var box = new Kinetic.Rect({cornerRadius: 3,x: 700,y: 25,shadowColor: '#a50026',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#a50026'});
-	court.add(box)
-	var box = new Kinetic.Rect({cornerRadius: 3,x: 726,y: 25,shadowColor: '#fdae61',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#fdae61'});
-	court.add(box)
-	var box = new Kinetic.Rect({cornerRadius: 3,x: 752,y: 25,shadowColor: '#ffffbf',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#ffffbf'});
-	court.add(box)
-	var box = new Kinetic.Rect({cornerRadius: 3,x: 778,y: 25,shadowColor: '#abd9e9',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#abd9e9'});
-	court.add(box)
-	var box = new Kinetic.Rect({cornerRadius: 3,x: 804,y: 25,shadowColor: '#313695',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#313695'});
-	court.add(box)
+	// var box = new Kinetic.Rect({cornerRadius: 3,x: 700,y: 25,shadowColor: '#a50026',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#a50026'});
+	// court.add(box)
+	// var box = new Kinetic.Rect({cornerRadius: 3,x: 726,y: 25,shadowColor: '#fdae61',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#fdae61'});
+	// court.add(box)
+	// var box = new Kinetic.Rect({cornerRadius: 3,x: 752,y: 25,shadowColor: '#ffffbf',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#ffffbf'});
+	// court.add(box)
+	// var box = new Kinetic.Rect({cornerRadius: 3,x: 778,y: 25,shadowColor: '#abd9e9',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#abd9e9'});
+	// court.add(box)
+	// var box = new Kinetic.Rect({cornerRadius: 3,x: 804,y: 25,shadowColor: '#313695',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#313695'});
+	// court.add(box)
 
 
 	// var rect=new Kinetic.Rect({x:0,y:621,width:900,height:49.5,fill:'#ffffff'})
