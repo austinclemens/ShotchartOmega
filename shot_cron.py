@@ -11,6 +11,8 @@ import MySQLdb
 
 yesterdays_date=datetime.date.today()-datetime.timedelta(1)
 box_date=yesterdays_date.strftime("%Y%m%d")
+month=yesterdays_date.strftime("%m")
+day=yesterdays_date.strftime("%d")
 
 url="http://www.nba.com/gameline/%s/" % (box_date)
 box_list=urllib2.urlopen(url).read()
@@ -32,16 +34,16 @@ for box in boxes:
 		data=json.load(plays)
 		teams=list(set([row[6] for row in data['resultSets'][0]['rowSet']]))
 		for row in data['resultSets'][0]['rowSet']:
-			# (player, offense team, defense team, 3pt, made, year, regular/post (0/1), quarter, second remaining, x, y)
+			# (player, offense team, defense team, 3pt, made, year, regular/post (0/1), quarter, second remaining, x, y, month, day)
 			three=0
 			if row[12]=='3PT Field Goal':
 				three=1
 			if row[6]==teams[0]:
-				temp=[row[3],teams[0],teams[1],three,row[20],season,0,row[7],row[8]*60+row[9],row[17],row[18]]
+				temp=[row[3],teams[0],teams[1],three,row[20],season,0,row[7],row[8]*60+row[9],row[17],row[18],month,day]
 			if row[6]==teams[1]:
-				temp=[row[3],teams[1],teams[0],three,row[20],season,0,row[7],row[8]*60+row[9],row[17],row[18]]
+				temp=[row[3],teams[1],teams[0],three,row[20],season,0,row[7],row[8]*60+row[9],row[17],row[18],month,day]
 			master_shots.append(row)
 
 for row in master_shots:
-	og
+	
 		
