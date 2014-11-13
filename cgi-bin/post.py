@@ -95,7 +95,7 @@ if quarter!='all':
 	string=string+" AND QUARTER=%s" % (quarter)
 
 
-con=MySQLdb.connect(user='austinc_austinc', passwd='scriptpass1.', host='localhost', db='austinc_shots2013')
+con=MySQLdb.connect(user='austinc_shotchar', passwd='scriptpass1.', host='localhost', db='austinc_allshotdata')
 cur=con.cursor()
 if quarter=="all":
 	cur.execute("""SELECT threept,made,x,y FROM shots WHERE %s""" % (string))
