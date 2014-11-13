@@ -1,11 +1,13 @@
 #!/usr/bin/python
-
 import cgi
 import MySQLdb
 import math
 import csv
 from operator import itemgetter
 import json
+import cgitb
+
+cgitb.enable()
 
 def chart(shots,average_data):
 	shots_temp=[[shot[0],shot[1],shot[2],shot[3]] for shot in shots]
@@ -16,8 +18,9 @@ def chart(shots,average_data):
 	# averagepps=1
 	for i,region in enumerate(player_data):
 		csv_data.append([region[0],region[1],region[2],round(float(region[3])-float(average_data[i][3]),4),round(float(region[3]),4),round(float(region[4]),4)])
-	sorted_chart=sorted(csv_data, key=itemgetter(2,6))[-201:].reverse()
-	sorted_chart.append(len(shots_temp))
+	sorted_chart=sorted(csv_data, key=itemgetter(2,5))[-201:]
+	sorted_chart.reverse()
+	# sorted_chart.append(len(shots_temp))
 	return sorted_chart
 
 def circle_chunk(shots_temp):
@@ -80,27 +83,27 @@ if quarter==None:
 if efficiency==None:
 	efficiency="0"
 
-string="(PLAYER_NAME='%s'" % (player1)
+string="(player='%s'" % (player1)
 if player2!=None:
-	string=string+" OR PLAYER_NAME='%s'" % (player2)
+	string=string+" OR player='%s'" % (player2)
 if player3!=None:
-	string=string+" OR PLAYER_NAME='%s'" % (player3)
+	string=string+" OR player='%s'" % (player3)
 if player4!=None:
-	string=string+" OR PLAYER_NAME='%s'" % (player4)
+	string=string+" OR player='%s'" % (player4)
 if player5!=None:
-	string=string+" OR PLAYER_NAME='%s'" % (player5)
+	string=string+" OR player='%s'" % (player5)
+string=string+")"
 if year!='Career':
-	string=string+" AND YEAR=%s" % (year)
+	string=string+" AND year=%s" % (year)
 if quarter!='all':
-	string=string+" AND QUARTER=%s" % (quarter)
-
+	string=string+" AND quarter=%s" % (quarter)
 
 con=MySQLdb.connect(user='austinc_shotchar', passwd='scriptpass1.', host='localhost', db='austinc_allshotdata')
 cur=con.cursor()
 if quarter=="all":
-	cur.execute("""SELECT threept,made,x,y FROM shots WHERE %s""" % (string))
+	cur.execute("""SELECT three,made,x,y FROM shots WHERE %s""" % (string))
 else:
-	query = ("SELECT threept,made,x,y  FROM shots WHERE %s AND PERIOD=%s")
+	query = ("SELECT three,made,x,y  FROM shots WHERE %s AND PERIOD=%s")
 	cur.execute(query,(string,quarter))
 
 rows=cur.fetchall()

@@ -14,7 +14,7 @@ box_date=yesterdays_date.strftime("%Y%m%d")
 month=yesterdays_date.strftime("%m")
 day=yesterdays_date.strftime("%d")
 
-url="http://www.nba.com/gameline/%s/" % (box_date)
+url="/Users/austinc/Desktop/all_shot_data.csv"
 box_list=urllib2.urlopen(url).read()
 
 find_box=re.compile('nbaGL([0-9]{10})')
