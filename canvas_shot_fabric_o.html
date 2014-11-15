@@ -21,6 +21,9 @@ var linecounter=1
 
 
 var width = window.innerWidth-30 || 900
+if (width>1000) {
+	width=1000
+}
 
 var stage = new Kinetic.Stage({
   container: 'container',
@@ -208,7 +211,7 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 	stage.add(layer)
 
 	for(var n = 0; n < 200; n++) {
-		if (shot_data[n][2]>0 && shot_data[n][6]>0.005){
+		if (shot_data[n][2]>0 && shot_data[n][5]>0.005){
 			var X = shot_data[n][1]*1.8+450+9 ;
   			var Y = shot_data[n][0]*1.8+144.5+9 ;
 
@@ -252,13 +255,13 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 				// shadowOpacity: 1,
 				radius:0,
 				stroke:'#000000',
-				strokeWidth: 1,
-				shotvol: shot_data[n][8],
+				strokeWidth: 0,
+				shotvol: shot_data[n][5],
 				fg: shot_data[n][4],
 				fill: fillcolor,
 			});
+			layer.add(box);
 		}
-		layer.add(box);
 	}
 
 	var shapes=layer.getChildren()

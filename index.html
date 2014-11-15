@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<link rel="stylesheet" type="text/css" media="all" href="css/bootstrap.min.css">
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/bootstrap-datepicker.js"></script>
+</head>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+
+$('.datepicker').datepicker()
+</script>
+
+<div class="container"><p></p>
+<div role="tabpanel">
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#players" aria-controls="Players" role="tab" data-toggle="tab">Players</a></li>
+	
+    <li role="presentation"><a href="#playersadvanced" aria-controls="Players Advanced" role="tab" data-toggle="tab">Players - Advanced</a></li>
+	
+    <li role="presentation"><a href="#teams" aria-controls="Teams" role="tab" data-toggle="tab">Teams</a></li>
+	
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="players">
+		<h4>Choose a season and one player</h4>
+		<p>
+		<div class="row">
+			<div class="col-xs-3">
+				<select class="form-control">
+					<option>Choose a season</option>
+					<option>1996-97</option>
+					<option>1997-98</option>
+					<option>1997-99</option>
+					<option>1999-00</option>
+					<option>2000-01</option>
+					<option>2001-02</option>
+					<option>2002-03</option>
+					<option>2003-04</option>
+					<option>2004-05</option>
+					<option>2005-06</option>
+					<option>2006-07</option>
+					<option>2007-08</option>
+					<option>2008-09</option>
+					<option>2009-10</option>
+					<option>2010-11</option>
+					<option>2011-12</option>
+					<option>2012-13</option>
+					<option>2013-14</option>
+					<option>2014-15</option>
+				</select>
+			</div>
+			<div class="col-xs-3">
+				<select class="form-control">
+					<option>Regular season</option>
+					<option>Playoffs</option>
+				</select>
+			</div>
+		</div>
+		</p>
+		<p>
+		<div class="row">
+			<div class="col-xs-3">
+				<select class="form-control">
+					<option>Choose a player</option>
+				</select>
+			</div>
+		</div>
+		</p>
+		<br>
+		<h4>Choose type of chart<br></h4>
+		<p>
+		<div class="row">
+			<form class="form-inline" role="form">
+				<div class="form-group">
+					<div class="col-xs-3">
+						<select class="form-control" >
+							<option>Field goal %</option>
+							<option>Efficiency (PPS)</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<span class="glyphicon glyphicon-question-sign" aria-hidden="true" style="font-size:1.3em" data-toggle="tooltip" data-placement="auto top" title="FG% charts compare the player's FG% at each location to league average FG% at that location. Efficiency charts compare the player's PPS at each location to league average PPS."></span>
+				</div>
+			</form>
+		</div>
+		</p>
+		<br>
+		<p>
+		<button type="button" class="btn btn-success">Run it</button> 
+		<button type="button" class="btn btn-info">Save to hard drive</button>
+		</p>
+	</div>
+	
+	
+	
+    <div role="tabpanel" class="tab-pane" id="playersadvanced">
+	<p>
+		<h4>Choose a season and up to 5 players<br><small>Hypothetical shot charts! Does not represent actual player pairings.</small></h4>
+		<div class="row">
+			<div class="col-xs-3">
+				<select class="form-control">
+					<option>Choose a season</option>
+					<option>1996-97</option>
+					<option>1997-98</option>
+					<option>1997-99</option>
+					<option>1999-00</option>
+					<option>2000-01</option>
+					<option>2001-02</option>
+					<option>2002-03</option>
+					<option>2003-04</option>
+					<option>2004-05</option>
+					<option>2005-06</option>
+					<option>2006-07</option>
+					<option>2007-08</option>
+					<option>2008-09</option>
+					<option>2009-10</option>
+					<option>2010-11</option>
+					<option>2011-12</option>
+					<option>2012-13</option>
+					<option>2013-14</option>
+					<option>2014-15</option>
+				</select>
+			</div>
+			<div class="col-xs-3">
+				<select class="form-control">
+					<option>Regular season</option>
+					<option>Playoffs</option>
+				</select>
+			</div>
+			</p>
+		</div>
+		<div class="row">
+			<p>
+			<div class="col-xs-3">
+				<select class="form-control">
+					<option>Player 1</option>
+				</select>
+			</div>
+			<div class="col-xs-3">
+				<select class="form-control">
+					<option>Player 2</option>
+				</select>
+			</div>
+			<div class="col-xs-6">
+			</div>
+			</p>
+		</div>
+		<div class="row">
+			<p>
+			<div class="col-xs-3">
+				<select class="form-control">
+					<option>Player 3</option>
+				</select>
+			</div>
+			<div class="col-xs-3">
+				<select class="form-control">
+					<option>Player 4</option>
+				</select>
+			</div>
+			</p>
+		</div>
+		<div class="row">
+			<p>
+			<div class="col-xs-3">
+				<select class="form-control">
+					<option>Player 5</option>
+				</select>
+			</div>
+		</div>
+	</p>
+<br>
+	<p>
+		<h4>Choose game period or date range (optional)<br></h4>
+		<div class="row">
+			<p>
+			<div class="col-xs-3">
+				<select class="form-control" >
+					<option>Complete game</option>
+					<option>1st quarter</option>
+					<option>2nd quarter</option>
+					<option>3rd quarter</option>
+					<option>4th quarter</option>
+					<option>Last 4 minutes</option>
+				</select>
+			</div>
+			</p>
+		</div>
+		<div class="row">
+		<p>
+		<div class="input-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+  			<input class="span2" size="16" type="text" value="12-02-2012">
+  			<span class="add-on"><i class="icon-th"></i></span>
+</div>
+		</div>
+	</p>
+		<br>
+		<h4>Choose type of chart<br></h4>
+		<p>
+		<div class="row">
+			<form class="form-inline" role="form">
+				<div class="form-group">
+					<div class="col-xs-3">
+						<select class="form-control" >
+							<option>Field goal %</option>
+							<option>Efficiency (PPS)</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<span class="glyphicon glyphicon-question-sign" aria-hidden="true" style="font-size:1.3em" data-toggle="tooltip" data-placement="auto top" title="FG% charts compare the player's FG% at each location to league average FG% at that location. Efficiency charts compare the player's PPS at each location to league average PPS."></span>
+				</div>
+			</form>
+		</div>
+		</p><br>
+		<button type="button" class="btn btn-success">Run it</button> 
+		<button type="button" class="btn btn-info">Save to hard drive</button>
+	</div>
+    <div role="tabpanel" class="tab-pane" id="teams">
+	<h4>Choose a season and a team</h4>
+		<p>
+		<div class="row">
+			<div class="col-xs-3">
+				<select class="form-control">
+					<option>Choose a season</option>
+					<option>1996-97</option>
+					<option>1997-98</option>
+					<option>1997-99</option>
+					<option>1999-00</option>
+					<option>2000-01</option>
+					<option>2001-02</option>
+					<option>2002-03</option>
+					<option>2003-04</option>
+					<option>2004-05</option>
+					<option>2005-06</option>
+					<option>2006-07</option>
+					<option>2007-08</option>
+					<option>2008-09</option>
+					<option>2009-10</option>
+					<option>2010-11</option>
+					<option>2011-12</option>
+					<option>2012-13</option>
+					<option>2013-14</option>
+					<option>2014-15</option>
+				</select>
+			</div>
+			<div class="col-xs-3">
+				<select class="form-control">
+					<option>Regular season</option>
+					<option>Playoffs</option>
+				</select>
+			</div>
+		</div>
+		</p>
+		<p>
+		<div class="row">
+			<div class="col-xs-3">
+				<select class="form-control">
+					<option>Choose a team</option>
+				</select>
+			</div>
+		</div>
+		</p>
+		<br>
+		<h4>Choose type of chart<br></h4>
+		<p>
+		<div class="row">
+			<form class="form-inline" role="form">
+				<div class="form-group">
+					<div class="col-xs-3">
+						<select class="form-control" >
+							<option>Offense</option>
+							<option>Defense</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-xs-3">
+						<select class="form-control" >
+							<option>Field goal %</option>
+							<option>Efficiency (PPS)</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<span class="glyphicon glyphicon-question-sign" aria-hidden="true" style="font-size:1.3em" data-toggle="tooltip" data-placement="auto top" title="FG% charts compare the player's FG% at each location to league average FG% at that location. Efficiency charts compare the player's PPS at each location to league average PPS."></span>
+				</div>
+			</form>
+		</div>
+		</p>
+		<br>
+		<p>
+		<button type="button" class="btn btn-success">Run it</button> 
+		<button type="button" class="btn btn-info">Save to hard drive</button>
+		</p>
+	</div>
+
+</div></div>

@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from __future__ import division
 import cgi
 import MySQLdb
 import math
@@ -17,7 +18,8 @@ def chart(shots,average_data):
 	csv_data=[]
 	# averagepps=1
 	for i,region in enumerate(player_data):
-		csv_data.append([region[0],region[1],region[2],round(float(region[3])-float(average_data[i][3]),4),round(float(region[3]),4),round(float(region[4]),4)])
+		csv_data.append([region[0],region[1],region[2],round(float(region[3])-float(average_data[i][3]),4),round(float(region[3]),4),float(region[4])])
+		# x,y,number of shots,diff from average,fg%,shots within 5 feet
 	sorted_chart=sorted(csv_data, key=itemgetter(2,5))[-201:]
 	sorted_chart.reverse()
 	# sorted_chart.append(len(shots_temp))
@@ -34,7 +36,7 @@ def circle_chunk(shots_temp):
 		if num_shots>0:			
 			# cur.execute("""SELECT threept,made,x,y FROM shots WHERE %s AND (POW(%s-LOC_X,2)-POW(%s-LOC_Y,2))<50""" % (string,x_center,y_center))
 			# dist_shots=cur.fetchall()
-			dist_shots=[shot for shot in shots_temp if math.sqrt((x_center-shot[1])**2+(y_center-shot[2])**2)<50]
+			dist_shots=[shot for shot in shots_temp if math.sqrt((x_center-shot[3])**2+(y_center-shot[2])**2)<50]
 			per_5box=len(dist_shots)/len(shots_temp)
 			
 			dists=([[math.sqrt((x_center-shot[3])**2+(y_center-shot[2])**2),shot[1]] for shot in dist_shots])
