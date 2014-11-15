@@ -18,7 +18,7 @@ def chart(shots,average_data):
 	csv_data=[]
 	# averagepps=1
 	for i,region in enumerate(player_data):
-		csv_data.append([region[0],region[1],region[2],round(float(region[3])-float(average_data[i][3]),4),round(float(region[3]),4),float(region[4])])
+		csv_data.append([region[0],region[1],region[2],round(float(region[3])-float(average_data[i][2]),4),round(float(region[3]),4),float(region[4])])
 		# x,y,number of shots,diff from average,fg%,shots within 5 feet
 	sorted_chart=sorted(csv_data, key=itemgetter(2,5))[-201:]
 	sorted_chart.reverse()
@@ -27,6 +27,7 @@ def chart(shots,average_data):
 
 def circle_chunk(shots_temp):
 	output=[]
+	temp=[]
 	shots_t=0
 	# 3pt, made, x, y
 	for box in box_matrix:
@@ -38,7 +39,7 @@ def circle_chunk(shots_temp):
 			# dist_shots=cur.fetchall()
 			dist_shots=[shot for shot in shots_temp if math.sqrt((x_center-shot[3])**2+(y_center-shot[2])**2)<50]
 			per_5box=len(dist_shots)/len(shots_temp)
-			
+
 			dists=([[math.sqrt((x_center-shot[3])**2+(y_center-shot[2])**2),shot[1]] for shot in dist_shots])
 			sorted_dists = sorted(dists, key=lambda place:place[0])
 			shots_made_smooth=sum([shot[1]*(1/math.sqrt(shot[0])) for shot in sorted_dists])

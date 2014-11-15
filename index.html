@@ -3,9 +3,10 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 	<link rel="stylesheet" type="text/css" media="all" href="css/bootstrap.min.css">
-	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-	<script type="text/javascript" charset="utf-8" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" charset="utf-8" src="js/bootstrap-datepicker.js"></script>
+	<link rel="stylesheet" type="text/css" id="bsdp-css" href="css/datepicker3.css">
+	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="lib/bootstrap.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="lib/bootstrap-datepicker.js"></script>
 </head>
 
 <script type="text/javascript">
@@ -13,7 +14,12 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();   
 });
 
-$('.datepicker').datepicker()
+$(document).ready(function () {                
+	$('#date1').datepicker({
+		format: "mm/dd/yyyy",
+		todayHighlight: true
+	});  
+});
 </script>
 
 <div class="container"><p></p>
@@ -142,41 +148,36 @@ $('.datepicker').datepicker()
 		</div>
 		<div class="row">
 			<p>
-			<div class="col-xs-3">
+			<div class="col-xs-2">
 				<select class="form-control">
 					<option>Player 1</option>
 				</select>
 			</div>
-			<div class="col-xs-3">
+			<div class="col-xs-2">
 				<select class="form-control">
 					<option>Player 2</option>
 				</select>
 			</div>
-			<div class="col-xs-6">
-			</div>
-			</p>
-		</div>
-		<div class="row">
-			<p>
-			<div class="col-xs-3">
+			<div class="col-xs-2">
 				<select class="form-control">
 					<option>Player 3</option>
 				</select>
 			</div>
-			<div class="col-xs-3">
+		</p>
+		</div>
+		<div class="row">
+			<p>
+			<div class="col-xs-2">
 				<select class="form-control">
 					<option>Player 4</option>
 				</select>
 			</div>
-			</p>
-		</div>
-		<div class="row">
-			<p>
-			<div class="col-xs-3">
+			<div class="col-xs-2">
 				<select class="form-control">
 					<option>Player 5</option>
 				</select>
 			</div>
+			</p>
 		</div>
 	</p>
 <br>
@@ -195,15 +196,16 @@ $('.datepicker').datepicker()
 				</select>
 			</div>
 			</p>
-		</div>
-		<div class="row">
 		<p>
-		<div class="input-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-  			<input class="span2" size="16" type="text" value="12-02-2012">
-  			<span class="add-on"><i class="icon-th"></i></span>
-</div>
+			<div class="col-xs-5">
+				<div class="input-daterange input-group" id="date1">
+    				<input type="text" class="input-sm form-control" name="start" />
+    				<span class="input-group-addon">to</span>
+    				<input type="text" class="input-sm form-control" name="end" />
+				</div>
+			</div>
 		</div>
-	</p>
+		</p>
 		<br>
 		<h4>Choose type of chart<br></h4>
 		<p>
@@ -222,9 +224,10 @@ $('.datepicker').datepicker()
 				</div>
 			</form>
 		</div>
-		</p><br>
+		</p><br><p>
 		<button type="button" class="btn btn-success">Run it</button> 
 		<button type="button" class="btn btn-info">Save to hard drive</button>
+	</p>
 	</div>
     <div role="tabpanel" class="tab-pane" id="teams">
 	<h4>Choose a season and a team</h4>
@@ -304,5 +307,7 @@ $('.datepicker').datepicker()
 		<button type="button" class="btn btn-info">Save to hard drive</button>
 		</p>
 	</div>
+	<div class="iframeWrapper" style="position: relative; padding-bottom: 74.25%; padding-top: 25px; height: 0;">
+<iframe id="blah" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="canvas_shot_fabric_o.html?player=Dirk Nowitzki&year=2013&efficient=0" frameborder="0" align="middle" width=900 height=660 seamless="seamless" scrolling="no" class="aligncenter"></iframe></div>
 
 </div></div>
