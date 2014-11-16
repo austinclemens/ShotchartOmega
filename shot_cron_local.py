@@ -55,12 +55,23 @@ def update(box_date):
 	cur.close()
 
 def averages(year):
+	print year
 	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='184.164.140.34',db='austinc_allshotdata',port=3306)
 	cur=con.cursor()
 
 	cur.execute("""SELECT three,made,x,y FROM shots WHERE year=%s""" % (year))
 	rows=cur.fetchall()
+	print 'rows fetched'
+
 	year_average=chart(rows)
+
+	with open("/Users/austinc/Desktop/averages/%s.csv" % (year),'a') as csvfile:
+		writer=csv.writer(csvfile)
+		for row in year_average:
+			writer.writerow(row)
+
+	con.close()
+
 
 def chart(shots):
 	shots_temp=[[shot[0],shot[1],shot[2],shot[3]] for shot in shots]
@@ -69,46 +80,56 @@ def chart(shots):
 	# coord, coord, number of shots, smooth_fg, percent of shots within 5 feet
 	csv_data=[]
 	# averagepps=1
-	for i,region in enumerate(player_data):
-		csv_data.append([region[0],region[1],region[2],round(float(region[3])-float(average_data[i][3]),4),round(float(region[3]),4),float(region[4])])
-		# x,y,number of shots,diff from average,fg%,shots within 5 feet
-	sorted_chart=sorted(csv_data, key=itemgetter(2,5))[-201:]
-	sorted_chart.reverse()
 	# sorted_chart.append(len(shots_temp))
-	return sorted_chart
+	return player_data
+
 
 def circle_chunk(shots_temp):
 	output=[]
 	shots_t=0
 	# 3pt, made, x, y
 	for box in box_matrix:
+		print box
 		x_center=box[0][0]+5
 		y_center=box[0][1]+5
-		num_shots=len([shot for shot in shots_temp if int(shot[3])>=box[0][0] and int(shot[3])<box[1][0] and int(shot[2])>=box[0][1] and int(shot[2])<box[1][1]])
-		if num_shots>0:			
-			# cur.execute("""SELECT threept,made,x,y FROM shots WHERE %s AND (POW(%s-LOC_X,2)-POW(%s-LOC_Y,2))<50""" % (string,x_center,y_center))
-			# dist_shots=cur.fetchall()
-			dist_shots=[shot for shot in shots_temp if math.sqrt((x_center-shot[3])**2+(y_center-shot[2])**2)<50]
-			per_5box=len(dist_shots)/len(shots_temp)
+		# cur.execute("""SELECT threept,made,x,y FROM shots WHERE %s AND (POW(%s-LOC_X,2)-POW(%s-LOC_Y,2))<50""" % (string,x_center,y_center))
+		# dist_shots=cur.fetchall()
+		dist_shots=[shot for shot in shots_temp if math.sqrt((x_center-shot[3])**2+(y_center-shot[2])**2)<50]
+		per_5box=len(dist_shots)/len(shots_temp)
 			
-			dists=([[math.sqrt((x_center-shot[3])**2+(y_center-shot[2])**2),shot[1]] for shot in dist_shots])
-			sorted_dists = sorted(dists, key=lambda place:place[0])
-			shots_made_smooth=sum([shot[1]*(1/math.sqrt(shot[0])) for shot in sorted_dists])
-			num_shots_smooth=sum([1/math.sqrt(shot[0]) for shot in sorted_dists])
-			try:
-				smooth_fg=shots_made_smooth/num_shots_smooth
-			except: 
-				smooth_fg=0
-			# three_regions=[13,14,15,16,4,5]
-			# if int(box[2][0]) in three_regions:
-			#	pps_made_smooth=shots_made_smooth*1.5
-			# if int(box[2][0]) not in three_regions:
-			#	pps_made_smooth=shots_made_smooth
-			# try: 
-			#	smooth_pps=2*pps_made_smooth/num_shots_smooth
-			#except:
-			#	smooth_pps=0
-			output.append([box[0][0],box[0][1],smooth_fg])
-			# coord, coord, number of shots, smooth_fg, percent of shots within 5 feet
+		dists=([[math.sqrt((x_center-shot[3])**2+(y_center-shot[2])**2),shot[1]] for shot in dist_shots])
+		sorted_dists = sorted(dists, key=lambda place:place[0])
+		shots_made_smooth=sum([shot[1]*(1/math.sqrt(shot[0])) for shot in sorted_dists])
+		num_shots_smooth=sum([1/math.sqrt(shot[0]) for shot in sorted_dists])
+		try:
+			smooth_fg=shots_made_smooth/num_shots_smooth
+		except: 
+			smooth_fg=0
+		# three_regions=[13,14,15,16,4,5]
+		# if int(box[2][0]) in three_regions:
+		#	pps_made_smooth=shots_made_smooth*1.5
+		# if int(box[2][0]) not in three_regions:
+		#	pps_made_smooth=shots_made_smooth
+		# try: 
+		#	smooth_pps=2*pps_made_smooth/num_shots_smooth
+		#except:
+		#	smooth_pps=0
+		output.append([box[0][0],box[0][1],smooth_fg])
+		# coord, coord, number of shots, smooth_fg, percent of shots within 5 feet
 	return output
+
+def player_list(year):
+	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='184.164.140.34',db='austinc_allshotdata',port=3306)
+	cur=con.cursor()
+
+	cur.execute("""SELECT players FROM shots WHERE year=%s""" % (year))
+	rows=cur.fetchall()
+
+	uniques=set(rows)
+
+	with open("/Users/austinc/Desktop/p_years/%s.csv" % (year),'w') as file:
+		for row in year_average:
+			writer.writerow(row)
+
+
 
