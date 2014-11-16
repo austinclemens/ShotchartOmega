@@ -75,46 +75,71 @@ year=data.getfirst('year')
 season=data.getfirst('type')
 efficiency=data.getfirst('efficiency')
 quarter=data.getfirst('quarter')
+startdate=data.getfirst('startdate')
+enddate=data.getfirst('enddate')
+team=data.getfirst('team')
+offense_defense=data.getfirst('defense_offense')
+chart_type=data.getfirst('chart_type')
 
-if year==None:
-	year="2013"
-if season==None:
-	season='regular season'
-if player1==None:
-	player1="Dirk Nowitzki"
-if quarter==None:
-	quarter="all"
-if efficiency==None:
-	efficiency="0"
+if chart_type==3:
+	if defense_offense==0:
+		string="defense_team=%s AND year=%s AND season=%s" % (team,year,season)
+	if defense_offense==1:
+		string="offense_team=%s AND year=%s AND season=%s" % (team,year,season)
 
-string="(player='%s'" % (player1)
-if player2!=None:
-	string=string+" OR player='%s'" % (player2)
-if player3!=None:
-	string=string+" OR player='%s'" % (player3)
-if player4!=None:
-	string=string+" OR player='%s'" % (player4)
-if player5!=None:
-	string=string+" OR player='%s'" % (player5)
-string=string+")"
-if year!='Career':
-	string=string+" AND year=%s" % (year)
-if quarter!='all':
-	string=string+" AND quarter=%s" % (quarter)
+if chart_type==1:
+	if year=='career':
+		string="player=%s AND season=%s" % (player1,season)
+	if year!='career':
+		string="player=%s AND year=%s & season=%s" % (player1, year, season)
+
+if chart_type==2:
+	append=""
+	append2=""
+
+	if quarter!=None:
+		if quarter=="4_minutes":
+			append=" AND seconds_remain<241"
+		else if:
+			append=" AND quarter=%s" % (quarter)
+
+	if startdate!=None:
+		pass
+		# start and end date code goes here
+
+	string="(player='%s'" % (player1)
+
+	if player2!=None:
+		string=string+" OR player='%s'" % (player2)
+	if player3!=None:
+		string=string+" OR player='%s'" % (player3)
+	if player4!=None:
+		string=string+" OR player='%s'" % (player4)
+	if player5!=None:
+		string=string+" OR player='%s'" % (player5)
+
+	string=string+')'
+	
+	string=string+' AND year=%s AND season=%s' % (year,season)
+
+	string=string+append+append2
+
 
 con=MySQLdb.connect(user='austinc_shotchar', passwd='scriptpass1.', host='localhost', db='austinc_allshotdata')
 cur=con.cursor()
-if quarter=="all":
-	cur.execute("""SELECT three,made,x,y FROM shots WHERE %s""" % (string))
-else:
-	query = ("SELECT three,made,x,y  FROM shots WHERE %s AND PERIOD=%s")
-	cur.execute(query,(string,quarter))
+cur.execute("""SELECT three,made,x,y FROM shots WHERE %s""" % (string))
 
 rows=cur.fetchall()
 
-with open("../OMEGA/averages/%s.csv" % (year),'rU') as csvfile:
-	reader=csv.reader(csvfile)
-	average_csv=[row for row in reader]
+if year=='career':
+	with open("../OMEGA/averages/careers.csv" % (year),'rU') as csvfile:
+		reader=csv.reader(csvfile)
+		average_csv=[row for row in reader]
+
+if year!='career':
+	with open("../OMEGA/averages/%s.csv" % (year),'rU') as csvfile:
+		reader=csv.reader(csvfile)
+		average_csv=[row for row in reader]
 
 results_csv=chart(rows,average_csv)
 con.close()

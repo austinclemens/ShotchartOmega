@@ -122,14 +122,35 @@ def player_list(year):
 	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='184.164.140.34',db='austinc_allshotdata',port=3306)
 	cur=con.cursor()
 
-	cur.execute("""SELECT players FROM shots WHERE year=%s""" % (year))
+	cur.execute("""SELECT DISTINCT player FROM shots WHERE year=%s""" % (year))
 	rows=cur.fetchall()
 
-	uniques=set(rows)
+	with open("/Users/austinc/Desktop/p_years/%s.csv" % (year),'w') as file:
+		for row in rows:
+			file.write('<option value="%s">%s</option>' % (row,row))
+			file.write('\n')
+
+	con.close()
+
+	#<option value="pshot.html?width=800&player=Anthony Mason&year=1996">Anthony Mason</option>
+
+def career_list():
+	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='184.164.140.34',db='austinc_allshotdata',port=3306)
+	cur=con.cursor()
+
+	cur.execute("""SELECT DISTINCT players FROM shots""" % (year))
+	rows=cur.fetchall()
+
+	cur.execute("""SELECT DISTINCT players FROM shots WHERE year=1996""")
+	no_rows=cur.fetchall()
 
 	with open("/Users/austinc/Desktop/p_years/%s.csv" % (year),'w') as file:
-		for row in year_average:
-			writer.writerow(row)
+		for row in rows:
+			if row not in no_rows:
+				file.write('<option value="%s">%s</option>' % (row,row))
+				file.write('\n')
+
+	con.close()
 
 
 
