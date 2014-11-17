@@ -79,7 +79,7 @@ startdate=data.getfirst('startdate')
 enddate=data.getfirst('enddate')
 team=data.getfirst('team')
 offense_defense=data.getfirst('defense_offense')
-chart_type=int(data.getfirst('chart_type'))
+chart_type=data.getfirst('chart_type')
 
 if chart_type==None:
 	chart_type=1
@@ -98,11 +98,11 @@ if chart_type==3:
 	if defense_offense==1:
 		string="offense_team=%s AND year=%s AND season_type=%s" % (team,year,season)
 
-if chart_type==1:
+if int(chart_type)==1:
 	if year=='career':
 		string="player='%s' AND season_type='%s'" % (player1,season)
 	if year!='career':
-		string="player='%s' AND year=%s AND season_type='%s'" % (player1, year, season)
+		string="player='%s' AND year=%s AND season_type='%s'" % (player1, int(year), season)
 
 if chart_type==2:
 	append=""

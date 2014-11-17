@@ -226,8 +226,8 @@ $(document).ready(function () {
 			</form>
 		</div>
 		</p><br><p>
-		<button type="button" class="btn btn-success" id="run_1" onClick="update_1()">Run it</button> 
-		<button type="button" class="btn btn-info" id="save_1" onClick="save()">Save to hard drive</button>
+		<button type="button" class="btn btn-success" id="run_2" onClick="update_2()">Run it</button> 
+		<button type="button" class="btn btn-info" id="save_2" onClick="save()">Save to hard drive</button>
 	</p>
 	</div>
     <div role="tabpanel" class="tab-pane" id="teams">
@@ -304,14 +304,44 @@ $(document).ready(function () {
 		</p>
 		<br>
 		<p>
-		<button type="button" class="btn btn-success" id="run_1" onClick="update_1()">Run it</button> 
-		<button type="button" class="btn btn-info" id="save_1" onClick="save()">Save to hard drive</button>
+		<button type="button" class="btn btn-success" id="run_3" onClick="update_3()">Run it</button> 
+		<button type="button" class="btn btn-info" id="save_3" onClick="save()">Save to hard drive</button>
 		</p>
 	</div>
 	<div class="iframeWrapper" style="position: relative; padding-bottom: 74.25%; padding-top: 25px; height: 0;">
-<iframe id="blah" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="canvas_shot_fabric_o.html?player=Dirk Nowitzki&year=2013&efficient=0" frameborder="0" align="middle" width=900 height=660 seamless="seamless" scrolling="no" class="aligncenter"></iframe></div>
+<iframe id="shotchart" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="canvas_shot_fabric_o.html?player1=Dirk Nowitzki&year=2013&efficiency=0&season=Regular season&chart_type=1" frameborder="0" align="middle" width=900 height=660 seamless="seamless" scrolling="no" class="aligncenter"></iframe></div>
 
 </div></div>
 
 <script>
 // Update player and team fields according to year entry
+
+
+// update functions - one for each tab, initiate redraw inside the iframe.
+function update_1() {
+    var e = document.getElementById("year_1");
+    var u_year = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("player");
+    var u_player = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("efficiency_1");
+    var u_efficient = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("type_1");
+    var u_season = e.options[e.selectedIndex].value;
+
+    document.getElementById('shotchart').src = 'canvas_shot.html?chart_type=1&year='+u_year+'&efficient='+u_efficient+'&season='+u_season+'&player1='+u_player
+}
+
+function save() {
+    var iframe = document.getElementById('shotchart');
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;    
+    var result = innerDoc.getElementById('result');
+    var cv=innerDoc.getElementById('court');
+    cv.style.display="none";
+    var ur = cv.toDataURL();
+    result.src=ur;
+    result.style.width = 900;
+}
+</script>

@@ -129,7 +129,10 @@ layer.on('click',function(evt){
 
 
 window.onload=function() {
-    load_pshotnew()
+    var dict=[]
+    dict.push({chart_type:get_param('chart_type'),player1:get_param('player1'),year:get_param('year'),efficiency:get_param('efficiency'),season:get_param('season')})
+    //console.log(dict)
+    load_pshotnew(dict[0])
 }
 
 function get_param(name) {
@@ -140,58 +143,20 @@ function get_param(name) {
 	if( results == null )
 		return null;
 	else
-		return results[1];
+		return results[1].replace("%20"," ");
 }
 
-function load_pshot(year,player,efficient,dleague) {
-	if (dleague=="NBADEV") {
-		var url="dleague_years/"+year+"/pshot_"+player+".csv"
-	} 
-	else if (dleague=="NCAA") {
-		var url="NCAA/"+year+"/pshot_"+player+".csv"
-	}
-	else {
-		var url="pshot_years/"+year+"/pshot_"+player+".csv"
-	}
-	$.ajax({
-    type: "GET",
-    url: url,
-    dataType: "text",
-    success: function(data) { 
-        var shot_data = $.csv.toArrays(data);
-        if (year==1996 && linecounter==0) {
-        	redraw_arc(1)
-        }
-        if (year!=1996 && linecounter==1) {
-        	redraw_arc(0)
-        }
-        if (dleague=="NCAA") {
-        	redraw_arc(2)
-        }
-        circlayer.removeChildren()
-        stage.add(circlayer)
-        drawcourt_pshot(shot_data,year,player,efficient,dleague)
-    	}
-	});
-}
-
-function load_pshotnew() {
+function load_pshotnew(dict) {
 	$.ajax({
 	url: "http://www.austinclemens.com/cgi-bin/post.py",
 	type: "post",
 	datatype: "html",
-	data:   {
-		player1: "Kevin Durant",
-		season: "Regular season",
-		year: "2013",
-		efficiency: 0,
-		chart_type:'1',
-		},
+	data:   dict,
 	success: function(response){
 		//console.log("HELLO")
 		//var shot_data = $.csv.toArrays(response[0]);
 		//console.log(shot_data)
-		console.log(response)
+		//console.log(response)
 		var shot_data = eval("(" + response + ")");
 		redraw_arc(0)
 		circlayer.removeChildren()
