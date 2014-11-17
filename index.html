@@ -78,7 +78,6 @@ $(document).ready(function () {
 			<div class="col-xs-3">
 				<select class="form-control" id="player">
 					<option>Choose a player</option>
-					<option value='Blake Griffin'>Blake Griffin</option>
 				</select>
 			</div>
 		</div>
@@ -313,9 +312,81 @@ $(document).ready(function () {
 
 <script>
 // Update player and team fields according to year entry
+// var e = document.getElementById("year_1");
+// var z_year = e.options[e.selectedIndex].value;
+// $("#player_select").load("place_years/" + z_year + ".txt");
 
+$("#year_1").change(function() {
+    var e = document.getElementById("year_1");
+    var u_year = e.options[e.selectedIndex].value;
 
-// update functions - one for each tab, initiate redraw inside the iframe.
+	y_update=[]
+	y_update.push({year:u_year})
+
+	load_playermenu(y_update[0])
+});
+
+$("#year_2").change(function() {
+    var e = document.getElementById("year_2");
+    var u_year = e.options[e.selectedIndex].value;
+
+	y_update=[]
+	y_update.push({year:u_year})
+
+	load_playermenu(y_update[0])
+});
+
+$("#year_3").change(function() {
+    var e = document.getElementById("year_3");
+    var u_year = e.options[e.selectedIndex].value;
+
+	y_update=[]
+	y_update.push({year:u_year})
+
+	load_playermenu(y_update[0])
+});
+
+// Function to call update_players.py and get list for dropdown
+function load_playermenu(y_update) {
+	$.ajax({
+	url: "http://www.austinclemens.com/cgi-bin/update_players.py",
+	type: "post",
+	datatype: "html",
+	data: y_update,
+	success: function(response){
+		var menu_data = eval("(" + response + ")");
+		var select=document.getElementById('player');
+		var length=select.options.length;
+		for (var i=1; i<length; i++) {
+			select.options[i]=null;
+		}
+		for (var i=0; i<menu_data.length;i++) {
+			var opt=menu_data[i]
+			var el=document.createElement("option");
+			el.textContent=opt;
+			el.value=opt;
+			select.appendChild(el)
+		}
+
+		var p1=document.getElementById('player1')
+		var p2=document.getElementById('player2')
+		var p3=document.getElementById('player3')
+		var p4=document.getElementById('player4')
+		var p5=document.getElementById('player5')
+
+		var p=document.getElementById('player')
+		var options=p.innerHTML;
+
+		p1.innerHTML=options
+		p2.innerHTML=options
+		p3.innerHTML=options
+		p4.innerHTML=options
+		p5.innerHTML=options
+	}
+	});
+}
+
+// update functions - one for each tab, initiate redraw inside the iframe by calling load_pshotnew.
 function update_1() {
     var e = document.getElementById("year_1");
     var u_year = e.options[e.selectedIndex].value;
@@ -397,6 +468,7 @@ function update_3() {
     document.getElementById('shotchart').contentWindow.load_pshotnew(dict[0])
 }
 
+// Save to png function
 function save() {
     var iframe = document.getElementById('shotchart');
     var innerDoc = iframe.contentDocument || iframe.contentWindow.document;    

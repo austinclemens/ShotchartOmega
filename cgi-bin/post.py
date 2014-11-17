@@ -141,6 +141,7 @@ cur=con.cursor()
 cur.execute("""SELECT three,made,x,y FROM shots WHERE %s""" % (string))
 
 rows=cur.fetchall()
+con.close()
 
 if year=='career':
 	with open("../OMEGA/averages/careers.csv" % (year),'rU') as csvfile:
@@ -153,7 +154,6 @@ if year!='career':
 		average_csv=[row for row in reader]
 
 results_csv=chart(rows,average_csv)
-con.close()
 
 results=json.dumps(results_csv)
 
