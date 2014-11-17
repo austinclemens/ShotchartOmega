@@ -130,7 +130,7 @@ layer.on('click',function(evt){
 
 window.onload=function() {
     var dict=[]
-    dict.push({chart_type:get_param('chart_type'),player1:get_param('player1'),year:get_param('year'),efficiency:get_param('efficiency'),season:get_param('season')})
+    dict.push({chart_type:get_param('chart_type'),player1:get_param('player1'),player2:get_param('player2'),player3:get_param('player3'),player4:get_param('player4'),player5:get_param('player5'),quarter:get_param('quarter'),startdate:get_param('startdate'),enddate:get_param('enddate'),offense_defense:get_param('offense_defense'),team:get_param('team'),year:get_param('year'),efficiency:get_param('efficiency'),season:get_param('season')})
     //console.log(dict)
     load_pshotnew(dict[0])
 }
@@ -158,7 +158,7 @@ function load_pshotnew(dict) {
 		//console.log(shot_data)
 		//console.log(response)
 		var shot_data = eval("(" + response + ")");
-		redraw_arc(0)
+		// redraw_arc(0)
 		circlayer.removeChildren()
 		stage.add(circlayer)
 		drawcourt_pshot(shot_data,2013,"Kevin Durant","basic",0)

@@ -44,7 +44,6 @@ $(document).ready(function () {
 			<div class="col-xs-3">
 				<select class="form-control" id="year_1">
 					<option>Choose a season</option>
-					<option value='1996'>1996-97</option>
 					<option value='1997'>1997-98</option>
 					<option value='1998'>1998-99</option>
 					<option value='1999'>1999-00</option>
@@ -79,6 +78,7 @@ $(document).ready(function () {
 			<div class="col-xs-3">
 				<select class="form-control" id="player">
 					<option>Choose a player</option>
+					<option value='Blake Griffin'>Blake Griffin</option>
 				</select>
 			</div>
 		</div>
@@ -118,7 +118,6 @@ $(document).ready(function () {
 			<div class="col-xs-3">
 				<select class="form-control" id="year_2">
 					<option>Choose a season</option>
-					<option value='1996'>1996-97</option>
 					<option value='1997'>1997-98</option>
 					<option value='1998'>1998-99</option>
 					<option value='1999'>1999-00</option>
@@ -237,7 +236,6 @@ $(document).ready(function () {
 			<div class="col-xs-3">
 				<select class="form-control" id="year_3">
 					<option>Choose a season</option>
-					<option value='1996'>1996-97</option>
 					<option value='1997'>1997-98</option>
 					<option value='1998'>1998-99</option>
 					<option value='1999'>1999-00</option>
@@ -259,7 +257,7 @@ $(document).ready(function () {
 				</select>
 			</div>
 			<div class="col-xs-3">
-				<select class="form-control" id="type_3">
+				<select class="form-control" id="season_3">
 					<option>Regular season</option>
 					<option>Playoffs</option>
 				</select>
@@ -269,7 +267,7 @@ $(document).ready(function () {
 		<p>
 		<div class="row">
 			<div class="col-xs-3">
-				<select class="form-control" id="team">
+				<select class="form-control" id="team_select">
 					<option>Choose a team</option>
 				</select>
 			</div>
@@ -283,16 +281,16 @@ $(document).ready(function () {
 				<div class="form-group">
 					<div class="col-xs-3">
 						<select class="form-control" id="team_type">
-							<option>Offense</option>
-							<option>Defense</option>
+							<option value='1'>Offense</option>
+							<option value='0'>Defense</option>
 						</select>
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-xs-3">
 						<select class="form-control" id="efficiency_3" >
-							<option>Field goal %</option>
-							<option>Efficiency (PPS)</option>
+							<option value='0'>Field goal %</option>
+							<option value='1'>Efficiency (PPS)</option>
 						</select>
 					</div>
 				</div>
@@ -328,10 +326,75 @@ function update_1() {
     var e = document.getElementById("efficiency_1");
     var u_efficient = e.options[e.selectedIndex].value;
 
-    var e = document.getElementById("type_1");
+    var e = document.getElementById("season_1");
     var u_season = e.options[e.selectedIndex].value;
 
-    document.getElementById('shotchart').src = 'canvas_shot.html?chart_type=1&year='+u_year+'&efficient='+u_efficient+'&season='+u_season+'&player1='+u_player
+    var dict=[]
+    dict.push({chart_type:'1',player1:u_player,year:u_year,efficiency:u_efficient,season:u_season})
+
+    document.getElementById('shotchart').contentWindow.load_pshotnew(dict[0])
+}
+
+function update_2() {
+    var e = document.getElementById("year_2");
+    var u_year = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("player1");
+    var u_player1 = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("player2");
+    var u_player2 = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("player3");
+    var u_player3 = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("player4");
+    var u_player4 = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("player5");
+    var u_player5 = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("efficiency_2");
+    var u_efficient = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("season_2");
+    var u_season = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("quarter");
+    var u_quarter = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("startdate");
+    var u_startdate = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("enddate");
+    var u_enddate = e.options[e.selectedIndex].value;
+
+    var dict=[]
+    dict.push({chart_type:'2',player1:u_player1,year:u_year,efficiency:u_efficient,season:u_season,player2:u_player2,player3:u_player3,player4:u_player4,player5:u_player5,quarter:u_quarter,startdate:u_startdate,enddate:u_enddate})
+
+    document.getElementById('shotchart').contentWindow.load_pshotnew(dict[0])
+}
+
+function update_3() {
+    var e = document.getElementById("year_3");
+    var u_year = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("team_select");
+    var u_team = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("efficiency_3");
+    var u_efficient = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("season_3");
+    var u_season = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("team_type");
+    var u_teamtype = e.options[e.selectedIndex].value;
+
+    var dict=[]
+    dict.push({chart_type:'3',team:u_team,year:u_year,efficiency:u_efficient,season:u_season,offense_defense:u_teamtype})
+
+    document.getElementById('shotchart').contentWindow.load_pshotnew(dict[0])
 }
 
 function save() {

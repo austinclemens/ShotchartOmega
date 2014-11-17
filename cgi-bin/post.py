@@ -93,9 +93,9 @@ if season=="Playoffs":
 	season=1
 
 if chart_type==3:
-	if defense_offense==0:
+	if defense_offense=='0':
 		string="defense_team=%s AND year=%s AND season_type=%s" % (team,year,season)
-	if defense_offense==1:
+	if defense_offense=='1':
 		string="offense_team=%s AND year=%s AND season_type=%s" % (team,year,season)
 
 if int(chart_type)==1:
