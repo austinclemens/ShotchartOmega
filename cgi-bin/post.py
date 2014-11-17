@@ -72,26 +72,37 @@ player4=data.getfirst('player4')
 player5=data.getfirst('player5')
 
 year=data.getfirst('year')
-season=data.getfirst('type')
+season=data.getfirst('season')
 efficiency=data.getfirst('efficiency')
 quarter=data.getfirst('quarter')
 startdate=data.getfirst('startdate')
 enddate=data.getfirst('enddate')
 team=data.getfirst('team')
 offense_defense=data.getfirst('defense_offense')
-chart_type=data.getfirst('chart_type')
+chart_type=int(data.getfirst('chart_type'))
+
+if chart_type==None:
+	chart_type=1
+	player1="Dirk Nowitzki"
+	year="2013"
+	season="Regular season"
+
+if season=="Regular season":
+	season=0
+if season=="Playoffs":
+	season=1
 
 if chart_type==3:
 	if defense_offense==0:
-		string="defense_team=%s AND year=%s AND season=%s" % (team,year,season)
+		string="defense_team=%s AND year=%s AND season_type=%s" % (team,year,season)
 	if defense_offense==1:
-		string="offense_team=%s AND year=%s AND season=%s" % (team,year,season)
+		string="offense_team=%s AND year=%s AND season_type=%s" % (team,year,season)
 
 if chart_type==1:
 	if year=='career':
-		string="player=%s AND season=%s" % (player1,season)
+		string="player='%s' AND season_type='%s'" % (player1,season)
 	if year!='career':
-		string="player=%s AND year=%s & season=%s" % (player1, year, season)
+		string="player='%s' AND year=%s AND season_type='%s'" % (player1, year, season)
 
 if chart_type==2:
 	append=""
@@ -100,7 +111,7 @@ if chart_type==2:
 	if quarter!=None:
 		if quarter=="4_minutes":
 			append=" AND seconds_remain<241"
-		else if:
+		else:
 			append=" AND quarter=%s" % (quarter)
 
 	if startdate!=None:

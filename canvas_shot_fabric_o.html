@@ -182,16 +182,16 @@ function load_pshotnew() {
 	datatype: "html",
 	data:   {
 		player1: "Kevin Durant",
-		quarter: "all",
-		type: "regular season",
+		season: "Regular season",
 		year: "2013",
-		efficiency: "0",
-		chart_type=1
+		efficiency: 0,
+		chart_type:'1',
 		},
 	success: function(response){
 		//console.log("HELLO")
 		//var shot_data = $.csv.toArrays(response[0]);
 		//console.log(shot_data)
+		console.log(response)
 		var shot_data = eval("(" + response + ")");
 		redraw_arc(0)
 		circlayer.removeChildren()

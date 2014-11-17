@@ -42,7 +42,7 @@ $(document).ready(function () {
 		<p>
 		<div class="row">
 			<div class="col-xs-3">
-				<select class="form-control">
+				<select class="form-control" id="year_1">
 					<option>Choose a season</option>
 					<option value='1996'>1996-97</option>
 					<option value='1997'>1997-98</option>
@@ -67,7 +67,7 @@ $(document).ready(function () {
 				</select>
 			</div>
 			<div class="col-xs-3">
-				<select class="form-control">
+				<select class="form-control" id="season_1">
 					<option>Regular season</option>
 					<option>Playoffs</option>
 				</select>
@@ -77,7 +77,7 @@ $(document).ready(function () {
 		<p>
 		<div class="row">
 			<div class="col-xs-3">
-				<select class="form-control">
+				<select class="form-control" id="player">
 					<option>Choose a player</option>
 				</select>
 			</div>
@@ -90,7 +90,7 @@ $(document).ready(function () {
 			<form class="form-inline" role="form">
 				<div class="form-group">
 					<div class="col-xs-3">
-						<select class="form-control" >
+						<select class="form-control" id="efficiency_1">
 							<option>Field goal %</option>
 							<option>Efficiency (PPS)</option>
 						</select>
@@ -104,8 +104,8 @@ $(document).ready(function () {
 		</p>
 		<br>
 		<p>
-		<button type="button" class="btn btn-success">Run it</button> 
-		<button type="button" class="btn btn-info">Save to hard drive</button>
+		<button type="button" class="btn btn-success" id="run_1" onClick="update_1()">Run it</button> 
+		<button type="button" class="btn btn-info" id="save_1" onClick="save()">Save to hard drive</button>
 		</p>
 	</div>
 	
@@ -116,7 +116,7 @@ $(document).ready(function () {
 		<h4>Choose a season and up to 5 players<br><small>Hypothetical shot charts! Does not represent actual player pairings.</small></h4>
 		<div class="row">
 			<div class="col-xs-3">
-				<select class="form-control">
+				<select class="form-control" id="year_2">
 					<option>Choose a season</option>
 					<option value='1996'>1996-97</option>
 					<option value='1997'>1997-98</option>
@@ -140,7 +140,7 @@ $(document).ready(function () {
 				</select>
 			</div>
 			<div class="col-xs-3">
-				<select class="form-control">
+				<select class="form-control" id="season_2">
 					<option>Regular season</option>
 					<option>Playoffs</option>
 				</select>
@@ -150,17 +150,17 @@ $(document).ready(function () {
 		<div class="row">
 			<p>
 			<div class="col-xs-2">
-				<select class="form-control">
+				<select class="form-control" id="player1">
 					<option>Player 1</option>
 				</select>
 			</div>
 			<div class="col-xs-2">
-				<select class="form-control">
+				<select class="form-control" id="player2">
 					<option>Player 2</option>
 				</select>
 			</div>
 			<div class="col-xs-2">
-				<select class="form-control">
+				<select class="form-control" id="player3">
 					<option>Player 3</option>
 				</select>
 			</div>
@@ -169,12 +169,12 @@ $(document).ready(function () {
 		<div class="row">
 			<p>
 			<div class="col-xs-2">
-				<select class="form-control">
+				<select class="form-control" id="player4">
 					<option>Player 4</option>
 				</select>
 			</div>
 			<div class="col-xs-2">
-				<select class="form-control">
+				<select class="form-control" id="player5">
 					<option>Player 5</option>
 				</select>
 			</div>
@@ -187,7 +187,7 @@ $(document).ready(function () {
 		<div class="row">
 			<p>
 			<div class="col-xs-3">
-				<select class="form-control" >
+				<select class="form-control" id="quarter">
 					<option>Complete game</option>
 					<option>1st quarter</option>
 					<option>2nd quarter</option>
@@ -200,9 +200,9 @@ $(document).ready(function () {
 		<p>
 			<div class="col-xs-5">
 				<div class="input-daterange input-group" id="date1">
-    				<input type="text" class="input-sm form-control" name="start" />
+    				<input type="text" class="input-sm form-control" name="start" id="startdate" />
     				<span class="input-group-addon">to</span>
-    				<input type="text" class="input-sm form-control" name="end" />
+    				<input type="text" class="input-sm form-control" name="end" id="enddate" />
 				</div>
 			</div>
 		</div>
@@ -214,7 +214,7 @@ $(document).ready(function () {
 			<form class="form-inline" role="form">
 				<div class="form-group">
 					<div class="col-xs-3">
-						<select class="form-control" >
+						<select class="form-control" id="efficiency_2">
 							<option>Field goal %</option>
 							<option>Efficiency (PPS)</option>
 						</select>
@@ -226,8 +226,8 @@ $(document).ready(function () {
 			</form>
 		</div>
 		</p><br><p>
-		<button type="button" class="btn btn-success">Run it</button> 
-		<button type="button" class="btn btn-info">Save to hard drive</button>
+		<button type="button" class="btn btn-success" id="run_1" onClick="update_1()">Run it</button> 
+		<button type="button" class="btn btn-info" id="save_1" onClick="save()">Save to hard drive</button>
 	</p>
 	</div>
     <div role="tabpanel" class="tab-pane" id="teams">
@@ -235,7 +235,7 @@ $(document).ready(function () {
 		<p>
 		<div class="row">
 			<div class="col-xs-3">
-				<select class="form-control">
+				<select class="form-control" id="year_3">
 					<option>Choose a season</option>
 					<option value='1996'>1996-97</option>
 					<option value='1997'>1997-98</option>
@@ -259,7 +259,7 @@ $(document).ready(function () {
 				</select>
 			</div>
 			<div class="col-xs-3">
-				<select class="form-control">
+				<select class="form-control" id="type_3">
 					<option>Regular season</option>
 					<option>Playoffs</option>
 				</select>
@@ -269,7 +269,7 @@ $(document).ready(function () {
 		<p>
 		<div class="row">
 			<div class="col-xs-3">
-				<select class="form-control">
+				<select class="form-control" id="team">
 					<option>Choose a team</option>
 				</select>
 			</div>
@@ -282,7 +282,7 @@ $(document).ready(function () {
 			<form class="form-inline" role="form">
 				<div class="form-group">
 					<div class="col-xs-3">
-						<select class="form-control" >
+						<select class="form-control" id="team_type">
 							<option>Offense</option>
 							<option>Defense</option>
 						</select>
@@ -290,7 +290,7 @@ $(document).ready(function () {
 				</div>
 				<div class="form-group">
 					<div class="col-xs-3">
-						<select class="form-control" >
+						<select class="form-control" id="efficiency_3" >
 							<option>Field goal %</option>
 							<option>Efficiency (PPS)</option>
 						</select>
@@ -304,11 +304,14 @@ $(document).ready(function () {
 		</p>
 		<br>
 		<p>
-		<button type="button" class="btn btn-success">Run it</button> 
-		<button type="button" class="btn btn-info">Save to hard drive</button>
+		<button type="button" class="btn btn-success" id="run_1" onClick="update_1()">Run it</button> 
+		<button type="button" class="btn btn-info" id="save_1" onClick="save()">Save to hard drive</button>
 		</p>
 	</div>
 	<div class="iframeWrapper" style="position: relative; padding-bottom: 74.25%; padding-top: 25px; height: 0;">
 <iframe id="blah" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="canvas_shot_fabric_o.html?player=Dirk Nowitzki&year=2013&efficient=0" frameborder="0" align="middle" width=900 height=660 seamless="seamless" scrolling="no" class="aligncenter"></iframe></div>
 
 </div></div>
+
+<script>
+// Update player and team fields according to year entry
