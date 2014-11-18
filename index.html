@@ -43,7 +43,7 @@ $(document).ready(function () {
 		<div class="row">
 			<div class="col-xs-3">
 				<select class="form-control" id="year_1">
-					<option>Choose a season</option>
+					<option value='off'>Choose a season</option>
 					<option value='1997'>1997-98</option>
 					<option value='1998'>1998-99</option>
 					<option value='1999'>1999-00</option>
@@ -76,8 +76,8 @@ $(document).ready(function () {
 		<p>
 		<div class="row">
 			<div class="col-xs-3">
-				<select class="form-control" id="player">
-					<option>Choose a player</option>
+				<select class="form-control" id="player" disabled>
+					<option value='off'>Choose a player</option>
 				</select>
 			</div>
 		</div>
@@ -103,7 +103,7 @@ $(document).ready(function () {
 		</p>
 		<br>
 		<p>
-		<button type="button" class="btn btn-success" id="run_1" onClick="update_1()">Run it</button> 
+		<button type="button" class="btn btn-success" id="run_1" onClick="update_1()" disabled>Run it</button> 
 		<button type="button" class="btn btn-info" id="save_1" onClick="save()">Save to hard drive</button>
 		</p>
 	</div>
@@ -116,7 +116,7 @@ $(document).ready(function () {
 		<div class="row">
 			<div class="col-xs-3">
 				<select class="form-control" id="year_2">
-					<option>Choose a season</option>
+					<option value='off'>Choose a season</option>
 					<option value='1997'>1997-98</option>
 					<option value='1998'>1998-99</option>
 					<option value='1999'>1999-00</option>
@@ -148,18 +148,18 @@ $(document).ready(function () {
 		<div class="row">
 			<p>
 			<div class="col-xs-2">
-				<select class="form-control" id="player1">
-					<option>Player 1</option>
+				<select class="form-control" id="player1" disabled>
+					<option value='off'>Player 1</option>
 				</select>
 			</div>
 			<div class="col-xs-2">
-				<select class="form-control" id="player2">
-					<option>Player 2</option>
+				<select class="form-control" id="player2" disabled>
+					<option value='off'>Player 2</option>
 				</select>
 			</div>
 			<div class="col-xs-2">
-				<select class="form-control" id="player3">
-					<option>Player 3</option>
+				<select class="form-control" id="player3" disabled>
+					<option value='off'>Player 3</option>
 				</select>
 			</div>
 		</p>
@@ -167,13 +167,13 @@ $(document).ready(function () {
 		<div class="row">
 			<p>
 			<div class="col-xs-2">
-				<select class="form-control" id="player4">
-					<option>Player 4</option>
+				<select class="form-control" id="player4" disabled>
+					<option value='off'>Player 4</option>
 				</select>
 			</div>
 			<div class="col-xs-2">
-				<select class="form-control" id="player5">
-					<option>Player 5</option>
+				<select class="form-control" id="player5" disabled>
+					<option value='off'>Player 5</option>
 				</select>
 			</div>
 			</p>
@@ -224,7 +224,7 @@ $(document).ready(function () {
 			</form>
 		</div>
 		</p><br><p>
-		<button type="button" class="btn btn-success" id="run_2" onClick="update_2()">Run it</button> 
+		<button type="button" class="btn btn-success" id="run_2" onClick="update_2()" disabled>Run it</button> 
 		<button type="button" class="btn btn-info" id="save_2" onClick="save()">Save to hard drive</button>
 	</p>
 	</div>
@@ -234,7 +234,7 @@ $(document).ready(function () {
 		<div class="row">
 			<div class="col-xs-3">
 				<select class="form-control" id="year_3">
-					<option>Choose a season</option>
+					<option value='off'>Choose a season</option>
 					<option value='1997'>1997-98</option>
 					<option value='1998'>1998-99</option>
 					<option value='1999'>1999-00</option>
@@ -266,8 +266,8 @@ $(document).ready(function () {
 		<p>
 		<div class="row">
 			<div class="col-xs-3">
-				<select class="form-control" id="team_select">
-					<option>Choose a team</option>
+				<select class="form-control" id="team_select" disabled>
+					<option value='off'>Choose a team</option>
 				</select>
 			</div>
 		</div>
@@ -301,7 +301,7 @@ $(document).ready(function () {
 		</p>
 		<br>
 		<p>
-		<button type="button" class="btn btn-success" id="run_3" onClick="update_3()">Run it</button> 
+		<button type="button" class="btn btn-success" id="run_3" onClick="update_3()" disabled>Run it</button> 
 		<button type="button" class="btn btn-info" id="save_3" onClick="save()">Save to hard drive</button>
 		</p>
 	</div>
@@ -320,30 +320,55 @@ $("#year_1").change(function() {
     var e = document.getElementById("year_1");
     var u_year = e.options[e.selectedIndex].value;
 
-	y_update=[]
-	y_update.push({year:u_year})
+    if (u_year=='off') { 
+    	$('#player').prop('disabled',true);
+    	$('#run_1').prop('disabled',true)
+    }
 
-	load_playermenu(y_update[0])
+	if (u_year!='off') { 
+		$('#player').prop('disabled',false)
+		y_update=[]
+		y_update.push({year:u_year,pl:1})
+		load_playermenu(y_update[0])
+	}
 });
 
 $("#year_2").change(function() {
     var e = document.getElementById("year_2");
     var u_year = e.options[e.selectedIndex].value;
 
-	y_update=[]
-	y_update.push({year:u_year})
+    if (u_year=='off') {
+    	$('#player1').prop('disabled',true);
+    	$('#player2').prop('disabled',true);
+    	$('#player3').prop('disabled',true);
+    	$('#player4').prop('disabled',true);
+    	$('#player5').prop('disabled',true);
+    	$('#run_2').prop('disabled',true)
+    }
 
-	load_playermenu(y_update[0])
+    if (u_year!='off') {
+    	$('#player1').prop('disabled',false)
+    	y_update=[]
+		y_update.push({year:u_year,pl:1})
+		load_playermenu(y_update[0])
+    }
 });
 
 $("#year_3").change(function() {
     var e = document.getElementById("year_3");
     var u_year = e.options[e.selectedIndex].value;
 
-	y_update=[]
-	y_update.push({year:u_year})
+    if (u_year=='off') {
+		$('#team_select').prop('disabled',true);
+		$('#run_3').prop('disabled',true)
+    }
 
-	load_playermenu(y_update[0])
+    if (u_year!='off') {
+    	$('#team_select').prop('disabled',false)
+    	y_update=[]
+		y_update.push({year:u_year,pl:0})
+		load_teammenu(y_update[0])	
+    }
 });
 
 // Function to call update_players.py and get list for dropdown
@@ -357,9 +382,11 @@ function load_playermenu(y_update) {
 		var menu_data = eval("(" + response + ")");
 		var select=document.getElementById('player');
 		var length=select.options.length;
+		console.log(length)
 		for (var i=1; i<length; i++) {
-			select.options[i]=null;
+			select.remove(i);
 		}
+		console.log(select.options.length)
 		for (var i=0; i<menu_data.length;i++) {
 			var opt=menu_data[i]
 			var el=document.createElement("option");
@@ -382,6 +409,30 @@ function load_playermenu(y_update) {
 		p3.innerHTML=options
 		p4.innerHTML=options
 		p5.innerHTML=options
+	}
+	});
+}
+
+function load_teammenu(y_update) {
+	$.ajax({
+	url: "http://www.austinclemens.com/cgi-bin/update_players.py",
+	type: "post",
+	datatype: "html",
+	data: y_update,
+	success: function(response){
+		var menu_data = eval("(" + response + ")");
+		var select=document.getElementById('team_select');
+		var length=select.options.length;
+		for (var i=1; i<length; i++) {
+			select.remove(i);
+		}
+		for (var i=0; i<menu_data.length;i++) {
+			var opt=menu_data[i]
+			var el=document.createElement("option");
+			el.textContent=opt;
+			el.value=opt;
+			select.appendChild(el)
+		}
 	}
 	});
 }
@@ -463,7 +514,7 @@ function update_3() {
     var u_teamtype = e.options[e.selectedIndex].value;
 
     var dict=[]
-    dict.push({chart_type:'3',team:u_team,year:u_year,efficiency:u_efficient,season:u_season,offense_defense:u_teamtype})
+    dict.push({chart_type:'3',team:u_team,year:u_year,efficiency:u_efficient,season:u_season,defense_offense:u_teamtype})
 
     document.getElementById('shotchart').contentWindow.load_pshotnew(dict[0])
 }
@@ -479,4 +530,123 @@ function save() {
     result.src=ur;
     result.style.width = 900;
 }
+
+// Form disabling logic
+$("#player").change(function() {
+    var e = document.getElementById("player");
+    var u_player = e.options[e.selectedIndex].value;
+
+    if (u_player=='off') { 
+    	$('#run_1').prop('disabled',true)
+    }
+
+	if (u_player!='off') { 
+    	$('#run_1').prop('disabled',false)
+	}
+});
+
+$("#team_select").change(function() {
+    var e = document.getElementById("team_select");
+    var u_team = e.options[e.selectedIndex].value;
+
+    if (u_team=='off') { 
+    	$('#run_3').prop('disabled',true)
+    }
+
+	if (u_team!='off') { 
+    	$('#run_3').prop('disabled',false)
+	}
+});
+
+$("#player1").change(function() {
+    var e = document.getElementById("player1");
+    var u_player = e.options[e.selectedIndex].value;
+
+    if (u_player=='off') { 
+    	$('#run_2').prop('disabled',true)
+       	$('#player2').prop('disabled',true)
+       	$('#player3').prop('disabled',true)
+       	$('#player4').prop('disabled',true)
+       	$('#player5').prop('disabled',true)
+       	$("#player2").val('off');
+       	$("#player3").val('off');
+       	$("#player4").val('off');
+       	$("#player5").val('off');
+
+    }
+
+	if (u_player!='off') { 
+    	$('#run_2').prop('disabled',false)
+    	$('#player2').prop('disabled',false)
+	}
+});
+
+$("#player2").change(function() {
+    var e = document.getElementById("player2");
+    var u_player = e.options[e.selectedIndex].value;
+
+    if (u_player=='off') { 
+       	$('#player3').prop('disabled',true)
+       	$('#player4').prop('disabled',true)
+       	$('#player5').prop('disabled',true)
+       	$("#player3").val('off');
+       	$("#player4").val('off');
+       	$("#player5").val('off');
+
+    }
+
+	if (u_player!='off') { 
+    	$('#player3').prop('disabled',false)
+	}
+});
+
+$("#player3").change(function() {
+    var e = document.getElementById("player3");
+    var u_player = e.options[e.selectedIndex].value;
+
+    if (u_player=='off') { 
+       	$('#player4').prop('disabled',true)
+       	$('#player5').prop('disabled',true)
+       	$("#player4").val('off');
+       	$("#player5").val('off');
+
+    }
+
+	if (u_player!='off') { 
+    	$('#player4').prop('disabled',false)
+	}
+});
+
+$("#player3").change(function() {
+    var e = document.getElementById("player3");
+    var u_player = e.options[e.selectedIndex].value;
+
+    if (u_player=='off') { 
+       	$('#player4').prop('disabled',true)
+       	$('#player5').prop('disabled',true)
+       	$("#player4").val('off');
+       	$("#player5").val('off');
+
+    }
+
+	if (u_player!='off') { 
+    	$('#player4').prop('disabled',false)
+	}
+});
+
+$("#player4").change(function() {
+    var e = document.getElementById("player4");
+    var u_player = e.options[e.selectedIndex].value;
+
+    if (u_player=='off') { 
+       	$('#player5').prop('disabled',true)
+       	$("#player5").val('off');
+
+    }
+
+	if (u_player!='off') { 
+    	$('#player5').prop('disabled',false)
+	}
+});
+
 </script>

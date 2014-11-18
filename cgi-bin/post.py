@@ -92,11 +92,11 @@ if season=="Regular season":
 if season=="Playoffs":
 	season=1
 
-if chart_type==3:
-	if defense_offense=='0':
-		string="defense_team=%s AND year=%s AND season_type=%s" % (team,year,season)
-	if defense_offense=='1':
-		string="offense_team=%s AND year=%s AND season_type=%s" % (team,year,season)
+if int(chart_type)==3:
+	if int(offense_defense)==0:
+		string="defense_team='%s' AND year=%s AND season_type='%s'" % (team,year,season)
+	if int(offense_defense)==1:
+		string="offense_team='%s' AND year=%s AND season_type='%s'" % (team,year,season)
 
 if int(chart_type)==1:
 	if year=='career':
@@ -104,7 +104,7 @@ if int(chart_type)==1:
 	if year!='career':
 		string="player='%s' AND year=%s AND season_type='%s'" % (player1, int(year), season)
 
-if chart_type==2:
+if int(chart_type)==2:
 	append=""
 	append2=""
 
