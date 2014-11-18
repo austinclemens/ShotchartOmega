@@ -73,6 +73,25 @@ def averages(year):
 	con.close()
 
 
+def career_averages():
+	print year
+	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='184.164.140.34',db='austinc_allshotdata',port=3306)
+	cur=con.cursor()
+
+	cur.execute("""SELECT three,made,x,y FROM shots WHERE year>2004"""
+	rows=cur.fetchall()
+	print 'rows fetched'
+
+	year_average=chart(rows)
+
+	with open("/Users/austinc/Desktop/Current Work/ShotchartOmega/averages/careers.csv",'a') as csvfile:
+		writer=csv.writer(csvfile)
+		for row in year_average:
+			writer.writerow(row)
+
+	con.close()
+
+
 def chart(shots):
 	shots_temp=[[shot[0],shot[1],shot[2],shot[3]] for shot in shots]
 	# 3pt, made, x, y
@@ -117,40 +136,6 @@ def circle_chunk(shots_temp):
 		output.append([box[0][0],box[0][1],smooth_fg])
 		# coord, coord, number of shots, smooth_fg, percent of shots within 5 feet
 	return output
-
-def player_list(year):
-	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='184.164.140.34',db='austinc_allshotdata',port=3306)
-	cur=con.cursor()
-
-	cur.execute("""SELECT DISTINCT player FROM shots WHERE year=%s""" % (year))
-	rows=cur.fetchall()
-
-	with open("/Users/austinc/Desktop/p_years/%s.csv" % (year),'w') as file:
-		for row in rows:
-			file.write('<option value="%s">%s</option>' % (row,row))
-			file.write('\n')
-
-	con.close()
-
-	#<option value="pshot.html?width=800&player=Anthony Mason&year=1996">Anthony Mason</option>
-
-def career_list():
-	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='184.164.140.34',db='austinc_allshotdata',port=3306)
-	cur=con.cursor()
-
-	cur.execute("""SELECT DISTINCT players FROM shots""" % (year))
-	rows=cur.fetchall()
-
-	cur.execute("""SELECT DISTINCT players FROM shots WHERE year=1996""")
-	no_rows=cur.fetchall()
-
-	with open("/Users/austinc/Desktop/p_years/%s.csv" % (year),'w') as file:
-		for row in rows:
-			if row not in no_rows:
-				file.write('<option value="%s">%s</option>' % (row,row))
-				file.write('\n')
-
-	con.close()
 
 
 
