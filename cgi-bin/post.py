@@ -108,13 +108,13 @@ if int(chart_type)==2:
 	append=""
 	append2=""
 
-	if quarter!=None:
+	if quarter!='off':
 		if quarter=="4_minutes":
 			append=" AND seconds_remain<241"
 		else:
 			append=" AND quarter=%s" % (quarter)
 
-	if startdate!=None:
+	if startdate!='off' and enddate!='off':
 		pass
 		# start and end date code goes here
 
@@ -131,7 +131,7 @@ if int(chart_type)==2:
 
 	string=string+')'
 	
-	string=string+' AND year=%s AND season=%s' % (year,season)
+	string=string+' AND year=%s AND season_type=%s' % (year,season)
 
 	string=string+append+append2
 

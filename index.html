@@ -186,21 +186,21 @@ $(document).ready(function () {
 			<p>
 			<div class="col-xs-3">
 				<select class="form-control" id="quarter">
-					<option>Complete game</option>
-					<option>1st quarter</option>
-					<option>2nd quarter</option>
-					<option>3rd quarter</option>
-					<option>4th quarter</option>
-					<option>Last 4 minutes</option>
+					<option value='off'>Complete game</option>
+					<option value='1'>1st quarter</option>
+					<option value='2'>2nd quarter</option>
+					<option value='3'>3rd quarter</option>
+					<option value='4'>4th quarter</option>
+					<option value='4_minutes'>Last 4 minutes</option>
 				</select>
 			</div>
 			</p>
 		<p>
 			<div class="col-xs-5">
 				<div class="input-daterange input-group" id="date1">
-    				<input type="text" class="input-sm form-control" name="start" id="startdate" />
+    				<input type="text" class="input-sm form-control" id="startdate" />
     				<span class="input-group-addon">to</span>
-    				<input type="text" class="input-sm form-control" name="end" id="enddate" />
+    				<input type="text" class="input-sm form-control" id="enddate" />
 				</div>
 			</div>
 		</div>
@@ -381,13 +381,13 @@ function load_playermenu(y_update) {
 	success: function(response){
 		var menu_data = eval("(" + response + ")");
 		var select=document.getElementById('player');
-		var length=select.options.length;
-		console.log(length)
-		for (var i=1; i<length; i++) {
-			select.remove(i);
-		}
-		console.log(select.options.length)
-		for (var i=0; i<menu_data.length;i++) {
+		$("#player").empty()
+		var opt=menu_data[0]
+		var el=document.createElement("option")
+		el.textContent='Choose a player'
+		el.value='off'
+		select.appendChild(el)
+		for (var i=1; i<menu_data.length;i++) {
 			var opt=menu_data[i]
 			var el=document.createElement("option");
 			el.textContent=opt;
@@ -401,8 +401,7 @@ function load_playermenu(y_update) {
 		var p4=document.getElementById('player4')
 		var p5=document.getElementById('player5')
 
-		var p=document.getElementById('player')
-		var options=p.innerHTML;
+		var options=select.innerHTML;
 
 		p1.innerHTML=options
 		p2.innerHTML=options
@@ -485,11 +484,14 @@ function update_2() {
     var e = document.getElementById("quarter");
     var u_quarter = e.options[e.selectedIndex].value;
 
-    var e = document.getElementById("startdate");
-    var u_startdate = e.options[e.selectedIndex].value;
+    var u_startdate='off'
+    var u_enddate='off'
 
-    var e = document.getElementById("enddate");
-    var u_enddate = e.options[e.selectedIndex].value;
+    // var e = document.getElementById("startdate");
+    // var u_startdate = e.options[e.selectedIndex].value;
+
+    // var e = document.getElementById("enddate");
+    // var u_enddate = e.options[e.selectedIndex].value;
 
     var dict=[]
     dict.push({chart_type:'2',player1:u_player1,year:u_year,efficiency:u_efficient,season:u_season,player2:u_player2,player3:u_player3,player4:u_player4,player5:u_player5,quarter:u_quarter,startdate:u_startdate,enddate:u_enddate})
