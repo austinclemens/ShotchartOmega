@@ -157,8 +157,20 @@ function drawcourt_pshot(shot_data,efficient) {
 	
 	layer.removeChildren()
 
-	var text=new Kinetic.Text({x:350,y:15,fontSize:13,fontFamily:'Verdana',fill:'#000000',align:'right',text: shot_data[-1]})
-	court.add(text)
+	var text=new Kinetic.Text({x:350,y:21,width:280,fontSize:13,fontFamily:'Verdana',fill:'black',align:'left',text: shot_data[201]})
+	layer.add(text)
+	var text=new Kinetic.Text({x:40,y:21,width:280,fontSize:13,fontFamily:'Verdana',fill:'black',align:'left',text: shot_data[202]})
+	layer.add(text)
+	
+	if(shot_data[203][0]!=3) {
+		var text=new Kinetic.Text({x:40,y:5,fontSize:17,fontFamily:'Verdana',fill:'#000000',align:'right',text:'Player(s)'})
+		layer.add(text)
+	}
+
+	if(shot_data[203][0]==3) {
+		var text=new Kinetic.Text({x:40,y:5,fontSize:17,fontFamily:'Verdana',fill:'#000000',align:'right',text:'Team'})
+		layer.add(text)
+	}
 
 	var max=shot_data[0][2]
 	var min=shot_data[shot_data.length-4][2]
@@ -166,7 +178,7 @@ function drawcourt_pshot(shot_data,efficient) {
 
 	stage.add(layer)
 
-	for(var n = 0; n < 199; n++) {
+	for(var n = 0; n < 200; n++) {
 		if (shot_data[n][2]>0 && shot_data[n][5]>0.005){
 			var X = shot_data[n][1]*1.8+450+9 ;
   			var Y = shot_data[n][0]*1.8+144.5+9 ;
@@ -299,7 +311,7 @@ function choosecolor_pps(coef) {
 }
 
 function nba_court_base() {
-	var base=new Kinetic.Rect({x:54,y:50,width:792,height:255,fill:'#B0B0B0'})
+	var base=new Kinetic.Rect({x:54,y:50,width:792,height:255,fill:'#D0D0D0'})
 	court.add(base)
 	var base=new Kinetic.Rect({x:0,y:50,width:54,height:590,fill:'#E0E0E0'})
 	court.add(base)
@@ -307,15 +319,15 @@ function nba_court_base() {
 	court.add(base)
 	var base=new Kinetic.Rect({x:0,y:305,width:900,height:339,fill:'#E0E0E0'})
 	court.add(base)
-	var arc=new Kinetic.Arc({x:450,y:144.5,innerRadius:427.5,outerRadius:127.5,angle:136,fill:'#B0B0B0',rotationDeg:22})
+	var arc=new Kinetic.Arc({x:450,y:144.5,innerRadius:427.5,outerRadius:127.5,angle:136,fill:'#D0D0D0',rotationDeg:22})
 	court.add(arc)
 	var arc=new Kinetic.Arc({strokeWidth:2,stroke:'white',x:450,y:144.5,innerRadius:427.5,outerRadius:427.5,angle:136,rotationDeg:22,shadowColor:'#ffffff',shadowBlur:100})
 	court.add(arc)
-	var base=new Kinetic.Rect({x:342,y:50,width:216,height:342,fill:'#A0A0A0'})
+	var base=new Kinetic.Rect({x:342,y:50,width:216,height:342,fill:'#C0C0C0'})
 	court.add(base)
-	var base=new Kinetic.Rect({x:306,y:50,width:36,height:342,fill:'#909090'})
+	var base=new Kinetic.Rect({x:306,y:50,width:36,height:342,fill:'#C0C0C0'})
 	court.add(base)
-	var base=new Kinetic.Rect({x:558,y:50,width:36,height:342,fill:'#909090'})
+	var base=new Kinetic.Rect({x:558,y:50,width:36,height:342,fill:'#C0C0C0'})
 	court.add(base)
 
 	var line=new Kinetic.Line({strokeWidth:1,points:[0,51,900,51],stroke:'black'})
@@ -401,8 +413,6 @@ function nba_court_base() {
 	var text=new Kinetic.Text({x:10,y:624,fontSize:13,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'www.nyloncalculus.com/shotchart'})
 	court.add(text)
 
-	var text=new Kinetic.Text({x:40,y:5,fontSize:17,fontFamily:'Verdana',fill:'#000000',align:'right',text:'Player(s)'})
-	court.add(text)
 	var text=new Kinetic.Text({x:350,y:5,fontSize:17,fontFamily:'Verdana',fill:'#000000',align:'right',text:'Details'})
 	court.add(text)
 	// var text=new Kinetic.Text({x:700,y:5,fontSize:17,fontFamily:'Verdana',fill:'#000000',align:'left',text:'Key'})

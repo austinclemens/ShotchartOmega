@@ -21,8 +21,6 @@ def chart(shots,average_data):
 		# x,y,number of shots,diff from average,fg%,shots within 5 feet
 	sorted_chart=sorted(csv_data, key=itemgetter(2,5))[-201:]
 	sorted_chart.reverse()
-	details=details+', %s' % (len(shots))
-	sorted_chart.append(details)
 	return sorted_chart
 
 def circle_chunk(shots_temp):
@@ -89,33 +87,43 @@ if chart_type==None:
 	season="Regular season"
 
 if season=="Regular season":
-	season=0
+	season2=0
 if season=="Playoffs":
-	season=1
+	season2=1
 
 if int(chart_type)==3:
 	if int(offense_defense)==0:
-		string="defense_team='%s' AND year=%s AND season_type='%s'" % (team,year,season)
+		string="defense_team='%s' AND year=%s AND season_type='%s'" % (team,year,season2)
+		add='defense'
 	if int(offense_defense)==1:
-		string="offense_team='%s' AND year=%s AND season_type='%s'" % (team,year,season)
+		string="offense_team='%s' AND year=%s AND season_type='%s'" % (team,year,season2)
+		add='offense'
+	bits=[3,0]
+	players=team
+	year3="%02d" % (int(year[2:4])+1,)
+	year2=year+'-'+year3[-2:]
+	details="%s %s, %s" % (year2,season,add)
 
 if int(chart_type)==1:
 	if year=='career':
 		string="player='%s' AND season_type='%s'" % (player1,season)
+		year2='career'
 	if year!='career':
-		string="player='%s' AND year=%s AND season_type='%s'" % (player1, int(year), season)
-	details="%s, %s, %s" % (year,efficiency,season_type)
+		string="player='%s' AND year=%s AND season_type='%s'" % (player1, int(year), season2)
+		year3="%02d" % (int(year[2:4])+1,)
+		year2=year+'-'+year3[-2:]
+	details="%s %s" % (year2,season)
+	players=player1
+	bits=[1,0]
 
 if int(chart_type)==2:
 	append=""
 	append2=""
-
 	if quarter!='off':
 		if quarter=="4_minutes":
 			append=" AND seconds_remain<241"
 		else:
 			append=" AND quarter=%s" % (quarter)
-
 	if startdate!='off' and enddate!='off':
 		pass
 		# start and end date code goes here
@@ -132,10 +140,10 @@ if int(chart_type)==2:
 		string=string+" OR player='%s'" % (player5)
 
 	string=string+')'
-	
-	string=string+' AND year=%s AND season_type=%s' % (year,season)
-
+	string=string+' AND year=%s AND season_type=%s' % (year,season2)
 	string=string+append+append2
+
+	bits=[2,0]
 
 
 con=MySQLdb.connect(user='austinc_shotchar', passwd='scriptpass1.', host='localhost', db='austinc_allshotdata')
@@ -143,6 +151,7 @@ cur=con.cursor()
 cur.execute("""SELECT three,made,x,y FROM shots WHERE %s""" % (string))
 
 rows=cur.fetchall()
+details=details+', %s shots' % (len(rows))
 con.close()
 
 if year=='career':
@@ -156,6 +165,9 @@ if year!='career':
 		average_csv=[row for row in reader]
 
 results_csv=chart(rows,average_csv)
+results_csv.append(details)
+results_csv.append(players)
+results_csv.append(bits)
 
 results=json.dumps(results_csv)
 
