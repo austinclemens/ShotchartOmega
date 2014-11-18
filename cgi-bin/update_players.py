@@ -4,7 +4,7 @@ import MySQLdb
 import json
 
 def update_players(year,field):
-	if year!='career'
+	if year!='career':
 		con=MySQLdb.connect(user='austinc_shotchar', passwd='scriptpass1.', host='localhost', db='austinc_allshotdata')
 		cur=con.cursor()
 		if field==1:
@@ -17,7 +17,7 @@ def update_players(year,field):
 
 		return names
 
-	if year=='career'
+	if year=='career':
 		con=MySQLdb.connect(user='austinc_shotchar', passwd='scriptpass1.', host='localhost', db='austinc_allshotdata')
 		cur=con.cursor()
 		cur.execute("""SELECT DISTINCT player FROM shots WHERE year!=1996 ORDER BY player""")

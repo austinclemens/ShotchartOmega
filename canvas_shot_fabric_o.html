@@ -44,12 +44,6 @@ var circlayer = new Kinetic.Layer({
 	transformsEnabled: 'none',
 })
 
-var arclayer = new Kinetic.Layer({
-	hitGraphEnabled: false,
-	transformsEnabled: 'none',
-	listening: false,
-});
-
 var court = new Kinetic.Layer();
 
 stage.add(circlayer)
@@ -63,10 +57,10 @@ layer.on('click',function(evt){
 		x: shape.attrs.xcenter,
 		y: shape.attrs.ycenter,
 		radius: 0,
-		fillAlpha: .7,
-		fillRed: 30,
-		fillBlue: 30,
-		fillGreen: 30,
+		fillAlpha: .6,
+		fillRed: 250,
+		fillBlue: 250,
+		fillGreen: 250,
 		stroke: 'black',
 		strokeWidth:2,
 	});
@@ -82,21 +76,21 @@ layer.on('click',function(evt){
 	tween.play()
 
 	setTimeout(function(){
-		var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-24,y:shape.attrs.ycenter-65,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#ffffff",strokeWidth:1,text: Math.round(shape.attrs.fg*100)+"%"})
+		var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-24,y:shape.attrs.ycenter-65,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.fg*100)+"%"})
 		group.add(text)
-		var text=new Kinetic.Text({align:'center',fontStyle:'bold',x:shape.attrs.xcenter-41,y:shape.attrs.ycenter-40,fontSize:17,fontFamily:'Helvetica',fill:'#ffffff',text: "shots made"})
+		var text=new Kinetic.Text({align:'center',x:shape.attrs.xcenter-47,y:shape.attrs.ycenter-40,fontSize:17,fontFamily:'Verdana',fill:'#000000',text: "shots made"})
 		group.add(text)
 
 		if (Math.round(shape.attrs.shotvol*100)>9) {
-			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-24,y:shape.attrs.ycenter+15,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#ffffff",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
+			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-24,y:shape.attrs.ycenter+15,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
 			group.add(text)
 		}
 		if (Math.round(shape.attrs.shotvol*100)<10) {
-			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-16,y:shape.attrs.ycenter+15,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#ffffff",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
+			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-16,y:shape.attrs.ycenter+15,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
 			group.add(text)
 		}
 
-		var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-45,y:shape.attrs.ycenter+40,fontSize:17,fontFamily:'Helvetica',fill:'#ffffff',text: "shot volume"})
+		var text=new Kinetic.Text({x:shape.attrs.xcenter-50,y:shape.attrs.ycenter+40,fontSize:17,fontFamily:'Verdana',fill:'#000000',text: "shot volume"})
 		group.add(text)
 
 		var circle = new Kinetic.Circle({
@@ -104,16 +98,16 @@ layer.on('click',function(evt){
 			y: shape.attrs.ycenter,
 			radius: 2,
 			opacity: 1,
-			stroke: 'white',
+			stroke: 'black',
 			strokeWidth:1,
-			fill: '#7d7d7d'
+			fill: '#a0a0a0'
 		})
 		group.add(circle)
 
-		var line=new Kinetic.Line({strokeWidth:1,dash: [5, 5],points:[shape.attrs.xcenter+3,shape.attrs.ycenter,shape.attrs.xcenter+90,shape.attrs.ycenter],stroke:'white'})
+		var line=new Kinetic.Line({strokeWidth:1,dash: [5, 5],points:[shape.attrs.xcenter+3,shape.attrs.ycenter,shape.attrs.xcenter+90,shape.attrs.ycenter],stroke:'black'})
 		group.add(line)
 
-		var text=new Kinetic.Text({x:shape.attrs.xcenter+35,y:shape.attrs.ycenter-10,fontSize:9,fontFamily:'Helvetica',fill:'#ffffff',text: "5 feet"})
+		var text=new Kinetic.Text({x:shape.attrs.xcenter+35,y:shape.attrs.ycenter-10,fontSize:9,fontFamily:'Helvetica',fill:'#000000',text: "5 feet"})
 		group.add(text)
 	},500)
 
@@ -121,17 +115,14 @@ layer.on('click',function(evt){
 
 })
 
-// circlayer.on('click',function(evt){
-// 		group.removeChildren()
-// 		circlayer.add(group)
-// })
-
-
+circlayer.on('click',function(evt){
+		group.removeChildren()
+		circlayer.add(group)
+})
 
 window.onload=function() {
     var dict=[]
     dict.push({chart_type:get_param('chart_type'),player1:get_param('player1'),player2:get_param('player2'),player3:get_param('player3'),player4:get_param('player4'),player5:get_param('player5'),quarter:get_param('quarter'),startdate:get_param('startdate'),enddate:get_param('enddate'),offense_defense:get_param('offense_defense'),team:get_param('team'),year:get_param('year'),efficiency:get_param('efficiency'),season:get_param('season')})
-    //console.log(dict)
     load_pshotnew(dict[0])
 }
 
@@ -153,39 +144,32 @@ function load_pshotnew(dict) {
 	datatype: "html",
 	data:   dict,
 	success: function(response){
-		//console.log("HELLO")
-		//var shot_data = $.csv.toArrays(response[0]);
-		//console.log(shot_data)
-		//console.log(response)
 		console.log(response)
 		var shot_data = eval("(" + response + ")");
-		// redraw_arc(0)
 		circlayer.removeChildren()
 		stage.add(circlayer)
-		drawcourt_pshot(shot_data,2013,"Kevin Durant","basic",0)
+		drawcourt_pshot(shot_data,"basic",0)
 	}
 	});
 }
 
-function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
+function drawcourt_pshot(shot_data,efficient) {
 	
 	layer.removeChildren()
 
+	var text=new Kinetic.Text({x:350,y:15,fontSize:13,fontFamily:'Verdana',fill:'#000000',align:'right',text: shot_data[-1]})
+	court.add(text)
+
 	var max=shot_data[0][2]
-	var min=shot_data[shot_data.length-1][2]
+	var min=shot_data[shot_data.length-4][2]
 	var box_size=18
 
 	stage.add(layer)
 
-	for(var n = 0; n < 200; n++) {
+	for(var n = 0; n < 199; n++) {
 		if (shot_data[n][2]>0 && shot_data[n][5]>0.005){
 			var X = shot_data[n][1]*1.8+450+9 ;
   			var Y = shot_data[n][0]*1.8+144.5+9 ;
-
-  			if (dleague=="NCAA") {
-				var X = shot_data[n][1]*1.8+450;
-  				var Y = shot_data[n][0]*1.8+94.5;
-  			}
 
   			if(efficient=="efficiency") {
   				fillcolor=choosecolor_pps(shot_data[n][7])
@@ -194,23 +178,6 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
   				fillcolor=choosecolor_pshot(shot_data[n][3])
   			}
 
-			// var box = new Kinetic.Rect({
-			// 	cornerRadius: 10,
-			// 	x: X,
-			// 	y: Y,
-			// 	xcenter: X,
-			// 	ycenter: Y,
-			// 	//shadowColor: '#000000',
-			// 	//shadowBlur: 10,
-			// 	// shadowOpacity: 1,
-			// 	width: 0,
-			// 	height: 0,
-			// 	stroke:'#000000',
-			// 	strokeWidth: 1,
-			// 	shotvol: shot_data[n][8],
-			// 	fg: shot_data[n][4],
-			// 	fill: fillcolor,
-			// });
 			var box = new Kinetic.Circle({
 				//cornerRadius: 10,
 				x: X,
@@ -221,8 +188,8 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 				//shadowBlur: 10,
 				// shadowOpacity: 1,
 				radius:0,
-				stroke:'#000000',
-				strokeWidth: 0,
+				// stroke:'#000000',
+				// strokeWidth: 0,
 				shotvol: shot_data[n][5],
 				fg: shot_data[n][4],
 				fill: fillcolor,
@@ -235,17 +202,7 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 
 	for (var n=0; n < shapes.length; n++) {
 		var rect=shapes[n]
-		var maxwidth=choosesize(shot_data[n][2],min,max,18)
-
-		// var tween = new Kinetic.Tween({
-		// 	node: rect, 
-		// 	duration: 2,
-		// 	x:rect.attrs.x-(maxwidth/2),
-		// 	y:rect.attrs.y-(maxwidth/2),
-		// 	easing: Kinetic.Easings.ElasticEaseOut,
-		// 	width:maxwidth,
-		// 	height:maxwidth,
-		// });
+		var maxwidth=choosesize(shot_data[n][2],min,max,22)
 
 		var tween = new Kinetic.Tween({
 			node: rect, 
@@ -255,29 +212,6 @@ function drawcourt_pshot(shot_data,year,player,efficient,dleague) {
 		});
 		tween.play()
 	}
-
-	// if (efficient=="basic") {
-	// 	var text=new Kinetic.Text({x:560,y:631,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'< Average FG%'})
-	// 	layer.add(text)
-	// }
-	// if (efficient=="efficiency") {
-	// 	var text=new Kinetic.Text({x:560,y:631,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'> Average PPS'})
-	// 	layer.add(text)
-	// }
-	// if (efficient=="basic") {
-	// 	var text=new Kinetic.Text({x:255,y:632,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'> Average FG%'})
-	// 	layer.add(text)
-	// }
-	// if (efficient=="efficiency") {
-	// 	var text=new Kinetic.Text({x:255,y:632,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'> Average PPS'})
-	// 	layer.add(text)
-	// }
-
-	// year2=parseInt(year)+1
-	// var text=new Kinetic.Text({x:9,y:587,fontSize:30,fontFamily:'Arial',fill:'#ffffff',align:'left',text:player.replace(/%20/g," ")+" "+year+"-"+year2+", 4th quarters"})
-	// layer.add(text)
-
-	//setTimeout(function(){shadow_layer(shot_data,min,max,efficient,dleague)},1200)
 }
 
 function shadow_layer(shot_data,min,max,efficient,dleague) {
@@ -293,13 +227,6 @@ function shadow_layer(shot_data,min,max,efficient,dleague) {
   			}
   			if(efficient=="basic") {
   				fillcolor=choosecolor_pshot(shot_data[n][3])
-  			}
-
-  			if (dleague=="NCAA") {
-				var X = shot_data[n][1]*1.8+441+((18-choosesize(shot_data[n][2],min,max,20))/2);
-  				var Y = shot_data[n][0]*1.8+85.5+((18-choosesize(shot_data[n][2],min,max,20))/2);
-  				var Xcenter = shot_data[n][1]*1.8+450
-  				var Ycenter = shot_data[n][0]*1.8+94.5
   			}
 
 			var box = new Kinetic.Rect({
@@ -371,51 +298,35 @@ function choosecolor_pps(coef) {
 	if (coef<-.35) return '#001eff';
 }
 
-function redraw_arc(line) {
-
-	arclayer.removeChildren()
-
-	if (line==1) {
-		linecounter=1
-		var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:144.5,innerRadius:396,outerRadius:396,angle:180})
-		arclayer.add(arc)
-		var line=new Kinetic.Line({strokeWidth:3.6,points:[54,50,54,145.4],stroke:'white'})
-		arclayer.add(line)
-		var line=new Kinetic.Line({strokeWidth:3.6,points:[846,50,846,145.4],stroke:'white'})
-		arclayer.add(line)
-	}
-
-	if (line==0) {
-		linecounter=0
-		var arc=new Kinetic.Arc({strokeWidth:2,stroke:'white',x:450,y:144.5,innerRadius:427.5,outerRadius:427.5,angle:136,rotationDeg:22,shadowColor:'#ffffff',shadowBlur:100})
-		arclayer.add(arc)
-		var line=new Kinetic.Line({strokeWidth:2,points:[54,50,54,305.6],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
-		arclayer.add(line)
-		var line=new Kinetic.Line({strokeWidth:2,points:[846,50,846,305.6],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
-		arclayer.add(line)
-	}
-
-	if (line==2) {
-		var arc=new Kinetic.Arc({strokeWidth:3.6,stroke:'white',x:450,y:144.5,innerRadius:373.5,outerRadius:373.5,angle:180,rotationDeg:0})
-		arclayer.add(arc)
-		var line=new Kinetic.Line({strokeWidth:3.6,points:[76.5,50,76.5,170],stroke:'white'})
-		arclayer.add(line)
-		var line=new Kinetic.Line({strokeWidth:3.6,points:[823.5,50,823.5,170],stroke:'white'})
-		arclayer.add(line)
-	}
-
-	stage.add(arclayer)
-}
-
 function nba_court_base() {
-	var base=new Kinetic.Rect({x:0,y:0,width:900,height:640,fill:'#B0B0B0'})
+	var base=new Kinetic.Rect({x:54,y:50,width:792,height:255,fill:'#B0B0B0'})
 	court.add(base)
+	var base=new Kinetic.Rect({x:0,y:50,width:54,height:590,fill:'#E0E0E0'})
+	court.add(base)
+	var base=new Kinetic.Rect({x:846,y:50,width:54,height:590,fill:'#E0E0E0'})
+	court.add(base)
+	var base=new Kinetic.Rect({x:0,y:305,width:900,height:339,fill:'#E0E0E0'})
+	court.add(base)
+	var arc=new Kinetic.Arc({x:450,y:144.5,innerRadius:427.5,outerRadius:127.5,angle:136,fill:'#B0B0B0',rotationDeg:22})
+	court.add(arc)
+	var arc=new Kinetic.Arc({strokeWidth:2,stroke:'white',x:450,y:144.5,innerRadius:427.5,outerRadius:427.5,angle:136,rotationDeg:22,shadowColor:'#ffffff',shadowBlur:100})
+	court.add(arc)
 	var base=new Kinetic.Rect({x:342,y:50,width:216,height:342,fill:'#A0A0A0'})
 	court.add(base)
 	var base=new Kinetic.Rect({x:306,y:50,width:36,height:342,fill:'#909090'})
 	court.add(base)
 	var base=new Kinetic.Rect({x:558,y:50,width:36,height:342,fill:'#909090'})
 	court.add(base)
+
+	var line=new Kinetic.Line({strokeWidth:1,points:[0,51,900,51],stroke:'black'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:1,points:[0,643,900,643],stroke:'black'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:2,points:[0,643,0,51],stroke:'black'})
+	court.add(line)
+	var line=new Kinetic.Line({strokeWidth:2,points:[900,643,900,51],stroke:'black'})
+	court.add(line)
+
 	var line=new Kinetic.Line({strokeWidth:2,points:[306,50,306,392],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
 	var line=new Kinetic.Line({strokeWidth:2,points:[594,50,594,392],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
@@ -456,8 +367,6 @@ function nba_court_base() {
 	court.add(line)
 	var line=new Kinetic.Line({strokeWidth:2,points:[594,302,607.5,302],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
-	var line=new Kinetic.Line({strokeWidth:3.6,points:[40,50,860,50],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
-	court.add(line)
 
 	var arc=new Kinetic.Arc({innerRadius:27,outerRadius:27,strokeWidth:2,stroke:'white',x:450,y:148.1,angle:360,rotationDeg:0,shadowColor:'#ffffff',shadowBlur:100})
 	court.add(arc)
@@ -468,15 +377,13 @@ function nba_court_base() {
 	var arc=new Kinetic.Arc({strokeWidth:2,stroke:'white',x:450,y:392,innerRadius:108,outerRadius:108,angle:180,dash:[22,22],rotationDeg:180,shadowColor:'#ffffff',shadowBlur:100})
 	court.add(arc)
 
-	var arc=new Kinetic.Arc({strokeWidth:2,stroke:'white',x:450,y:144.5,innerRadius:427.5,outerRadius:427.5,angle:136,rotationDeg:22,shadowColor:'#ffffff',shadowBlur:100})
-	court.add(arc)
 	var line=new Kinetic.Line({strokeWidth:2,points:[54,50,54,305.6],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
 	var line=new Kinetic.Line({strokeWidth:2,points:[846,50,846,305.6],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
 
 	var img = new Image()
-	img.src="Twitter_logo_sm.png"
+	img.src="Twitter_logo_sm2.png"
 	img.onload = function() {
 		twit = new Kinetic.Image({
 			x: 765,
@@ -489,74 +396,35 @@ function nba_court_base() {
         court.draw()
     }
     
-    var text=new Kinetic.Text({x:782,y:624,fontSize:13,fontFamily:'Helvetica',fill:'#ffffff',align:'right',text:'@AustinClemens2'})
+    var text=new Kinetic.Text({x:782,y:624,fontSize:13,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'@AustinClemens2'})
 	court.add(text)
-	var text=new Kinetic.Text({x:10,y:624,fontSize:13,fontFamily:'Helvetica',fill:'#ffffff',align:'right',text:'www.nyloncalculus.com/shotchart'})
-	court.add(text)
-
-	var text=new Kinetic.Text({x:40,y:5,fontSize:17,fontFamily:'Verdana',fill:'#ffffff',align:'right',text:'Player(s)'})
-	court.add(text)
-	var text=new Kinetic.Text({x:350,y:5,fontSize:17,fontFamily:'Verdana',fill:'#ffffff',align:'right',text:'Details'})
-	court.add(text)
-	var text=new Kinetic.Text({x:700,y:5,fontSize:17,fontFamily:'Verdana',fill:'#ffffff',align:'right',text:'Key'})
+	var text=new Kinetic.Text({x:10,y:624,fontSize:13,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'www.nyloncalculus.com/shotchart'})
 	court.add(text)
 
-	// var box = new Kinetic.Rect({cornerRadius: 3,x: 700,y: 25,shadowColor: '#a50026',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#a50026'});
-	// court.add(box)
-	// var box = new Kinetic.Rect({cornerRadius: 3,x: 726,y: 25,shadowColor: '#fdae61',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#fdae61'});
-	// court.add(box)
-	// var box = new Kinetic.Rect({cornerRadius: 3,x: 752,y: 25,shadowColor: '#ffffbf',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#ffffbf'});
-	// court.add(box)
-	// var box = new Kinetic.Rect({cornerRadius: 3,x: 778,y: 25,shadowColor: '#abd9e9',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#abd9e9'});
-	// court.add(box)
-	// var box = new Kinetic.Rect({cornerRadius: 3,x: 804,y: 25,shadowColor: '#313695',shadowBlur: 20,width: 18,shadowAlpha:.5,height: 18,fill: '#313695'});
-	// court.add(box)
-
-
-	// var rect=new Kinetic.Rect({x:0,y:621,width:900,height:49.5,fill:'#ffffff'})
-	// court.add(rect)
-	// var line=new Kinetic.Line({strokeWidth:1.5,points:[0,621,900,621],stroke:'black'})
-	// court.add(line)
-
-	// var box = new Kinetic.Rect({cornerRadius: 3,x: 349,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-	// 	width: 18,height: 18,fill: '#ff0000',
-	// });
-	// court.add(box)
-	// var box = new Kinetic.Rect({cornerRadius: 3,x: 372,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-	// 	width: 18,height: 18,fill: '#ff5a00',
-	// });
-	// court.add(box)
-	// var box = new Kinetic.Rect({cornerRadius: 3,x: 395,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-	// 	width: 18,height: 18,fill: '#ff9600',
-	// });
-	// court.add(box)
-	// var box = new Kinetic.Rect({cornerRadius: 3,x: 418,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-	// 	width: 18,height: 18,fill: '#ffd200',
-	// });
-	// court.add(box)
-	// var box = new Kinetic.Rect({cornerRadius: 3,x: 441,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-	// 	width: 18,height: 18,fill: '#ffffbf',
-	// });
-	// court.add(box)
-	// var box = new Kinetic.Rect({cornerRadius: 3,x: 464,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-	// 	width: 18,height: 18,fill: '#00f0ff',
-	// });
-	// court.add(box)
-	// var box = new Kinetic.Rect({cornerRadius: 3,x: 487,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-	// 	width: 18,height: 18,fill: '#00b4ff',
-	// });
-	// court.add(box)
-	// var box = new Kinetic.Rect({cornerRadius: 3,x: 510,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-	// 	width: 18,height: 18,fill: '#0078ff',
-	// });
-	// court.add(box)
-	// var box = new Kinetic.Rect({cornerRadius: 3,x: 533,y: 628,shadowColor: '#ACACAC',shadowBlur: 20,shadowOffset: {x:5,y:5},
-	// 	width: 18,height: 18,fill: '#003cff',
-	// });
-	// court.add(box)
-
-	// var text=new Kinetic.Text({x:429,y:651,fontSize:12,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'Average'})
+	var text=new Kinetic.Text({x:40,y:5,fontSize:17,fontFamily:'Verdana',fill:'#000000',align:'right',text:'Player(s)'})
+	court.add(text)
+	var text=new Kinetic.Text({x:350,y:5,fontSize:17,fontFamily:'Verdana',fill:'#000000',align:'right',text:'Details'})
+	court.add(text)
+	// var text=new Kinetic.Text({x:700,y:5,fontSize:17,fontFamily:'Verdana',fill:'#000000',align:'left',text:'Key'})
 	// court.add(text)
+
+	var text=new Kinetic.Text({x:665,y:30,fontSize:10,fontFamily:'Verdana',fill:'#000000',align:'left',text:'< avg'})
+	court.add(text)
+	var text=new Kinetic.Text({x:825,y:30,fontSize:10,fontFamily:'Verdana',fill:'#000000',align:'left',text:'> avg'})
+	court.add(text)
+	var text=new Kinetic.Text({x:740,y:13,fontSize:10,fontFamily:'Verdana',fill:'#000000',align:'left',text:'average'})
+	court.add(text)
+
+	var box = new Kinetic.Circle({x: 710,y: 36, radius:10,fill: '#313695',stroke:'black',strokeWidth:1});
+	court.add(box)
+	var box = new Kinetic.Circle({x: 735,y: 36, radius:10,fill: '#abd9e9',stroke:'black',strokeWidth:1});
+	court.add(box)
+	var box = new Kinetic.Circle({x: 760,y: 36, radius:10,fill: '#ffffbf',stroke:'black',strokeWidth:1});
+	court.add(box)
+	var box = new Kinetic.Circle({x: 785,y: 36, radius:10,fill: '#fdae61',stroke:'black',strokeWidth:1});
+	court.add(box)
+	var box = new Kinetic.Circle({x: 810,y: 36, radius:10,fill: '#a50026',stroke:'black',strokeWidth:1});
+	court.add(box)
 
 	stage.add(court)
 }

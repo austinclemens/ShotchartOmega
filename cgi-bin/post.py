@@ -21,7 +21,8 @@ def chart(shots,average_data):
 		# x,y,number of shots,diff from average,fg%,shots within 5 feet
 	sorted_chart=sorted(csv_data, key=itemgetter(2,5))[-201:]
 	sorted_chart.reverse()
-	# sorted_chart.append(len(shots_temp))
+	details=details+', %s' % (len(shots))
+	sorted_chart.append(details)
 	return sorted_chart
 
 def circle_chunk(shots_temp):
@@ -103,6 +104,7 @@ if int(chart_type)==1:
 		string="player='%s' AND season_type='%s'" % (player1,season)
 	if year!='career':
 		string="player='%s' AND year=%s AND season_type='%s'" % (player1, int(year), season)
+	details="%s, %s, %s" % (year,efficiency,season_type)
 
 if int(chart_type)==2:
 	append=""
