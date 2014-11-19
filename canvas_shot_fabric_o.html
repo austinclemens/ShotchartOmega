@@ -15,6 +15,8 @@
 <div id="container"></div>
 
 <script defer>
+var toggle=0
+
 var shapes=[]
 var group = new Kinetic.Group()
 var linecounter=1
@@ -38,6 +40,12 @@ var layer = new Kinetic.Layer({
 	transformsEnabled: 'none',
 	listening: true,
 });
+
+var dlayer = new Kinetic.Layer({
+	hitGraphEnabled:true,
+	transformsEnabled: 'none',
+	listening: false
+})
 
 var circlayer = new Kinetic.Layer({
 	hitGraphEnabled: true,
@@ -76,10 +84,19 @@ layer.on('click',function(evt){
 	tween.play()
 
 	setTimeout(function(){
-		var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-24,y:shape.attrs.ycenter-65,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.fg*100)+"%"})
-		group.add(text)
-		var text=new Kinetic.Text({align:'center',x:shape.attrs.xcenter-47,y:shape.attrs.ycenter-40,fontSize:17,fontFamily:'Verdana',fill:'#000000',text: "shots made"})
-		group.add(text)
+		
+		if(toggle==0){
+			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-24,y:shape.attrs.ycenter-65,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.fg*100)+"%"})
+			group.add(text)
+			var text=new Kinetic.Text({align:'center',x:shape.attrs.xcenter-47,y:shape.attrs.ycenter-40,fontSize:17,fontFamily:'Verdana',fill:'#000000',text: "shots made"})
+			group.add(text)
+		}
+		if(toggle==1){
+			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-27,y:shape.attrs.ycenter-65,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.fg*100)/100})
+			group.add(text)
+			var text=new Kinetic.Text({align:'center',x:shape.attrs.xcenter-62,y:shape.attrs.ycenter-40,fontSize:17,fontFamily:'Verdana',fill:'#000000',text: "points per shot"})
+			group.add(text)
+		}
 
 		if (Math.round(shape.attrs.shotvol*100)>9) {
 			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-24,y:shape.attrs.ycenter+15,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
@@ -144,32 +161,33 @@ function load_pshotnew(dict) {
 	datatype: "html",
 	data:   dict,
 	success: function(response){
-		console.log(response)
+		//console.log(response)
 		var shot_data = eval("(" + response + ")");
 		circlayer.removeChildren()
 		stage.add(circlayer)
-		drawcourt_pshot(shot_data,"basic",0)
+		drawcourt_pshot(shot_data)
 	}
 	});
 }
 
-function drawcourt_pshot(shot_data,efficient) {
+function drawcourt_pshot(shot_data) {
 	
 	layer.removeChildren()
+	dlayer.removeChildren()
 
 	var text=new Kinetic.Text({x:350,y:21,width:280,fontSize:13,fontFamily:'Verdana',fill:'black',align:'left',text: shot_data[201]})
-	layer.add(text)
+	dlayer.add(text)
 	var text=new Kinetic.Text({x:40,y:21,width:280,fontSize:13,fontFamily:'Verdana',fill:'black',align:'left',text: shot_data[202]})
-	layer.add(text)
+	dlayer.add(text)
 	
 	if(shot_data[203][0]!=3) {
 		var text=new Kinetic.Text({x:40,y:5,fontSize:17,fontFamily:'Verdana',fill:'#000000',align:'right',text:'Player(s)'})
-		layer.add(text)
+		dlayer.add(text)
 	}
 
 	if(shot_data[203][0]==3) {
 		var text=new Kinetic.Text({x:40,y:5,fontSize:17,fontFamily:'Verdana',fill:'#000000',align:'right',text:'Team'})
-		layer.add(text)
+		dlayer.add(text)
 	}
 
 	var max=shot_data[0][2]
@@ -177,6 +195,15 @@ function drawcourt_pshot(shot_data,efficient) {
 	var box_size=18
 
 	stage.add(layer)
+	stage.add(dlayer)
+
+	if(shot_data[203][1]==1) {
+		toggle=1
+	}
+
+	if(shot_data[203][1]==0) {
+		toggle=0
+	}
 
 	for(var n = 0; n < 200; n++) {
 		if (shot_data[n][2]>0 && shot_data[n][5]>0.005){
@@ -184,10 +211,12 @@ function drawcourt_pshot(shot_data,efficient) {
   			var Y = shot_data[n][0]*1.8+144.5+9 ;
 
   			if(shot_data[203][1]==1) {
-  				fillcolor=choosecolor_pps(shot_data[n][3],shot_data[203][0])
+  				fillcolor=choosecolor_pps(shot_data[n][3],shot_data[203][0],1)
+  				strokecolor=choosecolor_pps(shot_data[n][3],shot_data[203][0],.8)
   			}
   			if(shot_data[203][1]==0) {
-  				fillcolor=choosecolor_pshot(shot_data[n][3],shot_data[203][0])
+  				fillcolor=choosecolor_pshot(shot_data[n][3],shot_data[203][0],.8)
+  				strokecolor=choosecolor_pshot(shot_data[n][3],shot_data[203][0],1)
   			}
 
 			var box = new Kinetic.Circle({
@@ -196,16 +225,37 @@ function drawcourt_pshot(shot_data,efficient) {
 				y: Y,
 				xcenter: X,
 				ycenter: Y,
-				//shadowColor: '#000000',
-				//shadowBlur: 10,
-				// shadowOpacity: 1,
+				shadowColor: '#000000',
+				shadowBlur: 5,
+				shadowOpacity: 1,
 				radius:0,
+				//strokeWidth:1,
+				//stroke:strokecolor,
 				// stroke:'#000000',
 				// strokeWidth: 0,
 				shotvol: shot_data[n][5],
 				fg: shot_data[n][4],
 				fill: fillcolor,
 			});
+
+			// var box = new Kinetic.Rect({
+			// 	//cornerRadius: 10,
+			// 	x: X,
+			// 	y: Y,
+			// 	width:0,
+			// 	height:0,
+			// 	shadowColor: '#000000',
+			// 	shadowBlur: 10,
+			// 	shadowOpacity: 1,
+			// 	//strokeWidth:1,
+			// 	//stroke:strokecolor,
+			// 	// stroke:'#000000',
+			// 	// strokeWidth: 0,
+			// 	shotvol: shot_data[n][5],
+			// 	fg: shot_data[n][4],
+			// 	fill: fillcolor,
+			// });
+
 			layer.add(box);
 		}
 	}
@@ -214,43 +264,50 @@ function drawcourt_pshot(shot_data,efficient) {
 
 	for (var n=0; n < shapes.length; n++) {
 		var rect=shapes[n]
-		var maxwidth=choosesize(shot_data[n][2],min,max,22)
+		var maxwidth=choosesize(shot_data[n][2],min,max,19)
 
 		var tween = new Kinetic.Tween({
 			node: rect, 
 			duration: 2,
 			easing: Kinetic.Easings.ElasticEaseOut,
 			radius:maxwidth/2,
+			//height:maxwidth,
+			//width:maxwidth,
 		});
 		tween.play()
 	}
+	setTimeout(function(){shadow_layer(shot_data,min,max)},1200)
 }
 
-function shadow_layer(shot_data,min,max,efficient,dleague) {
+function shadow_layer(shot_data,min,max) {
 	for(var n = 0; n < 200; n++) {
-		if (shot_data[n][2]>0 && shot_data[n][6]>0.005){
-			var X = shot_data[n][1]*1.8+450+((18-choosesize(shot_data[n][2],min,max,20))/2) ;
-  			var Y = shot_data[n][0]*1.8+144.5+((18-choosesize(shot_data[n][2],min,max,20))/2) ;
-  			var Xcenter = shot_data[n][1]*1.8+450+9
-  			var Ycenter = shot_data[n][0]*1.8+94.5+9
-
-  			if(efficient=="efficiency") {
-  				fillcolor=choosecolor_pps(shot_data[n][7])
+		if (shot_data[n][2]>0 && shot_data[n][5]>0.005){
+			var X = shot_data[n][1]*1.8+450+9  ;
+  			var Y = shot_data[n][0]*1.8+144.5+9 ;
+  			//var Xcenter = shot_data[n][1]*1.8+450+9
+  			//var Ycenter = shot_data[n][0]*1.8+94.5+9
+  			
+  			if(shot_data[203][1]==1) {
+  				fillcolor=choosecolor_pps(shot_data[n][3],shot_data[203][0],1)
+  				strokecolor=choosecolor_pps(shot_data[n][3],shot_data[203][0],.8)
   			}
-  			if(efficient=="basic") {
-  				fillcolor=choosecolor_pshot(shot_data[n][3])
+  			if(shot_data[203][1]==0) {
+  				fillcolor=choosecolor_pshot(shot_data[n][3],shot_data[203][0],.8)
+  				strokecolor=choosecolor_pshot(shot_data[n][3],shot_data[203][0],1)
   			}
 
-			var box = new Kinetic.Rect({
-				cornerRadius: 3,
+
+			var box = new Kinetic.Circle({
+				//cornerRadius: 3,
 				x: X,
 				y: Y,
-				xcenter: Xcenter,
-				ycenter: Ycenter,
-				width: choosesize(shot_data[n][2],min,max,20),
-				height: choosesize(shot_data[n][2],min,max,20),
+				xcenter: X,
+				ycenter: Y,
+				radius: choosesize(shot_data[n][2],min,max,19)/2,
+				//width: choosesize(shot_data[n][2],min,max,20),
+				//height: choosesize(shot_data[n][2],min,max,20),
 				fill: fillcolor,
-				shotvol: shot_data[n][8],
+				shotvol: shot_data[n][5],
 				fg: shot_data[n][4],
 			});
 		}
@@ -276,32 +333,32 @@ function choosesize(shots,min,max,side_length) {
 	return Math.round(blah);
 }
 
-function choosecolor_pshot(coef,bit) {
+function choosecolor_pshot(coef,bit,alpha) {
 	if (bit==3){
-		if (coef>=.10) return '#a50026';
-		if (coef>=.08 && coef<.10) return '#d73027';
-		if (coef>=.06 && coef<.08) return '#f46d43';
-		if (coef>=.04 && coef<.06) return '#fdae61';
-		if (coef>=.02 && coef<.04) return '#fee090';
-		if (coef>=-.02 && coef<.02) return '#ffffbf';
-		if (coef>=-.04 && coef<-.02) return '#e0f3f8';
-		if (coef>=-.06 && coef<-.04) return '#abd9e9';
-		if (coef>=-.08 && coef<-.06) return '#74add1';
-		if (coef>=-.10 && coef<-.08) return '#4575b4';
-		if (coef<=-.10) return '#313695';
+		if (coef>=.10) return 'rgba(165,0,38,'+alpha+')';
+		if (coef>=.08 && coef<.10) return 'rgba(215,48,39,'+alpha+')';
+		if (coef>=.06 && coef<.08) return 'rgba(244,109,67,'+alpha+')';
+		if (coef>=.04 && coef<.06) return 'rgba(253,174,97,'+alpha+')';
+		if (coef>=.02 && coef<.04) return 'rgba(254,224,144,'+alpha+')';
+		if (coef>=-.02 && coef<.02) return 'rgba(255,255,191,'+alpha+')';
+		if (coef>=-.04 && coef<-.02) return 'rgba(224,243,248,'+alpha+')';
+		if (coef>=-.06 && coef<-.04) return 'rgba(171,217,233,'+alpha+')';
+		if (coef>=-.08 && coef<-.06) return 'rgba(116,173,209,'+alpha+')';
+		if (coef>=-.10 && coef<-.08) return 'rgba(69,117,180,'+alpha+')';
+		if (coef<=-.10) return 'rgba(49,54,149,'+alpha+')';
 	}
 	if (bit!=3){
-		if (coef>=.15) return '#a50026';
-		if (coef>=.12 && coef<.15) return '#d73027';
-		if (coef>=.09 && coef<.12) return '#f46d43';
-		if (coef>=.06 && coef<.09) return '#fdae61';
-		if (coef>=.03 && coef<.06) return '#fee090';
-		if (coef>=-.03 && coef<.03) return '#ffffbf';
-		if (coef>=-.06 && coef<-.03) return '#e0f3f8';
-		if (coef>=-.09 && coef<-.06) return '#abd9e9';
-		if (coef>=-.12 && coef<-.09) return '#74add1';
-		if (coef>=-.15 && coef<-.12) return '#4575b4';
-		if (coef<=-.15) return '#313695';
+		if (coef>=.15) return 'rgba(165,0,38,'+alpha+')';
+		if (coef>=.12 && coef<.15) return 'rgba(215,48,39,'+alpha+')';
+		if (coef>=.09 && coef<.12) return 'rgba(244,109,67,'+alpha+')';
+		if (coef>=.06 && coef<.09) return 'rgba(253,174,97,'+alpha+')';
+		if (coef>=.03 && coef<.06) return 'rgba(254,224,144,'+alpha+')';
+		if (coef>=-.03 && coef<.03) return 'rgba(255,255,191,'+alpha+')';
+		if (coef>=-.06 && coef<-.03) return 'rgba(224,243,248,'+alpha+')';
+		if (coef>=-.09 && coef<-.06) return 'rgba(171,217,233,'+alpha+')';
+		if (coef>=-.12 && coef<-.09) return 'rgba(116,173,209,'+alpha+')';
+		if (coef>=-.15 && coef<-.12) return 'rgba(69,117,180,'+alpha+')';
+		if (coef<=-.15) return 'rgba(49,54,149,'+alpha+')';
 	}
 }
 
