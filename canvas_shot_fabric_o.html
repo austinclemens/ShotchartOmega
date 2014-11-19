@@ -28,7 +28,7 @@ if (width>1000) {
 var stage = new Kinetic.Stage({
   container: 'container',
   width: width,
-  height: (.775)*width,
+  height: (.716)*width,
   scaleX:width/900,
   scaleY:width/900,
 });
@@ -313,6 +313,8 @@ function choosecolor_pps(coef) {
 function nba_court_base() {
 	var base=new Kinetic.Rect({x:54,y:50,width:792,height:255,fill:'#D0D0D0'})
 	court.add(base)
+	var base=new Kinetic.Rect({x:0,y:0,width:900,height:49,fill:'#ffffff'})
+	court.add(base)
 	var base=new Kinetic.Rect({x:0,y:50,width:54,height:590,fill:'#E0E0E0'})
 	court.add(base)
 	var base=new Kinetic.Rect({x:846,y:50,width:54,height:590,fill:'#E0E0E0'})
@@ -330,7 +332,7 @@ function nba_court_base() {
 	var base=new Kinetic.Rect({x:558,y:50,width:36,height:342,fill:'#C0C0C0'})
 	court.add(base)
 
-	var line=new Kinetic.Line({strokeWidth:1,points:[0,51,900,51],stroke:'black'})
+	var line=new Kinetic.Line({strokeWidth:1,points:[0,50,900,50],stroke:'black'})
 	court.add(line)
 	var line=new Kinetic.Line({strokeWidth:1,points:[0,643,900,643],stroke:'black'})
 	court.add(line)

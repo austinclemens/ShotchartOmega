@@ -119,25 +119,45 @@ if int(chart_type)==1:
 if int(chart_type)==2:
 	append=""
 	append2=""
+	year3="%02d" % (int(year[2:4])+1,)
+	year2=year+'-'+year3[-2:]
+	details="%s %s" % (year2,season)
+
 	if quarter!='off':
 		if quarter=="4_minutes":
-			append=" AND seconds_remain<241"
+			append=" AND seconds_remain<241 AND quarter=4"
+			details=details+", last 4 minutes"
 		else:
 			append=" AND quarter=%s" % (quarter)
+			if int(quarter)==1:
+				quart='1st'
+			if int(quarter)==2:
+				quart='2nd'
+			if int(quarter)==3:
+				quart='3rd'
+			if int(quarter)==4:
+				quart='4th'
+			details=details+", %s quarters" % (quart)
+
 	if startdate!='off' and enddate!='off':
 		pass
 		# start and end date code goes here
 
 	string="(player='%s'" % (player1)
+	players=player1
 
-	if player2!=None:
+	if player2!='off':
 		string=string+" OR player='%s'" % (player2)
-	if player3!=None:
+		players=players+', %s' % (player2)
+	if player3!='off':
 		string=string+" OR player='%s'" % (player3)
-	if player4!=None:
+		players=players+', %s' % (player3)
+	if player4!='off':
 		string=string+" OR player='%s'" % (player4)
-	if player5!=None:
+		players=players+', %s' % (player4)
+	if player5!='off':
 		string=string+" OR player='%s'" % (player5)
+		players=players+', %s' % (player5)
 
 	string=string+')'
 	string=string+' AND year=%s AND season_type=%s' % (year,season2)

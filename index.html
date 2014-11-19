@@ -82,7 +82,6 @@ $(document).ready(function () {
 			</div>
 		</div>
 		</p>
-		<br>
 		<h4>Choose type of chart<br></h4>
 		<p>
 		<div class="row">
@@ -149,17 +148,17 @@ $(document).ready(function () {
 			<p>
 			<div class="col-xs-2">
 				<select class="form-control" id="player1" disabled>
-					<option value='off'>Player 1</option>
+					<option value='off'>Choose a player</option>
 				</select>
 			</div>
 			<div class="col-xs-2">
 				<select class="form-control" id="player2" disabled>
-					<option value='off'>Player 2</option>
+					<option value='off'>Choose a player</option>
 				</select>
 			</div>
 			<div class="col-xs-2">
 				<select class="form-control" id="player3" disabled>
-					<option value='off'>Player 3</option>
+					<option value='off'>Choose a player</option>
 				</select>
 			</div>
 		</p>
@@ -168,22 +167,21 @@ $(document).ready(function () {
 			<p>
 			<div class="col-xs-2">
 				<select class="form-control" id="player4" disabled>
-					<option value='off'>Player 4</option>
+					<option value='off'>Choose a player</option>
 				</select>
 			</div>
 			<div class="col-xs-2">
 				<select class="form-control" id="player5" disabled>
-					<option value='off'>Player 5</option>
+					<option value='off'>Choose a player</option>
 				</select>
 			</div>
 			</p>
 		</div>
 	</p>
-<br>
 	<p>
 		<h4>Choose game period or date range (optional)<br></h4>
+		<p>
 		<div class="row">
-			<p>
 			<div class="col-xs-3">
 				<select class="form-control" id="quarter">
 					<option value='off'>Complete game</option>
@@ -194,8 +192,6 @@ $(document).ready(function () {
 					<option value='4_minutes'>Last 4 minutes</option>
 				</select>
 			</div>
-			</p>
-		<p>
 			<div class="col-xs-5">
 				<div class="input-daterange input-group" id="date1">
     				<input type="text" class="input-sm form-control" id="startdate" />
@@ -205,7 +201,6 @@ $(document).ready(function () {
 			</div>
 		</div>
 		</p>
-		<br>
 		<h4>Choose type of chart<br></h4>
 		<p>
 		<div class="row">
@@ -229,7 +224,7 @@ $(document).ready(function () {
 	</p>
 	</div>
     <div role="tabpanel" class="tab-pane" id="teams">
-	<h4>Choose a season and a team</h4>
+	<h4>Choose a season and a team<br><small>May take longer to load than other charts.</small></h4>
 		<p>
 		<div class="row">
 			<div class="col-xs-3">
@@ -272,7 +267,6 @@ $(document).ready(function () {
 			</div>
 		</div>
 		</p>
-		<br>
 		<h4>Choose type of chart<br></h4>
 		<p>
 		<div class="row">
@@ -522,15 +516,13 @@ function update_3() {
 }
 
 // Save to png function
-function save() {
-    var iframe = document.getElementById('shotchart');
-    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;    
-    var result = innerDoc.getElementById('result');
-    var cv=innerDoc.getElementById('court');
-    cv.style.display="none";
-    var ur = cv.toDataURL();
-    result.src=ur;
-    result.style.width = 900;
+function save() {  
+    var stage = document.getElementById("shotchart").contentWindow.stage;
+    stage.toDataURL({
+        callback: function(dataUrl) {
+            window.open(dataUrl)
+        },
+    })
 }
 
 // Form disabling logic
