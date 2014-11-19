@@ -187,7 +187,7 @@ function drawcourt_pshot(shot_data,efficient) {
   				fillcolor=choosecolor_pps(shot_data[n][7])
   			}
   			if(efficient=="basic") {
-  				fillcolor=choosecolor_pshot(shot_data[n][3])
+  				fillcolor=choosecolor_pshot(shot_data[n][3],shot_data[203][0])
   			}
 
 			var box = new Kinetic.Circle({
@@ -276,18 +276,33 @@ function choosesize(shots,min,max,side_length) {
 	return Math.round(blah);
 }
 
-function choosecolor_pshot(coef) {
-	if (coef>=.15) return '#a50026';
-	if (coef>=.12 && coef<.15) return '#d73027';
-	if (coef>=.09 && coef<.12) return '#f46d43';
-	if (coef>=.06 && coef<.09) return '#fdae61';
-	if (coef>=.03 && coef<.06) return '#fee090';
-	if (coef>=-.03 && coef<.03) return '#ffffbf';
-	if (coef>=-.06 && coef<-.03) return '#e0f3f8';
-	if (coef>=-.09 && coef<-.06) return '#abd9e9';
-	if (coef>=-.12 && coef<-.09) return '#74add1';
-	if (coef>=-.15 && coef<-.12) return '#4575b4';
-	if (coef<=-.15) return '#313695';
+function choosecolor_pshot(coef,bit) {
+	if (bit==3){
+		if (coef>=.10) return '#a50026';
+		if (coef>=.08 && coef<.10) return '#d73027';
+		if (coef>=.06 && coef<.08) return '#f46d43';
+		if (coef>=.04 && coef<.06) return '#fdae61';
+		if (coef>=.02 && coef<.04) return '#fee090';
+		if (coef>=-.02 && coef<.02) return '#ffffbf';
+		if (coef>=-.04 && coef<-.02) return '#e0f3f8';
+		if (coef>=-.06 && coef<-.04) return '#abd9e9';
+		if (coef>=-.08 && coef<-.06) return '#74add1';
+		if (coef>=-.10 && coef<-.08) return '#4575b4';
+		if (coef<=-.10) return '#313695';
+	}
+	if (bit!=3){
+		if (coef>=.15) return '#a50026';
+		if (coef>=.12 && coef<.15) return '#d73027';
+		if (coef>=.09 && coef<.12) return '#f46d43';
+		if (coef>=.06 && coef<.09) return '#fdae61';
+		if (coef>=.03 && coef<.06) return '#fee090';
+		if (coef>=-.03 && coef<.03) return '#ffffbf';
+		if (coef>=-.06 && coef<-.03) return '#e0f3f8';
+		if (coef>=-.09 && coef<-.06) return '#abd9e9';
+		if (coef>=-.12 && coef<-.09) return '#74add1';
+		if (coef>=-.15 && coef<-.12) return '#4575b4';
+		if (coef<=-.15) return '#313695';
+	}
 }
 
 function choosecolor_pps(coef) {

@@ -22,7 +22,7 @@ $(document).ready(function () {
 });
 </script>
 
-<div class="container"><p></p>
+<div class="container-fluid"><p></p>
 <div role="tabpanel">
 
   <!-- Nav tabs -->
@@ -376,7 +376,6 @@ function load_playermenu(y_update) {
 		var menu_data = eval("(" + response + ")");
 		var select=document.getElementById('player');
 		$("#player").empty()
-		var opt=menu_data[0]
 		var el=document.createElement("option")
 		el.textContent='Choose a player'
 		el.value='off'
@@ -415,10 +414,10 @@ function load_teammenu(y_update) {
 	success: function(response){
 		var menu_data = eval("(" + response + ")");
 		var select=document.getElementById('team_select');
-		var length=select.options.length;
-		for (var i=1; i<length; i++) {
-			select.remove(i);
-		}
+		$("#team_select").empty()
+		var el=document.createElement("option")
+		el.textContent='Choose a team'
+		el.value='off'
 		for (var i=0; i<menu_data.length;i++) {
 			var opt=menu_data[i]
 			var el=document.createElement("option");
