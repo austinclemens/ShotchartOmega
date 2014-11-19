@@ -183,10 +183,10 @@ function drawcourt_pshot(shot_data,efficient) {
 			var X = shot_data[n][1]*1.8+450+9 ;
   			var Y = shot_data[n][0]*1.8+144.5+9 ;
 
-  			if(efficient=="efficiency") {
-  				fillcolor=choosecolor_pps(shot_data[n][7])
+  			if(shot_data[203][1]==1) {
+  				fillcolor=choosecolor_pps(shot_data[n][3],shot_data[203][0])
   			}
-  			if(efficient=="basic") {
+  			if(shot_data[203][1]==0) {
   				fillcolor=choosecolor_pshot(shot_data[n][3],shot_data[203][0])
   			}
 
@@ -305,24 +305,33 @@ function choosecolor_pshot(coef,bit) {
 	}
 }
 
-function choosecolor_pps(coef) {
-	if (coef>=.40) return '#ff0000';
-	if (coef>=.35 && coef<.40) return '#ff1e00';
-	if (coef>=.30 && coef<.35) return '#ff3c00';
-	if (coef>=.25 && coef<.30) return '#ff5a00';
-	if (coef>=.20 && coef<.25) return '#ff7800';
-	if (coef>=.15 && coef<.20) return '#ff9600';
-	if (coef>=.10 && coef<.15) return '#ffb400';
-	if (coef>=.05 && coef<.10) return '#ffd200';
-	if (coef>=.00 && coef<.05) return '#ffffbf';
-	if (coef>=-.05 && coef<.00) return '#ffffbf';
-	if (coef>=-.10 && coef<-.05) return '#00d2ff';
-	if (coef>=-.15 && coef<-.10) return '#00b4ff';
-	if (coef>=-.20 && coef<-.15) return '#0096ff';
-	if (coef>=-.25 && coef<-.20) return '#0078ff';
-	if (coef>=-.30 && coef<-.25) return '#005aff';
-	if (coef>=-.35 && coef<-.30) return '#003cff';
-	if (coef<-.35) return '#001eff';
+function choosecolor_pps(coef,bit) {
+	if (bit==3){
+		if (coef>=.25) return '#a50026';
+		if (coef>=.20 && coef<.25) return '#d73027';
+		if (coef>=.15 && coef<.20) return '#f46d43';
+		if (coef>=.10 && coef<.15) return '#fdae61';
+		if (coef>=.05 && coef<.10) return '#fee090';
+		if (coef>=-.05 && coef<.05) return '#ffffbf';
+		if (coef>=-.10 && coef<-.05) return '#e0f3f8';
+		if (coef>=-.15 && coef<-.10) return '#abd9e9';
+		if (coef>=-.20 && coef<-.15) return '#74add1';
+		if (coef>=-.25 && coef<-.20) return '#4575b4';
+		if (coef<=-.25) return '#313695';
+	}
+	if (bit!=3){
+		if (coef>=.15) return '#a50026';
+		if (coef>=.12 && coef<.15) return '#d73027';
+		if (coef>=.09 && coef<.12) return '#f46d43';
+		if (coef>=.06 && coef<.09) return '#fdae61';
+		if (coef>=.03 && coef<.06) return '#fee090';
+		if (coef>=-.03 && coef<.03) return '#ffffbf';
+		if (coef>=-.06 && coef<-.03) return '#e0f3f8';
+		if (coef>=-.09 && coef<-.06) return '#abd9e9';
+		if (coef>=-.12 && coef<-.09) return '#74add1';
+		if (coef>=-.15 && coef<-.12) return '#4575b4';
+		if (coef<=-.15) return '#313695';
+	}
 }
 
 function nba_court_base() {

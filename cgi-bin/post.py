@@ -10,20 +10,24 @@ import cgitb
 
 cgitb.enable()
 
-def chart(shots,average_data):
+def chart(shots,average_data,efficiency):
 	# 3pt, made, x, y
-	player_data=circle_chunk(shots)
+	player_data=circle_chunk(shots,efficiency)
 	# coord, coord, number of shots, smooth_fg, percent of shots within 5 feet
 	csv_data=[]
 	# averagepps=1
-	for i,region in enumerate(player_data):
-		csv_data.append([region[0],region[1],region[2],round(float(region[3])-float(average_data[i][2]),4),round(float(region[3]),4),float(region[4])])
-		# x,y,number of shots,diff from average,fg%,shots within 5 feet
+	if efficiency=='1':
+		for i,region in enumerate(player_data):
+			csv_data.append([region[0],region[1],region[2],round(float(region[3])-1,4),round(float(region[3]),4),float(region[4])])
+	if efficiency!='1':
+		for i,region in enumerate(player_data):
+			csv_data.append([region[0],region[1],region[2],round(float(region[3])-float(average_data[i][2]),4),round(float(region[3]),4),float(region[4])])
+			# x,y,number of shots,diff from average,fg%,shots within 5 feet
 	sorted_chart=sorted(csv_data, key=itemgetter(2,5))[-201:]
 	sorted_chart.reverse()
 	return sorted_chart
 
-def circle_chunk(shots_temp):
+def circle_chunk(shots_temp,efficiency):
 	output=[]
 	temp=[]
 	shots_t=0
@@ -46,15 +50,17 @@ def circle_chunk(shots_temp):
 				smooth_fg=shots_made_smooth/num_shots_smooth
 			except: 
 				smooth_fg=0
-			# three_regions=[13,14,15,16,4,5]
-			# if int(box[2][0]) in three_regions:
-			#	pps_made_smooth=shots_made_smooth*1.5
-			# if int(box[2][0]) not in three_regions:
-			#	pps_made_smooth=shots_made_smooth
-			# try: 
-			#	smooth_pps=2*pps_made_smooth/num_shots_smooth
-			#except:
-			#	smooth_pps=0
+			if efficiency=='1':
+				three_regions=[13,14,15,16,4,5]
+				if int(box[2][0]) in three_regions:
+					pps_made_smooth=shots_made_smooth*1.5
+				if int(box[2][0]) not in three_regions:
+					pps_made_smooth=shots_made_smooth
+				try: 
+					smooth_pps=2*pps_made_smooth/num_shots_smooth
+				except:
+					smooth_pps=0
+				smooth_fg=smooth_pps
 			output.append([box[0][0],box[0][1],num_shots,smooth_fg,per_5box])
 			# coord, coord, number of shots, smooth_fg, percent of shots within 5 feet
 		if num_shots==0:
@@ -98,11 +104,15 @@ if int(chart_type)==3:
 	if int(offense_defense)==1:
 		string="offense_team='%s' AND year=%s AND season_type='%s'" % (team,year,season2)
 		add='offense'
-	bits=[3,0]
 	players=team
 	year3="%02d" % (int(year[2:4])+1,)
 	year2=year+'-'+year3[-2:]
 	details="%s %s, %s" % (year2,season,add)
+	if efficiency=='1':
+		bits=[3,1]
+		details=details+', points per shot'
+	if efficiency!='1':
+		bits=[3,0]
 
 if int(chart_type)==1:
 	if year=='career':
@@ -114,7 +124,11 @@ if int(chart_type)==1:
 		year2=year+'-'+year3[-2:]
 	details="%s %s" % (year2,season)
 	players=player1
-	bits=[1,0]
+	if efficiency=='1':
+		bits=[1,1]
+		details=details+', points per shot'
+	if efficiency!='1':
+		bits=[1,0]
 
 if int(chart_type)==2:
 	append=""
@@ -163,7 +177,11 @@ if int(chart_type)==2:
 	string=string+' AND year=%s AND season_type=%s' % (year,season2)
 	string=string+append+append2
 
-	bits=[2,0]
+	if efficiency=='1':
+		bits=[2,1]
+		details=details+', points per shot'
+	if efficiency!='1':
+		bits=[2,0]
 
 
 con=MySQLdb.connect(user='austinc_shotchar', passwd='scriptpass1.', host='localhost', db='austinc_allshotdata')
@@ -184,7 +202,7 @@ if year!='career':
 		reader=csv.reader(csvfile)
 		average_csv=[row for row in reader]
 
-results_csv=chart(rows,average_csv)
+results_csv=chart(rows,average_csv,efficiency)
 results_csv.append(details)
 results_csv.append(players)
 results_csv.append(bits)
