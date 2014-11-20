@@ -6,9 +6,6 @@ import math
 import csv
 from operator import itemgetter
 import json
-import cgitb
-
-cgitb.enable()
 
 def chart(shots,average_data,efficiency):
 	# 3pt, made, x, y
