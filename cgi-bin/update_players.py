@@ -8,9 +8,9 @@ def update_players(year,field):
 		con=MySQLdb.connect(user='austinc_shotchar', passwd='scriptpass1.', host='localhost', db='austinc_allshotdata')
 		cur=con.cursor()
 		if field==1:
-			cur.execute("""SELECT DISTINCT player FROM shots WHERE year=%s ORDER BY player""" % (year))
+			cur.execute("""SELECT player FROM puniques WHERE year=%s ORDER BY player""" % (year))
 		if field==0:
-			cur.execute("""SELECT DISTINCT offense_team FROM shots WHERE year=%s ORDER BY offense_team""" % (year))
+			cur.execute("""SELECT team FROM tuniques WHERE year=%s ORDER BY team""" % (year))
 
 		names=cur.fetchall()
 		con.close()
@@ -20,7 +20,7 @@ def update_players(year,field):
 	if year=='career':
 		con=MySQLdb.connect(user='austinc_shotchar', passwd='scriptpass1.', host='localhost', db='austinc_allshotdata')
 		cur=con.cursor()
-		cur.execute("""SELECT DISTINCT player FROM shots WHERE year!=1996 ORDER BY player""")
+		cur.execute("""SELECT DISTINCT player FROM puniques WHERE year!=1996 ORDER BY player""")
 		
 		names=cur.fetchall()
 		con.close()

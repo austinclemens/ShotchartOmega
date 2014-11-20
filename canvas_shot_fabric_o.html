@@ -161,7 +161,7 @@ function load_pshotnew(dict) {
 	datatype: "html",
 	data:   dict,
 	success: function(response){
-		//console.log(response)
+		console.log(response)
 		var shot_data = eval("(" + response + ")");
 		circlayer.removeChildren()
 		stage.add(circlayer)
@@ -491,9 +491,9 @@ function nba_court_base() {
         court.draw()
     }
     
-    var text=new Kinetic.Text({x:782,y:624,fontSize:13,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'@AustinClemens2'})
+    var text=new Kinetic.Text({x:782,y:624,fontSize:13,fontFamily:'Helvetica',fill:'#606060',align:'right',text:'@AustinClemens2'})
 	court.add(text)
-	var text=new Kinetic.Text({x:10,y:624,fontSize:13,fontFamily:'Helvetica',fill:'#000000',align:'right',text:'www.nyloncalculus.com/shotchart'})
+	var text=new Kinetic.Text({x:10,y:624,fontSize:13,fontFamily:'Helvetica',fill:'#606060',align:'right',text:'www.nyloncalculus.com/shotchart'})
 	court.add(text)
 
 	var text=new Kinetic.Text({x:350,y:5,fontSize:17,fontFamily:'Verdana',fill:'#000000',align:'right',text:'Details'})
@@ -501,22 +501,22 @@ function nba_court_base() {
 	// var text=new Kinetic.Text({x:700,y:5,fontSize:17,fontFamily:'Verdana',fill:'#000000',align:'left',text:'Key'})
 	// court.add(text)
 
-	var text=new Kinetic.Text({x:665,y:30,fontSize:10,fontFamily:'Verdana',fill:'#000000',align:'left',text:'< avg'})
+	var text=new Kinetic.Text({x:665,y:28,fontSize:10,fontFamily:'Verdana',fill:'#000000',align:'left',text:'< avg'})
 	court.add(text)
-	var text=new Kinetic.Text({x:825,y:30,fontSize:10,fontFamily:'Verdana',fill:'#000000',align:'left',text:'> avg'})
+	var text=new Kinetic.Text({x:825,y:28,fontSize:10,fontFamily:'Verdana',fill:'#000000',align:'left',text:'> avg'})
 	court.add(text)
-	var text=new Kinetic.Text({x:740,y:13,fontSize:10,fontFamily:'Verdana',fill:'#000000',align:'left',text:'average'})
+	var text=new Kinetic.Text({x:740,y:11,fontSize:10,fontFamily:'Verdana',fill:'#000000',align:'left',text:'average'})
 	court.add(text)
 
-	var box = new Kinetic.Circle({x: 710,y: 36, radius:10,fill: '#313695',stroke:'black',strokeWidth:1});
+	var box = new Kinetic.Circle({x: 710,y: 34, radius:9,fill: '#313695',shadowBlur:5,shadowColor:'#000000'});
 	court.add(box)
-	var box = new Kinetic.Circle({x: 735,y: 36, radius:10,fill: '#abd9e9',stroke:'black',strokeWidth:1});
+	var box = new Kinetic.Circle({x: 735,y: 34, radius:9,fill: '#abd9e9',shadowBlur:5,shadowColor:'#000000'});
 	court.add(box)
-	var box = new Kinetic.Circle({x: 760,y: 36, radius:10,fill: '#ffffbf',stroke:'black',strokeWidth:1});
+	var box = new Kinetic.Circle({x: 760,y: 34, radius:9,fill: '#ffffbf',shadowBlur:5,shadowColor:'#000000'});
 	court.add(box)
-	var box = new Kinetic.Circle({x: 785,y: 36, radius:10,fill: '#fdae61',stroke:'black',strokeWidth:1});
+	var box = new Kinetic.Circle({x: 785,y: 34, radius:9,fill: '#fdae61',shadowBlur:5,shadowColor:'#000000'});
 	court.add(box)
-	var box = new Kinetic.Circle({x: 810,y: 36, radius:10,fill: '#a50026',stroke:'black',strokeWidth:1});
+	var box = new Kinetic.Circle({x: 810,y: 34, radius:9,fill: '#a50026',shadowBlur:5,shadowColor:'#000000'});
 	court.add(box)
 
 	stage.add(court)
