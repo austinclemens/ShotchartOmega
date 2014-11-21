@@ -14,7 +14,6 @@ cgitb.enable()
 def chart(shots,average_data,efficiency):
 	# 3pt, made, x, y
 	player_data=circle_chunk(shots,efficiency)
-	# player_data=player_data.tolist()
 	# coord, coord, number of shots, smooth_fg, percent of shots within 5 feet
 	csv_data=[]
 	# averagepps=1
@@ -43,9 +42,12 @@ def circle_chunk(shots_temp,efficiency):
 			# cur.execute("""SELECT threept,made,x,y FROM shots WHERE %s AND (POW(%s-LOC_X,2)-POW(%s-LOC_Y,2))<50""" % (string,x_center,y_center))
 			# dist_shots=cur.fetchall()
 			manip=shots_temp[:]
-			c1=(manip[:,3:4]-x_center)**2
-			c2=(manip[:,2:3]-y_center)**2
-			manip=np.hstack((manip,np.sqrt(c1+c2)))
+			manip=manip[manip[:,3]<x_center+50]
+			manip=manip[manip[:,3]>x_center-50]
+			manip=manip[manip[:,2]<y_center+50]
+			manip=manip[manip[:,2]>y_center-50]
+			c1=((manip[:,3:4]-x_center)**2)+((manip[:,2:3]-y_center)**2)
+			manip=np.hstack((manip,np.sqrt(c1)))
 			manip=manip[manip[:,-1]<50]
 
 			per_5box=len(manip)/total
