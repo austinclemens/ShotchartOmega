@@ -378,17 +378,17 @@ function choosecolor_pshot(coef,bit,alpha) {
 			if (coef<=-.10) return 'rgba(49,54,149,'+alpha+')';
 		}
 		if(alpha==2){
-			if (coef>=.10) return 'rgba(185,20,58,'+alpha+')';
-			if (coef>=.08 && coef<.10) return 'rgba(235,68,59,'+alpha+')';
-			if (coef>=.06 && coef<.08) return 'rgba(254,129,87,'+alpha+')';
-			if (coef>=.04 && coef<.06) return 'rgba(253,194,117,'+alpha+')';
+			if (coef>=.10) return 'rgba(195,30,68,'+alpha+')';
+			if (coef>=.08 && coef<.10) return 'rgba(245,78,69,'+alpha+')';
+			if (coef>=.06 && coef<.08) return 'rgba(254,139,97,'+alpha+')';
+			if (coef>=.04 && coef<.06) return 'rgba(253,204,127,'+alpha+')';
 			if (coef>=.02 && coef<.04) return 'rgba(254,244,164,'+alpha+')';
-			if (coef>=-.02 && coef<.02) return 'rgba(255,255,211,'+alpha+')';
+			if (coef>=-.02 && coef<.02) return 'rgba(255,255,251,'+alpha+')';
 			if (coef>=-.04 && coef<-.02) return 'rgba(244,255,255,'+alpha+')';
-			if (coef>=-.06 && coef<-.04) return 'rgba(191,237,253,'+alpha+')';
-			if (coef>=-.08 && coef<-.06) return 'rgba(136,193,229,'+alpha+')';
-			if (coef>=-.10 && coef<-.08) return 'rgba(89,137,200,'+alpha+')';
-			if (coef<=-.10) return 'rgba(69,74,169,'+alpha+')';	
+			if (coef>=-.06 && coef<-.04) return 'rgba(201,247,253,'+alpha+')';
+			if (coef>=-.08 && coef<-.06) return 'rgba(146,203,239,'+alpha+')';
+			if (coef>=-.10 && coef<-.08) return 'rgba(99,147,210,'+alpha+')';
+			if (coef<=-.10) return 'rgba(79,84,179,'+alpha+')';	
 		}
 	}
 	if (bit!=3){
@@ -597,15 +597,29 @@ function nba_court_base() {
 	var text=new Kinetic.Text({x:740,y:11,fontSize:10,fontFamily:'Verdana',fill:'#000000',align:'left',text:'average'})
 	court.add(text)
 
-	var box = new Kinetic.Circle({x: 710,y: 34, radius:9,fill: '#313695',shadowBlur:5,shadowColor:'#000000'});
+	var box = new Kinetic.Circle({x: 710,y: 34, radius:8,fill: '#313695',shadowBlur:2,shadowColor:'#000000'});
 	court.add(box)
-	var box = new Kinetic.Circle({x: 735,y: 34, radius:9,fill: '#abd9e9',shadowBlur:5,shadowColor:'#000000'});
+	var box = new Kinetic.Circle({x: 710,y: 34, radius:7,fill: '#313695',strokeWidth:1,stroke:'rgba(79,84,179,1)'});
 	court.add(box)
-	var box = new Kinetic.Circle({x: 760,y: 34, radius:9,fill: '#ffffbf',shadowBlur:5,shadowColor:'#000000'});
+
+	var box = new Kinetic.Circle({x: 735,y: 34, radius:8,fill: '#abd9e9',shadowBlur:2,shadowColor:'#000000'});
 	court.add(box)
-	var box = new Kinetic.Circle({x: 785,y: 34, radius:9,fill: '#fdae61',shadowBlur:5,shadowColor:'#000000'});
+	var box = new Kinetic.Circle({x: 735,y: 34, radius:7,fill: '#abd9e9',strokeWidth:1,stroke:'rgba(201,247,253,1)'});
 	court.add(box)
-	var box = new Kinetic.Circle({x: 810,y: 34, radius:9,fill: '#a50026',shadowBlur:5,shadowColor:'#000000'});
+
+	var box = new Kinetic.Circle({x: 760,y: 34, radius:8,fill: '#ffffbf',shadowBlur:2,shadowColor:'#000000'});
+	court.add(box)
+	var box = new Kinetic.Circle({x: 760,y: 34, radius:7,fill: '#ffffbf',strokeWidth:1,stroke:'rgba(255,255,251,1)'});
+	court.add(box)
+
+	var box = new Kinetic.Circle({x: 785,y: 34, radius:8,fill: '#fdae61',shadowBlur:2,shadowColor:'#000000'});
+	court.add(box)
+	var box = new Kinetic.Circle({x: 785,y: 34, radius:7,fill: '#fdae61',strokeWidth:1,stroke:'rgba(253,204,127,1)'});
+	court.add(box)
+
+	var box = new Kinetic.Circle({x: 810,y: 34, radius:8,fill: '#a50026',shadowBlur:2,shadowColor:'#000000'});
+	court.add(box)
+	var box = new Kinetic.Circle({x: 810,y: 34, radius:7,fill: '#a50026',strokeWidth:1,stroke:'rgba(195,30,68,1)'});
 	court.add(box)
 
 	stage.add(court)

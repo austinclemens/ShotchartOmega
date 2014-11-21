@@ -375,6 +375,7 @@ function load_playermenu(y_update) {
 	success: function(response){
 		var menu_data = eval("(" + response + ")");
 		var select=document.getElementById('player');
+		var s_option=select.options[select.selectedIndex].value
 		$("#player").empty()
 		var el=document.createElement("option")
 		el.textContent='Choose a player'
@@ -389,10 +390,15 @@ function load_playermenu(y_update) {
 		}
 
 		var p1=document.getElementById('player1')
+		var s_option1=p1.options[p1.selectedIndex].value
 		var p2=document.getElementById('player2')
+		var s_option2=p2.options[p2.selectedIndex].value
 		var p3=document.getElementById('player3')
+		var s_option3=p3.options[p3.selectedIndex].value
 		var p4=document.getElementById('player4')
+		var s_option4=p4.options[p4.selectedIndex].value
 		var p5=document.getElementById('player5')
+		var s_option5=p5.options[p5.selectedIndex].value
 
 		var options=select.innerHTML;
 
@@ -401,6 +407,13 @@ function load_playermenu(y_update) {
 		p3.innerHTML=options
 		p4.innerHTML=options
 		p5.innerHTML=options
+
+		$("#player").val(s_option)
+		$("#player1").val(s_option1)
+		$("#player2").val(s_option2)
+		$("#player3").val(s_option3)
+		$("#player4").val(s_option4)
+		$("#player5").val(s_option5)
 	}
 	});
 }
@@ -414,10 +427,12 @@ function load_teammenu(y_update) {
 	success: function(response){
 		var menu_data = eval("(" + response + ")");
 		var select=document.getElementById('team_select');
+		var s_option=select.options[select.selectedIndex].value
 		$("#team_select").empty()
 		var el=document.createElement("option")
 		el.textContent='Choose a team'
 		el.value='off'
+		select.appendChild(el)
 		for (var i=0; i<menu_data.length;i++) {
 			var opt=menu_data[i]
 			var el=document.createElement("option");
@@ -425,6 +440,7 @@ function load_teammenu(y_update) {
 			el.value=opt;
 			select.appendChild(el)
 		}
+		$("#team_select").val(s_option)
 	}
 	});
 }
