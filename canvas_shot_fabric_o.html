@@ -156,7 +156,7 @@ function get_param(name) {
 
 function load_pshotnew(dict) {
 	$.ajax({
-	url: "http://www.austinclemens.com/cgi-bin/post.py",
+	url: "http://www.austinclemens.com/cgi-bin/post_numpy.py",
 	type: "post",
 	datatype: "html",
 	data:   dict,
@@ -226,7 +226,7 @@ function drawcourt_pshot(shot_data) {
 				xcenter: X,
 				ycenter: Y,
 				shadowColor: '#000000',
-				shadowBlur: 5,
+				shadowBlur: 2,
 				shadowOpacity: 1,
 				radius:0,
 				//strokeWidth:1,

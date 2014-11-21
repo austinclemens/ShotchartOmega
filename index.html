@@ -102,7 +102,7 @@ $(document).ready(function () {
 		</p>
 		<br>
 		<p>
-		<button type="button" class="btn btn-success" id="run_1" onClick="update_1()" disabled>Run it</button> 
+		<button type="button" class="btn btn-success" id="run_1" onClick="update_1()" data-loading-text='Loading...' disabled>Run it</button> 
 		<button type="button" class="btn btn-info" id="save_1" onClick="save()">Save to hard drive</button>
 		</p>
 	</div>
@@ -431,6 +431,9 @@ function load_teammenu(y_update) {
 
 // update functions - one for each tab, initiate redraw inside the iframe by calling load_pshotnew.
 function update_1() {
+	var btn=$("#run_1")
+	btn.button('loading')
+
     var e = document.getElementById("year_1");
     var u_year = e.options[e.selectedIndex].value;
 
@@ -447,6 +450,7 @@ function update_1() {
     dict.push({chart_type:'1',player1:u_player,year:u_year,efficiency:u_efficient,season:u_season})
 
     document.getElementById('shotchart').contentWindow.load_pshotnew(dict[0])
+    btn.button('reset')
 }
 
 function update_2() {
