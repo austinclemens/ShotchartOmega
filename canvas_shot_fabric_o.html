@@ -423,30 +423,60 @@ function choosecolor_pshot(coef,bit,alpha) {
 
 function choosecolor_pps(coef,bit) {
 	if (bit==3){
-		if (coef>=.25) return '#a50026';
-		if (coef>=.20 && coef<.25) return '#d73027';
-		if (coef>=.15 && coef<.20) return '#f46d43';
-		if (coef>=.10 && coef<.15) return '#fdae61';
-		if (coef>=.05 && coef<.10) return '#fee090';
-		if (coef>=-.05 && coef<.05) return '#ffffbf';
-		if (coef>=-.10 && coef<-.05) return '#e0f3f8';
-		if (coef>=-.15 && coef<-.10) return '#abd9e9';
-		if (coef>=-.20 && coef<-.15) return '#74add1';
-		if (coef>=-.25 && coef<-.20) return '#4575b4';
-		if (coef<=-.25) return '#313695';
+		if(alpha==1){
+			if (coef>=.25) return 'rgba(165,0,38,'+alpha+')';
+			if (coef>=.20 && coef<.25) return 'rgba(215,48,39,'+alpha+')';
+			if (coef>=.15 && coef<.20) return 'rgba(244,109,67,'+alpha+')';
+			if (coef>=.10 && coef<.15) return 'rgba(253,174,97,'+alpha+')';
+			if (coef>=.05 && coef<.10) return 'rgba(254,224,144,'+alpha+')';
+			if (coef>=-.05 && coef<.05) return 'rgba(255,255,191,'+alpha+')';
+			if (coef>=-.10 && coef<-.05) return 'rgba(224,243,248,'+alpha+')';
+			if (coef>=-.15 && coef<-.10) return 'rgba(171,217,233,'+alpha+')';
+			if (coef>=-.20 && coef<-.15) return 'rgba(116,173,209,'+alpha+')';
+			if (coef>=-.25 && coef<-.20) return 'rgba(69,117,180,'+alpha+')';
+			if (coef<=-.25) return 'rgba(49,54,149,'+alpha+')';
+		}
+		if(alpha==2){
+			if (coef>=.25) return 'rgba(185,20,58,'+alpha+')';
+			if (coef>=.20 && coef<.25) return 'rgba(235,68,59,'+alpha+')';
+			if (coef>=.15 && coef<.20) return 'rgba(254,129,87,'+alpha+')';
+			if (coef>=.10 && coef<.15) return 'rgba(253,194,117,'+alpha+')';
+			if (coef>=.05 && coef<.10) return 'rgba(254,244,164,'+alpha+')';
+			if (coef>=-.05 && coef<.05) return 'rgba(255,255,211,'+alpha+')';
+			if (coef>=-.10 && coef<-.05) return 'rgba(244,255,255,'+alpha+')';
+			if (coef>=-.15 && coef<-.10) return 'rgba(191,237,253,'+alpha+')';
+			if (coef>=-.20 && coef<-.15) return 'rgba(136,193,229,'+alpha+')';
+			if (coef>=-.25 && coef<-.20) return 'rgba(89,137,200,'+alpha+')';
+			if (coef<=-.25) return 'rgba(69,74,169,'+alpha+')';	
+		}
 	}
 	if (bit!=3){
-		if (coef>=.15) return '#a50026';
-		if (coef>=.12 && coef<.15) return '#d73027';
-		if (coef>=.09 && coef<.12) return '#f46d43';
-		if (coef>=.06 && coef<.09) return '#fdae61';
-		if (coef>=.03 && coef<.06) return '#fee090';
-		if (coef>=-.03 && coef<.03) return '#ffffbf';
-		if (coef>=-.06 && coef<-.03) return '#e0f3f8';
-		if (coef>=-.09 && coef<-.06) return '#abd9e9';
-		if (coef>=-.12 && coef<-.09) return '#74add1';
-		if (coef>=-.15 && coef<-.12) return '#4575b4';
-		if (coef<=-.15) return '#313695';
+		if(alpha==1) {
+			if (coef>=.15) return 'rgba(165,0,38,'+alpha+')';
+			if (coef>=.12 && coef<.15) return 'rgba(215,48,39,'+alpha+')';
+			if (coef>=.09 && coef<.12) return 'rgba(244,109,67,'+alpha+')';
+			if (coef>=.06 && coef<.09) return 'rgba(253,174,97,'+alpha+')';
+			if (coef>=.03 && coef<.06) return 'rgba(254,224,144,'+alpha+')';
+			if (coef>=-.03 && coef<.03) return 'rgba(255,255,191,'+alpha+')';
+			if (coef>=-.06 && coef<-.03) return 'rgba(224,243,248,'+alpha+')';
+			if (coef>=-.09 && coef<-.06) return 'rgba(171,217,233,'+alpha+')';
+			if (coef>=-.12 && coef<-.09) return 'rgba(116,173,209,'+alpha+')';
+			if (coef>=-.15 && coef<-.12) return 'rgba(69,117,180,'+alpha+')';
+			if (coef<=-.15) return 'rgba(49,54,149,'+alpha+')';
+		}
+		if(alpha==2) {
+			if (coef>=.15) return 'rgba(195,30,68,'+alpha+')';
+			if (coef>=.12 && coef<.15) return 'rgba(245,78,69,'+alpha+')';
+			if (coef>=.09 && coef<.12) return 'rgba(254,139,97,'+alpha+')';
+			if (coef>=.06 && coef<.09) return 'rgba(253,204,127,'+alpha+')';
+			if (coef>=.03 && coef<.06) return 'rgba(254,244,164,'+alpha+')';
+			if (coef>=-.03 && coef<.03) return 'rgba(255,255,251,'+alpha+')';
+			if (coef>=-.06 && coef<-.03) return 'rgba(244,255,255,'+alpha+')';
+			if (coef>=-.09 && coef<-.06) return 'rgba(201,247,253,'+alpha+')';
+			if (coef>=-.12 && coef<-.09) return 'rgba(146,203,239,'+alpha+')';
+			if (coef>=-.15 && coef<-.12) return 'rgba(99,147,210,'+alpha+')';
+			if (coef<=-.15) return 'rgba(79,84,179,'+alpha+')';
+		}
 	}
 }
 

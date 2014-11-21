@@ -52,7 +52,6 @@ def update(box_date):
 			seasontype="Playoffs"
 			seasonindicator=1
 		nba_call_url='http://stats.nba.com/stats/shotchartdetail?Season=%s&SeasonType=%s&TeamID=0&PlayerID=0&GameID=%s&Outcome=&Location=&Month=0&SeasonSegment=&DateFrom=&Dateto=&OpponentTeamID=0&VsConference=&VsDivision=&Position=&RookieYear=&GameSegment=&Period=0&LastNGames=0&ContextMeasure=FGA' % (season,seasontype,game)
-		print nba_call_url
 		plays=urllib2.urlopen(nba_call_url)
 		data=json.load(plays)
 		teams=set([row[6] for row in data['resultSets'][0]['rowSet']])
@@ -66,7 +65,7 @@ def update(box_date):
 				temp=[game,row[4],teams[0],teams[1],three,row[20],year,seasonindicator,row[7],row[8]*60+row[9],row[17],row[18]]
 			if row[6]==teams[1]:
 				temp=[game,row[4],teams[1],teams[0],three,row[20],year,seasonindicator,row[7],row[8]*60+row[9],row[17],row[18]]
-			master_shots.append(row)
+			master_shots.append(temp)
 
 	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='184.164.140.34',db='austinc_allshotdata',port=3306)
 	cur=con.cursor()
@@ -145,15 +144,6 @@ def circle_chunk(shots_temp):
 			smooth_fg=shots_made_smooth/num_shots_smooth
 		except: 
 			smooth_fg=0
-		# three_regions=[13,14,15,16,4,5]
-		# if int(box[2][0]) in three_regions:
-		#	pps_made_smooth=shots_made_smooth*1.5
-		# if int(box[2][0]) not in three_regions:
-		#	pps_made_smooth=shots_made_smooth
-		# try: 
-		#	smooth_pps=2*pps_made_smooth/num_shots_smooth
-		#except:
-		#	smooth_pps=0
 		output.append([box[0][0],box[0][1],smooth_fg])
 		# coord, coord, number of shots, smooth_fg, percent of shots within 5 feet
 	return output

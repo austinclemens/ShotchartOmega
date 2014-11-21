@@ -127,7 +127,7 @@ if int(chart_type)==3:
 
 if int(chart_type)==1:
 	if year=='career':
-		string="player='%s' AND season_type='%s'" % (player1,season)
+		string="player='%s' AND season_type='%s'" % (player1,season2)
 		year2='career'
 	if year!='career':
 		string="player='%s' AND year=%s AND season_type='%s'" % (player1, int(year), season2)
