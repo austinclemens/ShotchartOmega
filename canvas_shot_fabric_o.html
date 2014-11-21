@@ -80,6 +80,8 @@ stage.add(circlayer)
 nba_court_base()
 
 layer.on('click',function(evt){
+	var g=new Kinetic.Group()
+
 	var shape=evt.target;
 
 	var circle = new Kinetic.Circle({
@@ -93,8 +95,8 @@ layer.on('click',function(evt){
 		stroke: 'black',
 		strokeWidth:2,
 	});
-	group.add(circle)
-	circlayer.add(group)
+	g.add(circle)
+	circlayer.add(g)
 
 	var tween = new Kinetic.Tween({
 		node: circle, 
@@ -108,28 +110,28 @@ layer.on('click',function(evt){
 		
 		if(toggle==0){
 			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-24,y:shape.attrs.ycenter-65,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.fg*100)+"%"})
-			group.add(text)
+			g.add(text)
 			var text=new Kinetic.Text({align:'center',x:shape.attrs.xcenter-47,y:shape.attrs.ycenter-40,fontSize:17,fontFamily:'Verdana',fill:'#000000',text: "shots made"})
-			group.add(text)
+			g.add(text)
 		}
 		if(toggle==1){
 			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-27,y:shape.attrs.ycenter-65,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.fg*100)/100})
-			group.add(text)
+			g.add(text)
 			var text=new Kinetic.Text({align:'center',x:shape.attrs.xcenter-62,y:shape.attrs.ycenter-40,fontSize:17,fontFamily:'Verdana',fill:'#000000',text: "points per shot"})
-			group.add(text)
+			g.add(text)
 		}
 
 		if (Math.round(shape.attrs.shotvol*100)>9) {
 			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-24,y:shape.attrs.ycenter+15,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
-			group.add(text)
+			g.add(text)
 		}
 		if (Math.round(shape.attrs.shotvol*100)<10) {
 			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-16,y:shape.attrs.ycenter+15,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
-			group.add(text)
+			g.add(text)
 		}
 
 		var text=new Kinetic.Text({x:shape.attrs.xcenter-50,y:shape.attrs.ycenter+40,fontSize:17,fontFamily:'Verdana',fill:'#000000',text: "shot volume"})
-		group.add(text)
+		g.add(text)
 
 		var circle = new Kinetic.Circle({
 			x: shape.attrs.xcenter,
@@ -140,13 +142,13 @@ layer.on('click',function(evt){
 			strokeWidth:1,
 			fill: '#a0a0a0'
 		})
-		group.add(circle)
+		g.add(circle)
 
 		var line=new Kinetic.Line({strokeWidth:1,dash: [5, 5],points:[shape.attrs.xcenter+3,shape.attrs.ycenter,shape.attrs.xcenter+90,shape.attrs.ycenter],stroke:'black'})
-		group.add(line)
+		g.add(line)
 
 		var text=new Kinetic.Text({x:shape.attrs.xcenter+35,y:shape.attrs.ycenter-10,fontSize:9,fontFamily:'Helvetica',fill:'#000000',text: "5 feet"})
-		group.add(text)
+		g.add(text)
 	},500)
 
 	stage.add(circlayer)
@@ -154,8 +156,9 @@ layer.on('click',function(evt){
 })
 
 circlayer.on('click',function(evt){
-		group.removeChildren()
-		circlayer.add(group)
+	var ga=evt.group
+	circlayer.destroy(ga)
+	circlayer.draw()
 })
 
 window.onload=function() {
