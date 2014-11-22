@@ -32,6 +32,28 @@ def unique_sql():
 			cur.execute("""INSERT INTO tuniques (year,team) VALUES (%s,%s)""",(year,row[0]))
 
 
+def game_info_scrape():
+	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='184.164.140.34',db='austinc_allshotdata',port=3306)
+	cur=con.cursor()
+
+	cur.execute("""SELECT DISTINCT gameid FROM shots""")
+	rows=cur.fetchall()
+
+	for row in rows:
+		url='http://stats.nba.com/stats/shotchartdetail?Season=2014-15&SeasonType=Regular%20Season&TeamID=0&PlayerID=0&GameID=%s&Outcome=&Location=&Month=0&SeasonSegment=&DateFrom=&Dateto=&OpponentTeamID=0&VsConference=&VsDivision=&Position=&RookieYear=&GameSegment=&Period=0&LastNGames=0&ContextMeasure=FGA' % (row[0])
+		box=urllib2.urlopen(url)
+		boxscore=json.load(box)
+
+		hometeam=boxscore['resultSets'][5]['rowSet'][1][4]+' '+boxscore['resultSets'][5]['rowSet'][1][2]
+		visitteam=boxscore['resultSets'][5]['rowSet'][0][4]+' '+boxscore['resultSets'][5]['rowSet'][0][2]
+		homescore=int(boxscore['resultSets'][5]['rowSet'][1][23])
+		visitscore=int(boxscore['resultSets'][5]['rowSet'][0][23])
+		date=boxscore['resultSets'][0]['rowSet'][0][0][0:10]
+
+		# gameid, date, home_team, visit_team, home_score, visit_score)
+		cur.execute("""INSERT INTO general_games (gameid,date,home_team,visit_team,home_score,visit_score) VALUES (%s,%s,%s,%s,%s,%s)""", (row[0],date,hometeam,visitteam,homescore,visitscore))
+	con.close()
+
 def update(box_date):
 	url="http://www.nba.com/gameline/%s/" % (box_date)
 	box_list=urllib2.urlopen(url).read()

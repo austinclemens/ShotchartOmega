@@ -42,10 +42,6 @@ def circle_chunk(shots_temp,efficiency):
 			# cur.execute("""SELECT threept,made,x,y FROM shots WHERE %s AND (POW(%s-LOC_X,2)-POW(%s-LOC_Y,2))<50""" % (string,x_center,y_center))
 			# dist_shots=cur.fetchall()
 			manip=shots_temp[:]
-			manip=manip[manip[:,3]<x_center+50]
-			manip=manip[manip[:,3]>x_center-50]
-			manip=manip[manip[:,2]<y_center+50]
-			manip=manip[manip[:,2]>y_center-50]
 			c1=((manip[:,3:4]-x_center)**2)+((manip[:,2:3]-y_center)**2)
 			manip=np.hstack((manip,np.sqrt(c1)))
 			manip=manip[manip[:,-1]<50]
@@ -165,7 +161,7 @@ if int(chart_type)==2:
 			details=details+", %s quarters" % (quart)
 
 	if startdate!='off' and enddate!='off':
-		pass
+		append2=" AND startdate>=%s AND enddate<=%s" % (startdate,enddate)
 		# start and end date code goes here
 
 	string="(player='%s'" % (player1)

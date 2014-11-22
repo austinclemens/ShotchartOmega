@@ -344,7 +344,7 @@ $("#year_2").change(function() {
     	$('#player1').prop('disabled',false)
     	y_update=[]
 		y_update.push({year:u_year,pl:1})
-		load_playermenu(y_update[0])
+		load_playermenu1(y_update[0])
     }
 });
 
@@ -389,8 +389,38 @@ function load_playermenu(y_update) {
 			select.appendChild(el)
 		}
 
+		if($("#player option[value='"+s_option+"']").length>0){
+			$("#player").val(s_option)
+		}
+	}
+	});
+}
+
+function load_playermenu1(y_update) {
+	$.ajax({
+	url: "http://www.austinclemens.com/cgi-bin/update_players.py",
+	type: "post",
+	datatype: "html",
+	data: y_update,
+	success: function(response){
+		var menu_data = eval("(" + response + ")");
+		var select=document.getElementById('player1');
+		var s_option=select.options[select.selectedIndex].value
 		var p1=document.getElementById('player1')
 		var s_option1=p1.options[p1.selectedIndex].value
+		$("#player1").empty()
+		var el=document.createElement("option")
+		el.textContent='Choose a player'
+		el.value='off'
+		select.appendChild(el)
+		for (var i=1; i<menu_data.length;i++) {
+			var opt=menu_data[i]
+			var el=document.createElement("option");
+			el.textContent=opt;
+			el.value=opt;
+			select.appendChild(el)
+		}
+
 		var p2=document.getElementById('player2')
 		var s_option2=p2.options[p2.selectedIndex].value
 		var p3=document.getElementById('player3')
@@ -402,18 +432,26 @@ function load_playermenu(y_update) {
 
 		var options=select.innerHTML;
 
-		p1.innerHTML=options
 		p2.innerHTML=options
 		p3.innerHTML=options
 		p4.innerHTML=options
 		p5.innerHTML=options
 
-		$("#player").val(s_option)
-		$("#player1").val(s_option1)
-		$("#player2").val(s_option2)
-		$("#player3").val(s_option3)
-		$("#player4").val(s_option4)
-		$("#player5").val(s_option5)
+		if($("#player1 option[value='"+s_option1+"']").length>0){
+			$("#player1").val(s_option1)
+		}
+		if($("#player2 option[value='"+s_option2+"']").length>0){
+			$("#player2").val(s_option2)
+		}
+		if($("#player3 option[value='"+s_option3+"']").length>0){
+			$("#player3").val(s_option3)
+		}
+		if($("#player4 option[value='"+s_option4+"']").length>0){
+			$("#player4").val(s_option4)
+		}
+		if($("#player5 option[value='"+s_option5+"']").length>0){
+			$("#player5").val(s_option5)
+		}
 	}
 	});
 }
@@ -440,7 +478,9 @@ function load_teammenu(y_update) {
 			el.value=opt;
 			select.appendChild(el)
 		}
-		$("#team_select").val(s_option)
+		if($("#team_select option[value='"+s_option+"']").length>0){
+			$("#team_select").val(s_option)
+		}
 	}
 	});
 }
