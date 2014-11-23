@@ -537,14 +537,11 @@ function update_2() {
     var e = document.getElementById("quarter");
     var u_quarter = e.options[e.selectedIndex].value;
 
-    var u_startdate='off'
-    var u_enddate='off'
+    var e = document.getElementById("startdate");
+    var u_startdate = e.value;
 
-    // var e = document.getElementById("startdate");
-    // var u_startdate = e.options[e.selectedIndex].value;
-
-    // var e = document.getElementById("enddate");
-    // var u_enddate = e.options[e.selectedIndex].value;
+    var e = document.getElementById("enddate");
+    var u_enddate = e.value;
 
     var dict=[]
     dict.push({chart_type:'2',player1:u_player1,year:u_year,efficiency:u_efficient,season:u_season,player2:u_player2,player3:u_player3,player4:u_player4,player5:u_player5,quarter:u_quarter,startdate:u_startdate,enddate:u_enddate})

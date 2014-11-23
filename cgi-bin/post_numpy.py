@@ -140,6 +140,8 @@ if int(chart_type)==1:
 if int(chart_type)==2:
 	append=""
 	append2=""
+	pre_append=""
+	post_append=""
 	year3="%02d" % (int(year[2:4])+1,)
 	year2=year+'-'+year3[-2:]
 	details="%s %s" % (year2,season.lower())
@@ -160,9 +162,12 @@ if int(chart_type)==2:
 				quart='4th'
 			details=details+", %s quarters" % (quart)
 
-	if startdate!='off' and enddate!='off':
-		append2=" AND startdate>=%s AND enddate<=%s" % (startdate,enddate)
-		# start and end date code goes here
+	if startdate!=None and enddate!=None:
+		startdate=startdate[6:]+"-"+startdate[0:2]+"-"+startdate[3:5]
+		enddate=enddate[6:]+"-"+enddate[0:2]+"-"+enddate[3:5]
+		pre_append="INNER JOIN general_game ON general_game.gameid=shots.gameid"
+		post_append=" AND date>='%s' AND date<='%s'" % (startdate,enddate)
+		details=details+", between %s and %s" % (startdate,enddate)
 
 	string="(player='%s'" % (player1)
 	players=player1
@@ -182,7 +187,7 @@ if int(chart_type)==2:
 
 	string=string+')'
 	string=string+' AND year=%s AND season_type=%s' % (year,season2)
-	string=string+append+append2
+	string=string+append+post_append
 
 	if efficiency=='1':
 		bits=[2,1]
@@ -193,7 +198,10 @@ if int(chart_type)==2:
 
 con=MySQLdb.connect(user='austinc_shotchar', passwd='scriptpass1.', host='localhost', db='austinc_allshotdata')
 cur=con.cursor()
-cur.execute("""SELECT three,made,x,y FROM shots WHERE %s""" % (string))
+if startdate==None or enddate==None:
+	cur.execute("""SELECT three,made,x,y FROM shots WHERE %s""" % (string))
+if startdate!=None and enddate!=None:
+	cur.execute("SELECT three,made,x,y FROM shots "+pre_append+" WHERE %s" % (string))
 
 rows=cur.fetchall()
 con.close()
