@@ -8,6 +8,8 @@ import datetime
 import math
 import re
 import MySQLdb
+from joblib import Parallel, delayed
+import multiprocessing
 
 yesterdays_date=datetime.date.today()-datetime.timedelta(1)
 box_date=yesterdays_date.strftime("%Y%m%d")
@@ -36,22 +38,38 @@ def game_info_scrape():
 	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='184.164.140.34',db='austinc_allshotdata',port=3306)
 	cur=con.cursor()
 
-	cur.execute("""SELECT DISTINCT gameid FROM shots""")
+	cur.execute("""SELECT DISTINCT gameid, year, season_type FROM shots""")
 	rows=cur.fetchall()
+	all_games=[row[0] for row in rows]
 
-	for row in rows:
-		url='http://stats.nba.com/stats/shotchartdetail?Season=2014-15&SeasonType=Regular%20Season&TeamID=0&PlayerID=0&GameID=%s&Outcome=&Location=&Month=0&SeasonSegment=&DateFrom=&Dateto=&OpponentTeamID=0&VsConference=&VsDivision=&Position=&RookieYear=&GameSegment=&Period=0&LastNGames=0&ContextMeasure=FGA' % (row[0])
-		box=urllib2.urlopen(url)
-		boxscore=json.load(box)
+	cur.execute("""SELECT DISTINCT gameid FROM general_game""")
+	current=cur.fetchall()
+	con.close()
+	taken=[row[0] for row in current]
 
-		hometeam=boxscore['resultSets'][5]['rowSet'][1][4]+' '+boxscore['resultSets'][5]['rowSet'][1][2]
-		visitteam=boxscore['resultSets'][5]['rowSet'][0][4]+' '+boxscore['resultSets'][5]['rowSet'][0][2]
-		homescore=int(boxscore['resultSets'][5]['rowSet'][1][23])
-		visitscore=int(boxscore['resultSets'][5]['rowSet'][0][23])
-		date=boxscore['resultSets'][0]['rowSet'][0][0][0:10]
+	games=[game for game in all_games if game not in taken]
 
-		# gameid, date, home_team, visit_team, home_score, visit_score)
-		cur.execute("""INSERT INTO general_games (gameid,date,home_team,visit_team,home_score,visit_score) VALUES (%s,%s,%s,%s,%s,%s)""", (row[0],date,hometeam,visitteam,homescore,visitscore))
+	num_cores=multiprocessing.cpu_count()
+
+	Parallel(n_jobs=num_cores)(delayed(get_game_info)(game) for game in games)
+
+def get_game_info(game):
+	url=url="http://stats.nba.com/stats/boxscore?StartPeriod=0&EndPeriod=0&StartRange=0&EndRange=0&RangeType=0&GameID=%s" % (game)
+	print url,
+	box=urllib2.urlopen(url)
+	boxscore=json.load(box)
+	print 'read'
+	
+	hometeam=boxscore['resultSets'][5]['rowSet'][1][4]+' '+boxscore['resultSets'][5]['rowSet'][1][2]
+	visitteam=boxscore['resultSets'][5]['rowSet'][0][4]+' '+boxscore['resultSets'][5]['rowSet'][0][2]
+	homescore=int(boxscore['resultSets'][5]['rowSet'][1][23])
+	visitscore=int(boxscore['resultSets'][5]['rowSet'][0][23])
+	date=boxscore['resultSets'][0]['rowSet'][0][0][0:10]
+	
+	# gameid, date, home_team, visit_team, home_score, visit_score)
+	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='184.164.140.34',db='austinc_allshotdata',port=3306)
+	cur=con.cursor()
+	cur.execute("""INSERT INTO general_game (gameid,date,home_team,visit_team,home_score,visit_score) VALUES (%s,%s,%s,%s,%s,%s)""", (game,date,hometeam,visitteam,homescore,visitscore))
 	con.close()
 
 def update(box_date):
@@ -66,6 +84,7 @@ def update(box_date):
 	for box in boxes:
 		game=box
 		year=int(box[3:5])
+		full_year=2000+year
 		season="20"+str(year)+"-"+str(year+1)
 		if int(box[2])==2:
 			seasontype="Regular%20Season"
@@ -84,9 +103,9 @@ def update(box_date):
 			if row[12]=='3PT Field Goal':
 				three=1
 			if row[6]==teams[0]:
-				temp=[game,row[4],teams[0],teams[1],three,row[20],year,seasonindicator,row[7],row[8]*60+row[9],row[17],row[18]]
+				temp=[game,row[4],teams[0],teams[1],three,row[20],full_year,seasonindicator,row[7],row[8]*60+row[9],row[17],row[18]]
 			if row[6]==teams[1]:
-				temp=[game,row[4],teams[1],teams[0],three,row[20],year,seasonindicator,row[7],row[8]*60+row[9],row[17],row[18]]
+				temp=[game,row[4],teams[1],teams[0],three,row[20],full_year,seasonindicator,row[7],row[8]*60+row[9],row[17],row[18]]
 			master_shots.append(temp)
 
 	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='184.164.140.34',db='austinc_allshotdata',port=3306)

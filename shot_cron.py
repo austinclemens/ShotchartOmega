@@ -25,6 +25,7 @@ def update(box_date):
 	for box in boxes:
 		game=box
 		year=int(box[3:5])
+		full_year=2000+year
 		season="20"+str(year)+"-"+str(year+1)
 		if int(box[2])==2:
 			seasontype="Regular%20Season"
@@ -43,9 +44,9 @@ def update(box_date):
 			if row[12]=='3PT Field Goal':
 				three=1
 			if row[6]==teams[0]:
-				temp=[game,row[4],teams[0],teams[1],three,row[20],year,seasonindicator,row[7],row[8]*60+row[9],row[17],row[18]]
+				temp=[game,row[4],teams[0],teams[1],three,row[20],full_year,seasonindicator,row[7],row[8]*60+row[9],row[17],row[18]]
 			if row[6]==teams[1]:
-				temp=[game,row[4],teams[1],teams[0],three,row[20],year,seasonindicator,row[7],row[8]*60+row[9],row[17],row[18]]
+				temp=[game,row[4],teams[1],teams[0],three,row[20],full_year,seasonindicator,row[7],row[8]*60+row[9],row[17],row[18]]
 			master_shots.append(temp)
 
 	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='localhost',db='austinc_allshotdata')
@@ -62,7 +63,6 @@ def averages(year):
 
 	cur.execute("""SELECT three,made,x,y FROM shots WHERE year=%s""" % (year))
 	rows=cur.fetchall()
-	print 'rows fetched'
 
 	year_average=chart(rows)
 
@@ -89,7 +89,6 @@ def circle_chunk(shots_temp):
 	shots_t=0
 	# 3pt, made, x, y
 	for box in box_matrix:
-		print box
 		x_center=box[0][0]+5
 		y_center=box[0][1]+5
 		# cur.execute("""SELECT threept,made,x,y FROM shots WHERE %s AND (POW(%s-LOC_X,2)-POW(%s-LOC_Y,2))<50""" % (string,x_center,y_center))
