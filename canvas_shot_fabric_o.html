@@ -187,7 +187,7 @@ function load_pshotnew(dict) {
 	datatype: "html",
 	data:   dict,
 	success: function(response){
-		console.log(response)
+		//console.log(response)
 		var shot_data = eval("(" + response + ")");
 		circlayer.removeChildren()
 		stage.add(circlayer)
@@ -421,7 +421,7 @@ function choosecolor_pshot(coef,bit,alpha) {
 	}
 }
 
-function choosecolor_pps(coef,bit) {
+function choosecolor_pps(coef,bit,alpha) {
 	if (bit==3){
 		if(alpha==1){
 			if (coef>=.25) return 'rgba(165,0,38,'+alpha+')';

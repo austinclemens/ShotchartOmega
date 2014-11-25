@@ -108,7 +108,45 @@ def circle_chunk(shots_temp):
 		# coord, coord, number of shots, smooth_fg, percent of shots within 5 feet
 	return output
 
+def game_info_scrape():
+	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='localhost',db='austinc_allshotdata')
+	cur=con.cursor()
+
+	cur.execute("""SELECT DISTINCT gameid, year, season_type FROM shots""")
+	rows=cur.fetchall()
+	all_games=[row[0] for row in rows]
+
+	cur.execute("""SELECT DISTINCT gameid FROM general_game""")
+	current=cur.fetchall()
+	con.close()
+	taken=[row[0] for row in current]
+
+	games=[game for game in all_games if game not in taken]
+
+	for game in games:
+		get_game_info(game)
+
+def get_game_info(game):
+	url=url="http://stats.nba.com/stats/boxscore?StartPeriod=0&EndPeriod=0&StartRange=0&EndRange=0&RangeType=0&GameID=%s" % (game)
+	print url,
+	box=urllib2.urlopen(url)
+	boxscore=json.load(box)
+	print 'read'
+	
+	hometeam=boxscore['resultSets'][5]['rowSet'][1][4]+' '+boxscore['resultSets'][5]['rowSet'][1][2]
+	visitteam=boxscore['resultSets'][5]['rowSet'][0][4]+' '+boxscore['resultSets'][5]['rowSet'][0][2]
+	homescore=int(boxscore['resultSets'][5]['rowSet'][1][23])
+	visitscore=int(boxscore['resultSets'][5]['rowSet'][0][23])
+	date=boxscore['resultSets'][0]['rowSet'][0][0][0:10]
+	
+	# gameid, date, home_team, visit_team, home_score, visit_score)
+	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='localhost',db='austinc_allshotdata')
+	cur=con.cursor()
+	cur.execute("""INSERT INTO general_game (gameid,date,home_team,visit_team,home_score,visit_score) VALUES (%s,%s,%s,%s,%s,%s)""", (game,date,hometeam,visitteam,homescore,visitscore))
+	con.close()
+
 update(box_date)
 averages(2014)
+game_info_scrape()
 
 quit()

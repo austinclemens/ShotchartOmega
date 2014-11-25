@@ -7,9 +7,6 @@ import csv
 from operator import itemgetter
 import json
 import numpy as np
-import cgitb
-
-cgitb.enable()
 
 def chart(shots,average_data,efficiency):
 	# 3pt, made, x, y
@@ -186,7 +183,11 @@ if int(chart_type)==2:
 		players=players+', %s' % (player5)
 
 	string=string+')'
-	string=string+' AND year=%s AND season_type=%s' % (year,season2)
+
+	if startdate!=None and enddate!=None:
+		string=string+' AND season_type=%s' % (year,season2)
+	if startdate==None or enddate==None:
+		string=string+' AND year=%s AND season_type=%s' % (year,season2)
 	string=string+append+post_append
 
 	if efficiency=='1':
