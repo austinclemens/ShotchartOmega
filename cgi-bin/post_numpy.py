@@ -224,6 +224,7 @@ if year!='career':
 results_csv=chart(rows,average_csv,efficiency)
 results_csv.append(details)
 results_csv.append(players)
+bits.append(len(rows))
 results_csv.append(bits)
 
 results=json.dumps(results_csv)

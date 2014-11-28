@@ -232,7 +232,12 @@ function drawcourt_pshot(shot_data) {
 		toggle=0
 	}
 
-	for(var n = 0; n < 200; n++) {
+	var draws=shot_data[203][2]/2.5
+	if(draws>200) {
+		draws=200
+	}
+
+	for(var n = 0; n < draws; n++) {
 		if (shot_data[n][2]>0 && shot_data[n][5]>0.005){
 			var X = shot_data[n][1]*1.8+450+9 ;
   			var Y = shot_data[n][0]*1.8+144.5+9 ;
@@ -303,11 +308,11 @@ function drawcourt_pshot(shot_data) {
 		});
 		tween.play()
 	}
-	setTimeout(function(){shadow_layer(shot_data,min,max)},1200)
+	setTimeout(function(){shadow_layer(shot_data,min,max,draws)},1200)
 }
 
-function shadow_layer(shot_data,min,max) {
-	for(var n = 0; n < 200; n++) {
+function shadow_layer(shot_data,min,max,draws) {
+	for(var n = 0; n < draws; n++) {
 		if (shot_data[n][2]>0 && shot_data[n][5]>0.005){
 			var X = shot_data[n][1]*1.8+450+9  ;
   			var Y = shot_data[n][0]*1.8+144.5+9 ;

@@ -67,10 +67,7 @@ def get_game_info(game):
 	date=boxscore['resultSets'][0]['rowSet'][0][0][0:10]
 	
 	# gameid, date, home_team, visit_team, home_score, visit_score)
-	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='184.164.140.34',db='austinc_allshotdata',port=3306)
-	cur=con.cursor()
-	cur.execute("""INSERT INTO general_game (gameid,date,home_team,visit_team,home_score,visit_score) VALUES (%s,%s,%s,%s,%s,%s)""", (game,date,hometeam,visitteam,homescore,visitscore))
-	con.close()
+
 
 def update(box_date):
 	url="http://www.nba.com/gameline/%s/" % (box_date)
