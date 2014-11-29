@@ -60,14 +60,27 @@ def get_game_info(game):
 	boxscore=json.load(box)
 	print 'read'
 	
-	hometeam=boxscore['resultSets'][5]['rowSet'][1][4]+' '+boxscore['resultSets'][5]['rowSet'][1][2]
-	visitteam=boxscore['resultSets'][5]['rowSet'][0][4]+' '+boxscore['resultSets'][5]['rowSet'][0][2]
-	homescore=int(boxscore['resultSets'][5]['rowSet'][1][23])
-	visitscore=int(boxscore['resultSets'][5]['rowSet'][0][23])
 	date=boxscore['resultSets'][0]['rowSet'][0][0][0:10]
+	nba_homeid=boxscore['resultSets'][0]['rowSet'][0][6]
+	nba_visitid=boxscore['resultSets'][0]['rowSet'][0][7]
+
+	if nba_homeid==boxscore['resultSets'][5]['rowSet'][1][1]:
+		hometeam=boxscore['resultSets'][5]['rowSet'][1][4]+' '+boxscore['resultSets'][5]['rowSet'][1][2]
+		visitteam=boxscore['resultSets'][5]['rowSet'][0][4]+' '+boxscore['resultSets'][5]['rowSet'][0][2]
+		homescore=int(boxscore['resultSets'][5]['rowSet'][1][23])
+		visitscore=int(boxscore['resultSets'][5]['rowSet'][0][23])
+
+	if nba_homeid==boxscore['resultSets'][5]['rowSet'][0][1]:
+		hometeam=boxscore['resultSets'][5]['rowSet'][0][4]+' '+boxscore['resultSets'][5]['rowSet'][0][2]
+		visitteam=boxscore['resultSets'][5]['rowSet'][1][4]+' '+boxscore['resultSets'][5]['rowSet'][1][2]
+		homescore=int(boxscore['resultSets'][5]['rowSet'][0][23])
+		visitscore=int(boxscore['resultSets'][5]['rowSet'][1][23])
 	
 	# gameid, date, home_team, visit_team, home_score, visit_score)
-
+	con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='184.164.140.34',db='austinc_allshotdata',port=3306)
+	cur=con.cursor()
+	cur.execute("""INSERT INTO general_game (gameid,date,home_team,visit_team,nba_homeid,nba_visitid,home_score,visit_score) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)""", (game,date,hometeam,visitteam,nba_homeid,nba_visitid,homescore,visitscore))
+	con.close()
 
 def update(box_date):
 	url="http://www.nba.com/gameline/%s/" % (box_date)
