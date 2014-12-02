@@ -159,9 +159,9 @@ game_info_scrape()
 
 con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='localhost',db='austinc_allshotdata')
 cur=con.cursor()
-cur.execute("""UPDATE general_game SET bballrefid=CONCAT(DATE_FORMAT(CURDATE(),'%Y%m%d'),'0',home_abrev)""")
 cur.execute("""UPDATE general_game,team_abrevs SET general_game.home_abrev = team_abrevs.abrev WHERE general_game.home_team = team_abrevs.name""")
 cur.execute("""UPDATE general_game,team_abrevs SET general_game.visit_abrev = team_abrevs.abrev WHERE general_game.visit_team = team_abrevs.name""")
+cur.execute("""UPDATE general_game SET bballrefid=CONCAT(DATE_FORMAT(date,'%Y%m%d'),'0',home_abrev)""")
 con.close()
 
 
