@@ -20,6 +20,13 @@ $(document).ready(function () {
 		todayHighlight: true
 	});  
 });
+
+$(document).ready(function () {                
+	$('#date2').datepicker({
+		format: "mm/dd/yyyy",
+		todayHighlight: true
+	});  
+});
 </script>
 
 <div class="container-fluid"><p></p>
@@ -266,6 +273,28 @@ $(document).ready(function () {
 				</select>
 			</div>
 		</div>
+		<h4>Choose game period or date range (optional)<br><small>Date settings will override the year setting.</small></h4>
+		<p>
+		<div class="row">
+			<div class="col-xs-3">
+				<select class="form-control" id="quarter2">
+					<option value='off'>Complete game</option>
+					<option value='1'>1st quarter</option>
+					<option value='2'>2nd quarter</option>
+					<option value='3'>3rd quarter</option>
+					<option value='4'>4th quarter</option>
+					<option value='4_minutes'>Last 4 minutes</option>
+				</select>
+			</div>
+			<div class="col-xs-5">
+				<div class="input-daterange input-group" id="date2">
+    				<input type="text" class="input-sm form-control" id="startdate2" />
+    				<span class="input-group-addon">to</span>
+    				<input type="text" class="input-sm form-control" id="enddate2" />
+				</div>
+			</div>
+		</div>
+		</p>
 		</p>
 		<h4>Choose type of chart<br></h4>
 		<p>
@@ -565,8 +594,17 @@ function update_3() {
     var e = document.getElementById("team_type");
     var u_teamtype = e.options[e.selectedIndex].value;
 
+	var e = document.getElementById("quarter2");
+    var u_quarter = e.options[e.selectedIndex].value;
+
+    var e = document.getElementById("startdate2");
+    var u_startdate = e.value;
+
+    var e = document.getElementById("enddate2");
+    var u_enddate = e.value;
+
     var dict=[]
-    dict.push({chart_type:'3',team:u_team,year:u_year,efficiency:u_efficient,season:u_season,defense_offense:u_teamtype})
+    dict.push({chart_type:'3',team:u_team,year:u_year,efficiency:u_efficient,season:u_season,defense_offense:u_teamtype,quarter:u_quarter,startdate:u_startdate,enddate:u_enddate})
 
     document.getElementById('shotchart').contentWindow.load_pshotnew(dict[0])
 }

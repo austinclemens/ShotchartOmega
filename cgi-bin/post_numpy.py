@@ -102,46 +102,34 @@ if season=="Playoffs":
 	season2=1
 
 if int(chart_type)==3:
-	if int(offense_defense)==0:
-		string="defense_team='%s' AND year=%s AND season_type='%s'" % (team,year,season2)
-		add='defense'
-	if int(offense_defense)==1:
-		string="offense_team='%s' AND year=%s AND season_type='%s'" % (team,year,season2)
-		add='offense'
-	players=team
-	year3="%02d" % (int(year[2:4])+1,)
-	year2=year+'-'+year3[-2:]
-	details="%s %s, %s" % (year2,season.lower(),add)
-	if efficiency=='1':
-		bits=[3,1]
-		details=details+', points per shot'
-	if efficiency!='1':
-		bits=[3,0]
-
-if int(chart_type)==1:
-	if year=='career':
-		string="player='%s' AND season_type='%s'" % (player1,season2)
-		year2='career'
-	if year!='career':
-		string="player='%s' AND year=%s AND season_type='%s'" % (player1, int(year), season2)
-		year3="%02d" % (int(year[2:4])+1,)
-		year2=year+'-'+year3[-2:]
-	details="%s %s" % (year2,season.lower())
-	players=player1
-	if efficiency=='1':
-		bits=[1,1]
-		details=details+', points per shot'
-	if efficiency!='1':
-		bits=[1,0]
-
-if int(chart_type)==2:
 	append=""
 	append2=""
 	pre_append=""
 	post_append=""
 	year3="%02d" % (int(year[2:4])+1,)
 	year2=year+'-'+year3[-2:]
-	details="%s %s" % (year2,season.lower())
+
+	if int(offense_defense)==0:
+		if startdate!=None and enddate!=None:
+			string="defense_team='%s'" % (team)
+			add='defense'
+		if startdate==None or enddate==None:
+			string="defense_team='%s' AND year=%s AND season_type='%s'" % (team,year,season2)
+			add='defense'
+	if int(offense_defense)==1:
+		if startdate!=None and enddate!=None:
+			string="offense_team='%s'" % (team)
+			add='offense'
+		if startdate==None or enddate==None:
+			string="offense_team='%s' AND year=%s AND season_type='%s'" % (team,year,season2)
+			add='offense'
+
+	players=team
+	if startdate!=None and enddate!=None:
+		details="%s" % (add)
+
+	if startdate==None or enddate==None:
+		details="%s %s, %s" % (year2,season.lower(),add)
 
 	if quarter!='off':
 		if quarter=="4_minutes":
@@ -166,26 +154,87 @@ if int(chart_type)==2:
 		post_append=" AND date>='%s' AND date<='%s'" % (startdate,enddate)
 		details=details+", between %s and %s" % (startdate,enddate)
 
-	string="(player='%s'" % (player1)
+	if startdate==None or enddate==None:
+		string=string+' AND year=%s AND season_type=%s' % (year,season2)
+
+	string=string+append+post_append
+
+	if efficiency=='1':
+		bits=[3,1]
+		details=details+', points per shot'
+	if efficiency!='1':
+		bits=[3,0]
+
+if int(chart_type)==1:
+	if year=='career':
+		string='player="%s" AND season_type="%s"' % (player1,season2)
+		year2='career'
+	if year!='career':
+		string='player="%s" AND year=%s AND season_type="%s"' % (player1, int(year), season2)
+		year3="%02d" % (int(year[2:4])+1,)
+		year2=year+'-'+year3[-2:]
+	details="%s %s" % (year2,season.lower())
+	players=player1
+	if efficiency=='1':
+		bits=[1,1]
+		details=details+', points per shot'
+	if efficiency!='1':
+		bits=[1,0]
+
+if int(chart_type)==2:
+	append=""
+	append2=""
+	pre_append=""
+	post_append=""
+	year3="%02d" % (int(year[2:4])+1,)
+	year2=year+'-'+year3[-2:]
+
+	if startdate!=None and enddate!=None:
+		startdate=startdate[6:]+"-"+startdate[0:2]+"-"+startdate[3:5]
+		enddate=enddate[6:]+"-"+enddate[0:2]+"-"+enddate[3:5]
+		pre_append="INNER JOIN general_game ON general_game.gameid=shots.gameid"
+		post_append=" AND date>='%s' AND date<='%s'" % (startdate,enddate)
+		details="between %s and %s" % (startdate,enddate)
+
+	if startdate==None or enddate==None:
+		details="%s %s" % (year2,season.lower())
+
+	if quarter!='off':
+		if quarter=="4_minutes":
+			append=" AND seconds_remain<241 AND quarter=4"
+			details=details+", last 4 minutes"
+		else:
+			append=" AND quarter=%s" % (quarter)
+			if int(quarter)==1:
+				quart='1st'
+			if int(quarter)==2:
+				quart='2nd'
+			if int(quarter)==3:
+				quart='3rd'
+			if int(quarter)==4:
+				quart='4th'
+			details=details+", %s quarters" % (quart)
+
+	string='(player="%s"' % (player1)
 	players=player1
 
 	if player2!='off':
-		string=string+" OR player='%s'" % (player2)
-		players=players+', %s' % (player2)
+		string=string+' OR player="%s"' % (player2)
+		players=players+", %s" % (player2)
 	if player3!='off':
-		string=string+" OR player='%s'" % (player3)
-		players=players+', %s' % (player3)
+		string=string+' OR player="%s"' % (player3)
+		players=players+", %s" % (player3)
 	if player4!='off':
-		string=string+" OR player='%s'" % (player4)
-		players=players+', %s' % (player4)
+		string=string+' OR player="%s"' % (player4)
+		players=players+", %s" % (player4)
 	if player5!='off':
-		string=string+" OR player='%s'" % (player5)
-		players=players+', %s' % (player5)
+		string=string+' OR player="%s"' % (player5)
+		players=players+", %s" % (player5)
 
 	string=string+')'
 
 	if startdate!=None and enddate!=None:
-		string=string+' AND season_type=%s' % (year,season2)
+		string=string+' AND season_type=%s' % (season2)
 	if startdate==None or enddate==None:
 		string=string+' AND year=%s AND season_type=%s' % (year,season2)
 	string=string+append+post_append
@@ -226,6 +275,7 @@ results_csv.append(details)
 results_csv.append(players)
 bits.append(len(rows))
 results_csv.append(bits)
+# results_csv.append(string)
 
 results=json.dumps(results_csv)
 
