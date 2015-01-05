@@ -102,35 +102,35 @@ layer.on('click',function(evt){
 		node: circle, 
 		duration: 1,
 		easing: Kinetic.Easings.BackEaseOut,
-		radius: 90
+		radius: 54
 	});
 	tween.play()
 
 	setTimeout(function(){
 		
 		if(toggle==0){
-			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-24,y:shape.attrs.ycenter-65,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.fg*100)+"%"})
+			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-15,y:shape.attrs.ycenter-39,fontSize:19,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.fg*100)+"%"})
 			g.add(text)
-			var text=new Kinetic.Text({align:'center',x:shape.attrs.xcenter-47,y:shape.attrs.ycenter-40,fontSize:17,fontFamily:'Verdana',fill:'#000000',text: "shots made"})
+			var text=new Kinetic.Text({align:'center',x:shape.attrs.xcenter-27,y:shape.attrs.ycenter-23,fontSize:10,fontFamily:'Verdana',fill:'#000000',text: "shots made"})
 			g.add(text)
 		}
 		if(toggle==1){
-			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-27,y:shape.attrs.ycenter-65,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.fg*100)/100})
+			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-17,y:shape.attrs.ycenter-39,fontSize:19,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.pps*100)/100})
 			g.add(text)
-			var text=new Kinetic.Text({align:'center',x:shape.attrs.xcenter-62,y:shape.attrs.ycenter-40,fontSize:17,fontFamily:'Verdana',fill:'#000000',text: "points per shot"})
+			var text=new Kinetic.Text({align:'center',x:shape.attrs.xcenter-37,y:shape.attrs.ycenter-23,fontSize:10,fontFamily:'Verdana',fill:'#000000',text: "points per shot"})
 			g.add(text)
 		}
 
 		if (Math.round(shape.attrs.shotvol*100)>9) {
-			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-24,y:shape.attrs.ycenter+15,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
+			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-16,y:shape.attrs.ycenter+9,fontSize:19,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
 			g.add(text)
 		}
 		if (Math.round(shape.attrs.shotvol*100)<10) {
-			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-16,y:shape.attrs.ycenter+15,fontSize:30,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
+			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-11,y:shape.attrs.ycenter+9,fontSize:19,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
 			g.add(text)
 		}
 
-		var text=new Kinetic.Text({x:shape.attrs.xcenter-50,y:shape.attrs.ycenter+40,fontSize:17,fontFamily:'Verdana',fill:'#000000',text: "shot volume"})
+		var text=new Kinetic.Text({x:shape.attrs.xcenter-30,y:shape.attrs.ycenter+25,fontSize:10,fontFamily:'Verdana',fill:'#000000',text: "shot volume"})
 		g.add(text)
 
 		var circle = new Kinetic.Circle({
@@ -144,10 +144,10 @@ layer.on('click',function(evt){
 		})
 		g.add(circle)
 
-		var line=new Kinetic.Line({strokeWidth:1,dash: [5, 5],points:[shape.attrs.xcenter+3,shape.attrs.ycenter,shape.attrs.xcenter+90,shape.attrs.ycenter],stroke:'black'})
+		var line=new Kinetic.Line({strokeWidth:1,dash: [3, 3],points:[shape.attrs.xcenter+3,shape.attrs.ycenter,shape.attrs.xcenter+54,shape.attrs.ycenter],stroke:'black'})
 		g.add(line)
 
-		var text=new Kinetic.Text({x:shape.attrs.xcenter+35,y:shape.attrs.ycenter-10,fontSize:9,fontFamily:'Helvetica',fill:'#000000',text: "5 feet"})
+		var text=new Kinetic.Text({x:shape.attrs.xcenter+17,y:shape.attrs.ycenter-8,fontSize:8,fontFamily:'Helvetica',fill:'#000000',text: "3 feet"})
 		g.add(text)
 	},500)
 
@@ -266,7 +266,8 @@ function drawcourt_pshot(shot_data) {
 				// stroke:'#000000',
 				// strokeWidth: 0,
 				shotvol: shot_data[n][5],
-				fg: shot_data[n][4],
+				fg: shot_data[n][6],
+				pps: shot_data[n][4],
 				fill: fillcolor,
 			});
 
@@ -342,7 +343,8 @@ function shadow_layer(shot_data,min,max,draws) {
 				//height: choosesize(shot_data[n][2],min,max,20),
 				fill: fillcolor,
 				shotvol: shot_data[n][5],
-				fg: shot_data[n][4],
+				fg: shot_data[n][6],
+				pps: shot_data[n][4],
 			});
 		}
 		layer.add(box);

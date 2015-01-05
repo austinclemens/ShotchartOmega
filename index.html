@@ -87,6 +87,11 @@ $(document).ready(function () {
 					<option value='off'>Choose a player</option>
 				</select>
 			</div>
+			<div class="col-xs-3">
+				<label>
+					<input type="checkbox" id="hide1"> Hide player
+				</label>
+			</div>
 		</div>
 		</p>
 		<h4>Choose type of chart<br></h4>
@@ -271,6 +276,12 @@ $(document).ready(function () {
 				<select class="form-control" id="team_select" disabled>
 					<option value='off'>Choose a team</option>
 				</select>
+			</div>
+
+		<div class="col-xs-3">
+				<label>
+					<input type="checkbox" id="hide3"> Hide team
+				</label>
 			</div>
 		</div>
 		<h4>Choose game period or date range (optional)<br><small>Date settings will override the year setting.</small></h4>
@@ -531,8 +542,10 @@ function update_1() {
     var e = document.getElementById("season_1");
     var u_season = e.options[e.selectedIndex].value;
 
+    var hide = document.getElementById("hide1").checked
+
     var dict=[]
-    dict.push({chart_type:'1',player1:u_player,year:u_year,efficiency:u_efficient,season:u_season})
+    dict.push({chart_type:'1',player1:u_player,year:u_year,efficiency:u_efficient,season:u_season,hide:hide})
 
     document.getElementById('shotchart').contentWindow.load_pshotnew(dict[0])
     btn.button('reset')
@@ -603,8 +616,10 @@ function update_3() {
     var e = document.getElementById("enddate2");
     var u_enddate = e.value;
 
+    var hide = document.getElementById("hide3").checked
+
     var dict=[]
-    dict.push({chart_type:'3',team:u_team,year:u_year,efficiency:u_efficient,season:u_season,defense_offense:u_teamtype,quarter:u_quarter,startdate:u_startdate,enddate:u_enddate})
+    dict.push({chart_type:'3',team:u_team,year:u_year,efficiency:u_efficient,season:u_season,defense_offense:u_teamtype,quarter:u_quarter,startdate:u_startdate,enddate:u_enddate,hide:hide})
 
     document.getElementById('shotchart').contentWindow.load_pshotnew(dict[0])
 }
