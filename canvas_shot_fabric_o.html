@@ -77,6 +77,18 @@ var court = new Kinetic.Layer();
 
 stage.add(circlayer)
 
+var rim = new Kinetic.Circle({x: 450,y: 148.1, radius:144,fillRed:50,fillGreen:250,fillBlue:50,fillAlpha:0,strokeWidth:0});
+
+rim.on('mouseover',function() {
+	this.fillAlpha(.5)
+	court.draw()
+})
+
+rim.on('mouseout',function() {
+	this.fillAlpha(0)
+	court.draw()
+})
+
 nba_court_base()
 
 layer.on('click',function(evt){
@@ -346,8 +358,8 @@ function shadow_layer(shot_data,min,max,draws) {
 				fg: shot_data[n][6],
 				pps: shot_data[n][4],
 			});
-		}
 		layer.add(box);
+		}
 	}
 }
 
@@ -628,6 +640,8 @@ function nba_court_base() {
 	court.add(box)
 	var box = new Kinetic.Circle({x: 798,y: 34, radius:7,fill: '#a50026',strokeWidth:1,stroke:'rgba(195,30,68,1)'});
 	court.add(box)
+
+	court.add(rim)
 
 	stage.add(court)
 }

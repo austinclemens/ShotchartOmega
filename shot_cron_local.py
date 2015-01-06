@@ -10,6 +10,7 @@ import re
 import MySQLdb
 from joblib import Parallel, delayed
 import multiprocessing
+import pickle
 
 yesterdays_date=datetime.date.today()-datetime.timedelta(1)
 box_date=yesterdays_date.strftime("%Y%m%d")
@@ -137,10 +138,8 @@ def averages(year):
 
 	year_average=chart(rows)
 
-	with open("/Users/austinc/Desktop/averages/%s.csv" % (year),'a') as csvfile:
-		writer=csv.writer(csvfile)
-		for row in year_average:
-			writer.writerow(row)
+	with open("/Users/austinc/Desktop/%s_pickle" % (year),'wb') as f:
+		pickle.dump(year_average,f)
 
 	con.close()
 
@@ -155,13 +154,10 @@ def career_averages():
 
 	year_average=chart(rows)
 
-	with open("/Users/austinc/Desktop/Current Work/ShotchartOmega/averages/careers.csv",'a') as csvfile:
-		writer=csv.writer(csvfile)
-		for row in year_average:
-			writer.writerow(row)
+	with open("/Users/austinc/Desktop/career_pickle",'wb') as f:
+		pickle.dump(year_average,f)
 
 	con.close()
-
 
 def chart(shots):
 	shots_temp=[[shot[0],shot[1],shot[2],shot[3]] for shot in shots]
@@ -173,7 +169,6 @@ def chart(shots):
 	# sorted_chart.append(len(shots_temp))
 	return player_data
 
-
 def circle_chunk(shots_temp):
 	output=[]
 	shots_t=0
@@ -184,7 +179,7 @@ def circle_chunk(shots_temp):
 		y_center=box[0][1]+5
 		# cur.execute("""SELECT threept,made,x,y FROM shots WHERE %s AND (POW(%s-LOC_X,2)-POW(%s-LOC_Y,2))<50""" % (string,x_center,y_center))
 		# dist_shots=cur.fetchall()
-		dist_shots=[shot for shot in shots_temp if math.sqrt((x_center-shot[3])**2+(y_center-shot[2])**2)<50]
+		dist_shots=[shot for shot in shots_temp if math.sqrt((x_center-shot[3])**2+(y_center-shot[2])**2)<30]
 		per_5box=len(dist_shots)/len(shots_temp)
 			
 		dists=([[math.sqrt((x_center-shot[3])**2+(y_center-shot[2])**2),shot[1]] for shot in dist_shots])

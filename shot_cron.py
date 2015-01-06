@@ -66,10 +66,11 @@ def averages(year):
 
 	year_average=chart(rows)
 
-	with open("/home/austinc/public_html/OMEGA/averages/%s.csv" % (year),'w') as csvfile:
-		writer=csv.writer(csvfile)
-		for row in year_average:
-			writer.writerow(row)
+	with open("/home/austinc/public_html/OMEGA/averages/%s_pickle" % (year),'wb') as f:
+		pickle.dump(my_list,f)
+		# writer=csv.writer(csvfile)
+		# for row in year_average:
+		# 	writer.writerow(row)
 
 	con.close()
 
@@ -93,7 +94,7 @@ def circle_chunk(shots_temp):
 		y_center=box[0][1]+5
 		# cur.execute("""SELECT threept,made,x,y FROM shots WHERE %s AND (POW(%s-LOC_X,2)-POW(%s-LOC_Y,2))<50""" % (string,x_center,y_center))
 		# dist_shots=cur.fetchall()
-		dist_shots=[shot for shot in shots_temp if math.sqrt((x_center-shot[3])**2+(y_center-shot[2])**2)<50]
+		dist_shots=[shot for shot in shots_temp if math.sqrt((x_center-shot[3])**2+(y_center-shot[2])**2)<30]
 		per_5box=len(dist_shots)/len(shots_temp)
 			
 		dists=([[math.sqrt((x_center-shot[3])**2+(y_center-shot[2])**2),shot[1]] for shot in dist_shots])
@@ -154,7 +155,9 @@ def get_game_info(game):
 	con.close()
 
 update(box_date)
+
 averages(2014)
+
 game_info_scrape()
 
 con=MySQLdb.connect(user='austinc_shotchar',passwd='scriptpass1.',host='localhost',db='austinc_allshotdata')
