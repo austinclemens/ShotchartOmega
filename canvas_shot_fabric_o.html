@@ -73,21 +73,215 @@ var circlayer = new Kinetic.Layer({
 	transformsEnabled: 'none',
 })
 
+var textlayer = new Kinetic.Layer({
+})
+
 var court = new Kinetic.Layer();
 
 stage.add(circlayer)
+ 
+var rim = new Kinetic.Shape({
+	sceneFunc: function(context) {
+		context.beginPath();
+		context.moveTo(344.5,50);
+		// context.arcTo(344.5,50,554.5,50,144);
+		context.arc(450,144.5,144,-.7279,3.8679)
+   		context.lineTo(344.5,50);
+		context.closePath();
+		context.fillStrokeShape(this);
+	},
+	fillRed:50,
+	fillGreen:250,
+	fillBlue:50,
+	fillAlpha:0,
+	strokeWidth: 0,
+	volume: 0,
+	fg: 0
+})
 
-var rim = new Kinetic.Circle({x: 450,y: 148.1, radius:144,fillRed:50,fillGreen:250,fillBlue:50,fillAlpha:0,strokeWidth:0});
+var midrange = new Kinetic.Shape({
+	sceneFunc: function(context) {
+		context.beginPath();
+		context.moveTo(54,50);
+		context.lineTo(54,302);
+		context.arc(450,144.5,427.5,.87*Math.PI,0.125*Math.PI,true);
+		context.lineTo(846,50);
+		context.lineTo(554.5,50);
+		context.arc(450,144.5,144,-.7279,3.8679);
+		context.lineTo(54,50);
+		context.closePath();
+		context.fillStrokeShape(this);
+	},
+	fillRed:50,
+	fillGreen:200,
+	fillBlue:50,
+	fillAlpha:0,
+	strokeWidth: 0,
+	volume: 0,
+	fg: 0
+})
+ 
+var threes = new Kinetic.Shape({
+	sceneFunc: function(context) {
+		context.beginPath();
+		context.moveTo(0,50);
+		context.lineTo(54,50);
+		context.lineTo(54,302);
+		context.arc(450,144.5,427.5,.87*Math.PI,0.125*Math.PI,true);
+		context.lineTo(846,50);
+		context.lineTo(900,50);
+		context.lineTo(900,650);
+		context.lineTo(0,650);
+		context.lineTo(0,50);
+		context.closePath();
+		context.fillStrokeShape(this);
+	},
+	fillRed:0,
+	fillGreen:150,
+	fillBlue:50,
+	fillAlpha:0,
+	strokeWidth: 0,
+	volume: 0,
+	fg: 0
+})
+
+var rimtext = new Kinetic.Text({
+	x:315,
+	y:114.5,
+	text:"FG%: "+rim.fg,
+	fontSize:35,
+	fillRed: 20,
+	fillGreen: 20,
+	fillBlue: 20,
+	fillAlpha: 0,
+	fontStyle: 'bold'
+});
+
+var rimtext2 = new Kinetic.Text({
+	x:310,
+	y:154.5,
+	text:"Percent of Shots:"+rim.volume,
+	fontSize:35,
+	fillRed: 20,
+	fillGreen: 20,
+	fillBlue: 20,
+	fillAlpha: 0,
+	fontStyle: 'bold'
+});
+
+var midtext = new Kinetic.Text({
+	x:315,
+	y:344.5,
+	text:"FG%: "+rim.fg+" Percent of Shots:"+rim.volume,
+	fontSize:35,
+	fillRed: 20,
+	fillGreen: 20,
+	fillBlue: 20,
+	fillAlpha: 0,
+	fontStyle: 'bold'
+});
+
+var midtext2 = new Kinetic.Text({
+	x:310,
+	y:384.5,
+	text:"FG%: "+rim.fg+" Percent of Shots:"+rim.volume,
+	fontSize:35,
+	fillRed: 20,
+	fillGreen: 20,
+	fillBlue: 20,
+	fillAlpha: 0,
+	fontStyle: 'bold'
+});
+
+var threetext = new Kinetic.Text({
+	x:315,
+	y:564.5,
+	text:"FG%: "+rim.fg+" Percent of Shots:"+rim.volume,
+	fontSize:35,
+	fillRed: 20,
+	fillGreen: 20,
+	fillBlue: 20,
+	fillAlpha: 0,
+	fontStyle: 'bold'
+});
+
+var threetext2 = new Kinetic.Text({
+	x:310,
+	y:604.5,
+	text:"FG%: "+rim.fg+" Percent of Shots:"+rim.volume,
+	fontSize:35,
+	fillRed: 20,
+	fillGreen: 20,
+	fillBlue: 20,
+	fillAlpha: 0,
+	fontStyle: 'bold'
+});
+
+
 
 rim.on('mouseover',function() {
-	this.fillAlpha(.5)
+	this.fillAlpha(.1)
+	rimtext.text(rim.fg+"% shots made")
+	rimtext.fillAlpha(.7)
+
+	rimtext2.text(rim.volume+"% shot volume")
+	rimtext2.fillAlpha(.7)
+
+	textlayer.add
 	court.draw()
+	stage.add(textlayer)
+})
+
+midrange.on('mouseout',function() {
+	this.fillAlpha(0)
+	midtext.fillAlpha(0)
+	midtext2.fillAlpha(0)
+	court.draw()
+	textlayer.draw()
+})
+
+midrange.on('mouseover',function() {
+	this.fillAlpha(.1)
+	midtext.text(midrange.fg+"% shots made")
+	midtext.fillAlpha(.7)
+
+	midtext2.text(midrange.volume+"% shot volume")
+	midtext2.fillAlpha(.7)
+
+	textlayer.add
+	court.draw()
+	stage.add(textlayer)
 })
 
 rim.on('mouseout',function() {
 	this.fillAlpha(0)
+	rimtext.fillAlpha(0)
+	rimtext2.fillAlpha(0)
 	court.draw()
+	textlayer.draw()
 })
+
+threes.on('mouseover',function() {
+	this.fillAlpha(.1)
+	threetext.text(threes.fg+"% shots made")
+	threetext.fillAlpha(.7)
+
+	threetext2.text(threes.volume+"% shot volume")
+	threetext2.fillAlpha(.7)
+
+	textlayer.add
+	court.draw()
+	stage.add(textlayer)
+})
+
+threes.on('mouseout',function() {
+	this.fillAlpha(0)
+	threetext.fillAlpha(0)
+	threetext2.fillAlpha(0)
+	court.draw()
+	textlayer.draw()
+})
+
 
 nba_court_base()
 
@@ -169,8 +363,8 @@ layer.on('click',function(evt){
 
 circlayer.on('click',function(evt){
 	var ga=evt.group
-	circlayer.destroy(ga)
-	circlayer.draw()
+	ga.remove()
+	stage.add(circlayer)
 })
 
 window.onload=function() {
@@ -199,7 +393,7 @@ function load_pshotnew(dict) {
 	datatype: "html",
 	data:   dict,
 	success: function(response){
-		// console.log(response)
+		console.log(response)
 		var shot_data = eval("(" + response + ")");
 		circlayer.removeChildren()
 		stage.add(circlayer)
@@ -213,6 +407,23 @@ function drawcourt_pshot(shot_data) {
 	
 	layer.removeChildren()
 	dlayer.removeChildren()
+
+	rim.fg = Math.round(shot_data[204][0]*100)
+	rim.volume = Math.round(shot_data[204][1]*100)
+
+	midrange.fg = Math.round(shot_data[204][2]*100)
+	midrange.volume = Math.round(shot_data[204][3]*100)
+
+	threes.fg = Math.round(shot_data[204][4]*100)
+	threes.volume = Math.round(shot_data[204][5]*100)
+
+	textlayer.add(rimtext)
+	textlayer.add(rimtext2)
+	textlayer.add(midtext)
+	textlayer.add(midtext2)
+	textlayer.add(threetext)
+	textlayer.add(threetext2)
+	stage.add(textlayer)
 
 	var text=new Kinetic.Text({x:350,y:21,width:280,fontSize:13,fontFamily:'Verdana',fill:'black',align:'left',text: shot_data[201]})
 	dlayer.add(text)
@@ -230,7 +441,7 @@ function drawcourt_pshot(shot_data) {
 	}
 
 	var max=shot_data[0][2]
-	var min=shot_data[shot_data.length-4][2]
+	var min=shot_data[shot_data.length-5][2]
 	var box_size=18
 
 	stage.add(layer)
@@ -244,13 +455,14 @@ function drawcourt_pshot(shot_data) {
 		toggle=0
 	}
 
-	var draws=shot_data[203][2]/1.8
+	var draws=shot_data[203][2]/2
 	if(draws>200) {
 		draws=200
 	}
 
 	for(var n = 0; n < draws; n++) {
 		if (shot_data[n][2]>0 && shot_data[n][5]>0.005){
+			console.log("drawing a box")
 			var X = shot_data[n][1]*1.8+450+9 ;
   			var Y = shot_data[n][0]*1.8+144.5+9 ;
 
@@ -327,6 +539,7 @@ function drawcourt_pshot(shot_data) {
 function shadow_layer(shot_data,min,max,draws) {
 	for(var n = 0; n < draws; n++) {
 		if (shot_data[n][2]>0 && shot_data[n][5]>0.005){
+			console.log('drawing a shadow box')
 			var X = shot_data[n][1]*1.8+450+9  ;
   			var Y = shot_data[n][0]*1.8+144.5+9 ;
   			//var Xcenter = shot_data[n][1]*1.8+450+9
@@ -642,6 +855,8 @@ function nba_court_base() {
 	court.add(box)
 
 	court.add(rim)
+	court.add(midrange)
+	court.add(threes)
 
 	stage.add(court)
 }
