@@ -79,6 +79,10 @@ var textlayer = new Kinetic.Layer({
 var court = new Kinetic.Layer();
 
 stage.add(circlayer)
+
+var rimstick=0
+var midstick=0
+var threestick=0
  
 var rim = new Kinetic.Shape({
 	sceneFunc: function(context) {
@@ -219,7 +223,6 @@ var threetext2 = new Kinetic.Text({
 });
 
 
-
 rim.on('mouseover',function() {
 	rim.fillAlpha(.1)
 	rimtext.text(rim.fg+"% shots made")
@@ -240,15 +243,17 @@ rim.on('mouseover',function() {
 })
 
 rim.on('mouseout',function() {
-	rim.fillAlpha(0)
-	rimtext.fillAlpha(0)
-	rimtext2.fillAlpha(0)
+	if (rimstick==0) {
+		rim.fillAlpha(0)
+		rimtext.fillAlpha(0)
+		rimtext2.fillAlpha(0)
 
-	rimtext.stroke(null)
-	rimtext2.stroke(null)
+		rimtext.stroke(null)
+		rimtext2.stroke(null)
 
-	court.draw()
-	textlayer.draw()
+		court.draw()
+		textlayer.draw()
+	}
 })
 
 rimtext.on('mouseover',function() {
@@ -314,15 +319,17 @@ rimtext2.on('mouseout',function() {
 })
 
 midrange.on('mouseout',function() {
-	midrange.fillAlpha(0)
-	midtext.fillAlpha(0)
-	midtext2.fillAlpha(0)
+	if (midstick==0) {
+		midrange.fillAlpha(0)
+		midtext.fillAlpha(0)
+		midtext2.fillAlpha(0)
 
-	midtext.stroke(null)
-	midtext2.stroke(null)
+		midtext.stroke(null)
+		midtext2.stroke(null)
 
-	court.draw()
-	textlayer.draw()
+		court.draw()
+		textlayer.draw()
+	}
 })
 
 midrange.on('mouseover',function() {
@@ -426,15 +433,17 @@ threes.on('mouseover',function() {
 })
 
 threes.on('mouseout',function() {
-	threes.fillAlpha(0)
-	threetext.fillAlpha(0)
-	threetext2.fillAlpha(0)
+	if (threestick==0) {
+		threes.fillAlpha(0)
+		threetext.fillAlpha(0)
+		threetext2.fillAlpha(0)
 
-	threetext.stroke(null)
-	threetext2.stroke(null)
+		threetext.stroke(null)
+		threetext2.stroke(null)
 
-	court.draw()
-	textlayer.draw()
+		court.draw()
+		textlayer.draw()
+	}
 })
 
 threetext.on('mouseover',function() {
@@ -499,6 +508,150 @@ threetext2.on('mouseout',function() {
 	textlayer.draw()
 })
 
+rim.on('click', function() {
+	if (rimstick==1) {
+		rimstick=0
+		rim.fillRed(50)
+		rim.fillGreen(250)
+		rim.fillBlue(50)
+		court.draw()
+	} else {
+		rimstick=1
+		rim.fillRed(100)
+		rim.fillGreen(50)
+		rim.fillBlue(100)
+		court.draw()
+	};
+});
+
+rimtext.on('click', function() {
+	if (rimstick==1) {
+		rimstick=0
+		rim.fillRed(50)
+		rim.fillGreen(250)
+		rim.fillBlue(50)
+		court.draw()
+	} else {
+		rimstick=1
+		rim.fillRed(100)
+		rim.fillGreen(50)
+		rim.fillBlue(100)
+		court.draw()
+	};
+});
+
+rimtext2.on('click', function() {
+	if (rimstick==1) {
+		rimstick=0
+		rim.fillRed(50)
+		rim.fillGreen(250)
+		rim.fillBlue(50)
+		court.draw()
+	} else {
+		rimstick=1
+		rim.fillRed(100)
+		rim.fillGreen(50)
+		rim.fillBlue(100)
+		court.draw()
+	};
+});
+
+midrange.on('click', function() {
+	if (midstick==1) {
+		midstick=0
+		midrange.fillRed(50)
+		midrange.fillGreen(250)
+		midrange.fillBlue(50)
+		court.draw()
+	} else {
+		midstick=1
+		midrange.fillRed(100)
+		midrange.fillGreen(50)
+		midrange.fillBlue(100)
+		court.draw()
+	};
+});
+
+midtext.on('click', function() {
+	if (midstick==1) {
+		midstick=0
+		midrange.fillRed(50)
+		midrange.fillGreen(250)
+		midrange.fillBlue(50)
+		court.draw()
+	} else {
+		midstick=1
+		midrange.fillRed(100)
+		midrange.fillGreen(50)
+		midrange.fillBlue(100)
+		court.draw()
+	};
+});
+
+midtext2.on('click', function() {
+	if (midstick==1) {
+		midstick=0
+		midrange.fillRed(50)
+		midrange.fillGreen(250)
+		midrange.fillBlue(50)
+		court.draw()
+	} else {
+		midstick=1
+		midrange.fillRed(100)
+		midrange.fillGreen(50)
+		midrange.fillBlue(100)
+		court.draw()
+	};
+});
+
+threes.on('click', function() {
+	if (threestick==1) {
+		threestick=0
+		threes.fillRed(50)
+		threes.fillGreen(250)
+		threes.fillBlue(50)
+		court.draw()
+	} else {
+		threestick=1
+		threes.fillRed(100)
+		threes.fillGreen(50)
+		threes.fillBlue(100)
+		court.draw()
+	};
+});
+
+threetext.on('click', function() {
+	if (threestick==1) {
+		threestick=0
+		threes.fillRed(50)
+		threes.fillGreen(250)
+		threes.fillBlue(50)
+		court.draw()
+	} else {
+		threestick=1
+		threes.fillRed(100)
+		threes.fillGreen(50)
+		threes.fillBlue(100)
+		court.draw()
+	};
+});
+
+threetext2.on('click', function() {
+	if (threestick==1) {
+		threestick=0
+		threes.fillRed(50)
+		threes.fillGreen(250)
+		threes.fillBlue(50)
+		court.draw()
+	} else {
+		threestick=1
+		threes.fillRed(100)
+		threes.fillGreen(50)
+		threes.fillBlue(100)
+		court.draw()
+	};
+});
+
 
 nba_court_base()
 
@@ -532,28 +685,35 @@ layer.on('click',function(evt){
 	setTimeout(function(){
 		
 		if(toggle==0){
-			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-15,y:shape.attrs.ycenter-39,fontSize:19,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.fg*100)+"%"})
+			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter,y:shape.attrs.ycenter-39,fontSize:19,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.fg*100)+"%"})
+			text.offsetX(text.width()/2)
 			g.add(text)
-			var text=new Kinetic.Text({align:'center',x:shape.attrs.xcenter-27,y:shape.attrs.ycenter-23,fontSize:10,fontFamily:'Verdana',fill:'#000000',text: "shots made"})
+			var text=new Kinetic.Text({align:'center',x:shape.attrs.xcenter,y:shape.attrs.ycenter-23,fontSize:10,fontFamily:'Verdana',fill:'#000000',text: "shots made"})
+			text.offsetX(text.width()/2)
 			g.add(text)
 		}
 		if(toggle==1){
-			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-17,y:shape.attrs.ycenter-39,fontSize:19,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.pps*100)/100})
+			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter,y:shape.attrs.ycenter-39,fontSize:19,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.pps*100)/100})
+			text.offsetX(text.width()/2)
 			g.add(text)
-			var text=new Kinetic.Text({align:'center',x:shape.attrs.xcenter-37,y:shape.attrs.ycenter-23,fontSize:10,fontFamily:'Verdana',fill:'#000000',text: "points per shot"})
+			var text=new Kinetic.Text({align:'center',x:shape.attrs.xcenter,y:shape.attrs.ycenter-23,fontSize:10,fontFamily:'Verdana',fill:'#000000',text: "points per shot"})
+			text.offsetX(text.width()/2)
 			g.add(text)
 		}
 
 		if (Math.round(shape.attrs.shotvol*100)>9) {
-			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-16,y:shape.attrs.ycenter+9,fontSize:19,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
+			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter,y:shape.attrs.ycenter+9,fontSize:19,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
+			text.offsetX(text.width()/2)
 			g.add(text)
 		}
 		if (Math.round(shape.attrs.shotvol*100)<10) {
-			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter-11,y:shape.attrs.ycenter+9,fontSize:19,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
+			var text=new Kinetic.Text({fontStyle:'bold',x:shape.attrs.xcenter,y:shape.attrs.ycenter+9,fontSize:19,fontFamily:'Helvetica',fill:shape.attrs.fill,stroke:"#000000",strokeWidth:1,text: Math.round(shape.attrs.shotvol*100)+"%"})
+			text.offsetX(text.width()/2)
 			g.add(text)
 		}
 
-		var text=new Kinetic.Text({x:shape.attrs.xcenter-30,y:shape.attrs.ycenter+25,fontSize:10,fontFamily:'Verdana',fill:'#000000',text: "shot volume"})
+		var text=new Kinetic.Text({x:shape.attrs.xcenter,y:shape.attrs.ycenter+25,fontSize:10,fontFamily:'Verdana',fill:'#000000',text: "shot volume"})
+		text.offsetX(text.width()/2)
 		g.add(text)
 
 		var circle = new Kinetic.Circle({
