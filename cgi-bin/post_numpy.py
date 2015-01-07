@@ -3,11 +3,11 @@ from __future__ import division
 import cgi
 import MySQLdb
 from json import dumps
-# import cgitb
+import cgitb
 from pickle import load
 from numpy import logical_and, logical_or, concatenate, sqrt, array
 
-# cgitb.enable()
+cgitb.enable()
 
 def chart(shots,average_data,efficiency):
 	# 3pt, made, x, y
@@ -312,15 +312,24 @@ results_csv.append(bits)
 # results_csv.append(string)
 
 rim_rows = rows[rows[:,2]**2+rows[:,3]**2<80**2]
-fg_rim = rim_rows[:,1].sum()/len(rim_rows)
+if len(rim_rows)>0:
+	fg_rim = rim_rows[:,1].sum()/len(rim_rows)
+if len(rim_rows)==0:
+	fg_rim = 0
 volume_rim = len(rim_rows)/len(rows)
 
 mid_rows = rows[logical_and(logical_and(rows[:,2]**2+rows[:,3]**2>80**2,rows[:,2]**2+rows[:,3]**2<237.5**2),logical_and(rows[:,2]>-220,rows[:,2]<220))] 
-fg_mid = mid_rows[:,1].sum()/len(mid_rows)
+if len(mid_rows)>0:
+	fg_mid = mid_rows[:,1].sum()/len(mid_rows)
+if len(mid_rows)==0:
+	fg_mid = 0
 volume_mid = len(mid_rows)/len(rows)
 
 three_rows = rows[logical_or(abs(rows[:,2])>=220,rows[:,2]**2+rows[:,3]**2>=237.5**2)]
-fg_three = three_rows[:,1].sum()/len(three_rows)
+if len(three_rows)>0:
+	fg_three = three_rows[:,1].sum()/len(three_rows)
+if len(three_rows)==0:
+	fg_three = 0
 volume_three = len(three_rows)/len(rows)
 
 results_csv.append([fg_rim,volume_rim,fg_mid,volume_mid,fg_three,volume_three])
