@@ -820,6 +820,15 @@ function drawcourt_pshot(shot_data) {
 	
 	layer.removeChildren()
 	dlayer.removeChildren()
+	textlayer.removeChildren()
+
+	midstick=0
+	rimstick=0
+	threestick=0
+
+	threes.fillAlpha(0)
+	midrange.fillAlpha(0)
+	rim.fillAlpha(0)
 
 	rim.fg = Math.round(shot_data[204][0]*100)
 	rim.volume = Math.round(shot_data[204][1]*100)

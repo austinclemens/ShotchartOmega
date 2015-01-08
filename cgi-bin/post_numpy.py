@@ -124,6 +124,7 @@ enddate=data.getfirst('enddate')
 team=data.getfirst('team')
 offense_defense=data.getfirst('defense_offense')
 chart_type=data.getfirst('chart_type')
+hide=data.getfirst('hide')
 
 if chart_type==None:
 	chart_type=1
@@ -292,8 +293,12 @@ rows=cur.fetchall()
 con.close()
 
 rows=array(rows,float)
-details=details+', %s shots' % (len(rows))
-
+if hide!="true":
+	shotnum=len(rows)
+	details=details+', %s shots' % (shotnum)
+if hide=="true":
+	shotnum=int(round(len(rows)/100)*100)
+	details=details+', about %s shots' % (shotnum)
 
 if year=='career':
 	with open("../OMEGA/averages/2014_pickle",'rb') as cfile:
@@ -302,6 +307,12 @@ if year=='career':
 if year!='career':
 	with open("../OMEGA/averages/%s_pickle" % (year),'rb') as cfile:
 		average_csv=load(cfile)
+
+if hide=="true" and int(chart_type)==1:
+	players="A mystery player!"
+
+if hide=="true" and int(chart_type)==3:
+	players="A mystery team!"
 
 results_csv=chart(rows,average_csv,efficiency)
 results_csv=results_csv.tolist()
