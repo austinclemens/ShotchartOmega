@@ -774,11 +774,10 @@ layer.on('click',function(evt){
 
 })
 
-circlayer.on('click',function(evt){
-	var ga=evt.group
-	ga.remove()
-	stage.add(circlayer)
-})
+// circlayer.on('click',function(evt){
+// 	circlayer.remove(evt)
+// 	circlayer.draw()
+// })
 
 window.onload=function() {
     var dict=[]
@@ -829,6 +828,28 @@ function drawcourt_pshot(shot_data) {
 	threes.fillAlpha(0)
 	midrange.fillAlpha(0)
 	rim.fillAlpha(0)
+
+	threes.stroke(null)
+	midrange.stroke(null)
+	rim.stroke(null)
+
+	threetext.fillAlpha(0)
+	threetext.stroke(null)
+	threetext2.fillAlpha(0)
+	threetext2.stroke(null)
+
+	midtext.fillAlpha(0)
+	midtext.stroke(null)
+	midtext2.fillAlpha(0)
+	midtext2.stroke(null)
+
+	rimtext.fillAlpha(0)
+	rimtext.stroke(null)
+	rimtext2.fillAlpha(0)
+	rimtext2.stroke(null)
+
+	court.draw()
+	textlayer.draw()
 
 	rim.fg = Math.round(shot_data[204][0]*100)
 	rim.volume = Math.round(shot_data[204][1]*100)
