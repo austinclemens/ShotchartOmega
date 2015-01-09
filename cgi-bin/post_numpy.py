@@ -5,6 +5,7 @@ import MySQLdb
 from json import dumps
 from pickle import load
 from numpy import logical_and, logical_or, concatenate, sqrt, array
+# import cgitb
 
 # cgitb.enable()
 
@@ -322,11 +323,11 @@ if hide=="true":
 	details=details+', about %s shots' % (shotnum)
 
 if year=='career':
-	with open("../OMEGA/averages/2014_pickle",'rb') as cfile:
+	with open("../shotcharts/averages/2014_pickle",'rb') as cfile:
 		average_csv=load(cfile)
 
 if year!='career':
-	with open("../OMEGA/averages/%s_pickle" % (year),'rb') as cfile:
+	with open("../shotcharts/averages/%s_pickle" % (year),'rb') as cfile:
 		average_csv=load(cfile)
 
 if hide=="true" and int(chart_type)==1:
