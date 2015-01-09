@@ -25,6 +25,8 @@ def chart(shots,average_data,efficiency):
 	return sorted_chart
 
 def circle_chunk(shots_temp,efficiency):
+	# This function takes a raw collection of shots and chunks them into 1,600 locations around the court (1ft x 1ft boxes)
+	# box_matrix gives top right and bottom left coordinates for all boxes. For each box, we need a number of shots, a volume of shots in the surrounding area, a weighted FG% based on inverse distance, and a raw FG%
 	output=[]
 	total=len(shots_temp)
 	append=output.append
