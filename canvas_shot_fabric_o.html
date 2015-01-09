@@ -523,7 +523,7 @@ rim.on('click', function() {
 		rim.fillBlue(50)
 		rim.stroke('white')
 		rim.dash([10,10])
-		rim.strokeWidth(5)
+		rim.strokeWidth(3)
 		court.draw()
 	};
 });
@@ -543,7 +543,7 @@ rimtext.on('click', function() {
 		rim.fillBlue(50)
 		rim.stroke('white')
 		rim.dash([10,10])
-		rim.strokeWidth(5)
+		rim.strokeWidth(3)
 		court.draw()
 	};
 });
@@ -563,7 +563,7 @@ rimtext2.on('click', function() {
 		rim.fillBlue(50)
 		rim.stroke('white')
 		rim.dash([10,10])
-		rim.strokeWidth(5)
+		rim.strokeWidth(3)
 		court.draw()
 	};
 });
@@ -583,7 +583,7 @@ midrange.on('click', function() {
 		midrange.fillBlue(50)
 		midrange.stroke('white')
 		midrange.dash([10,10])
-		midrange.strokeWidth(5)
+		midrange.strokeWidth(3)
 		court.draw()
 	};
 });
@@ -603,7 +603,7 @@ midtext.on('click', function() {
 		midrange.fillBlue(50)
 		midrange.stroke('white')
 		midrange.dash([10,10])
-		midrange.strokeWidth(5)
+		midrange.strokeWidth(3)
 		court.draw()
 	};
 });
@@ -623,7 +623,7 @@ midtext2.on('click', function() {
 		midrange.fillBlue(50)
 		midrange.stroke('white')
 		midrange.dash([10,10])
-		midrange.strokeWidth(5)
+		midrange.strokeWidth(3)
 		court.draw()
 	};
 });
@@ -643,7 +643,7 @@ threes.on('click', function() {
 		threes.fillBlue(50)
 		threes.stroke('white')
 		threes.dash([10,10])
-		threes.strokeWidth(5)
+		threes.strokeWidth(3)
 		court.draw()
 	};
 });
@@ -663,7 +663,7 @@ threetext.on('click', function() {
 		threes.fillBlue(50)
 		threes.stroke('white')
 		threes.dash([10,10])
-		threes.strokeWidth(5)
+		threes.strokeWidth(3)
 		court.draw()
 	};
 });
@@ -683,7 +683,7 @@ threetext2.on('click', function() {
 		threes.fillBlue(50)
 		threes.stroke('white')
 		threes.dash([10,10])
-		threes.strokeWidth(5)
+		threes.strokeWidth(3)
 		court.draw()
 	};
 });
@@ -1225,7 +1225,7 @@ function nba_court_base() {
 	var line=new Kinetic.Line({strokeWidth:2,points:[594,302,607.5,302],stroke:'white',shadowColor:'#ffffff',shadowBlur:100})
 	court.add(line)
 
-	var arc=new Kinetic.Arc({innerRadius:27,outerRadius:27,strokeWidth:2,stroke:'white',x:450,y:148.1,angle:360,rotationDeg:0,shadowColor:'#ffffff',shadowBlur:100})
+	var arc=new Kinetic.Arc({innerRadius:13.5,outerRadius:13.5,strokeWidth:2,stroke:'white',x:450,y:134.6,angle:360,rotationDeg:0,shadowColor:'#ffffff',shadowBlur:100})
 	court.add(arc)
 	var arc=new Kinetic.Arc({strokeWidth:2,stroke:'white',x:450,y:392,innerRadius:108,outerRadius:108,angle:180,shadowColor:'#ffffff',shadowBlur:100})
 	court.add(arc)
@@ -1255,7 +1255,7 @@ function nba_court_base() {
     
     var text=new Kinetic.Text({x:782,y:624,fontSize:13,fontFamily:'Helvetica',fill:'#606060',align:'right',text:'@AustinClemens2'})
 	court.add(text)
-	var text=new Kinetic.Text({x:10,y:624,fontSize:13,fontFamily:'Helvetica',fill:'#606060',align:'right',text:'www.nyloncalculus.com/shotchart'})
+	var text=new Kinetic.Text({x:10,y:624,fontSize:13,fontFamily:'Helvetica',fill:'#606060',align:'right',text:'www.austinclemens.com/shotcharts'})
 	court.add(text)
 
 	var text=new Kinetic.Text({x:350,y:5,fontSize:17,fontFamily:'Verdana',fill:'#000000',align:'right',text:'Details'})
