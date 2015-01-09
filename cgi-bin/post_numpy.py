@@ -3,7 +3,6 @@ from __future__ import division
 import cgi
 import MySQLdb
 from json import dumps
-# import cgitb
 from pickle import load
 from numpy import logical_and, logical_or, concatenate, sqrt, array
 
@@ -304,7 +303,7 @@ if int(chart_type)==2:
 		bits=[2,0]
 
 
-con=MySQLdb.connect(user='austinc_shotchar', passwd='scriptpass1.', host='localhost', db='austinc_allshotdata')
+con=MySQLdb.connect(read_default_file="/home/austinc/etc/my.cnf", host='localhost', db='austinc_allshotdata')
 cur=con.cursor()
 if startdate==None or enddate==None:
 	cur.execute("""SELECT three,made,x,y FROM shots WHERE %s""" % (string))

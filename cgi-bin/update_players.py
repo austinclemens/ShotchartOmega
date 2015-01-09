@@ -5,7 +5,7 @@ import json
 
 def update_players(year,field):
 	if year!='career':
-		con=MySQLdb.connect(user='austinc_shotchar', passwd='scriptpass1.', host='localhost', db='austinc_allshotdata')
+		con=MySQLdb.connect(read_default_file="/home/austinc/etc/my.cnf", host='localhost', db='austinc_allshotdata')
 		cur=con.cursor()
 		if field==1:
 			cur.execute("""SELECT player FROM puniques WHERE year=%s ORDER BY player""" % (year))
@@ -18,7 +18,7 @@ def update_players(year,field):
 		return names
 
 	if year=='career':
-		con=MySQLdb.connect(user='austinc_shotchar', passwd='scriptpass1.', host='localhost', db='austinc_allshotdata')
+		con=MySQLdb.connect(read_default_file="/home/austinc/etc/my.cnf", host='localhost', db='austinc_allshotdata')
 		cur=con.cursor()
 		cur.execute("""SELECT DISTINCT player FROM puniques WHERE year!=1996 ORDER BY player""")
 		
