@@ -8,6 +8,7 @@ import datetime
 import math
 import re
 import MySQLdb
+import pickle
 
 yesterdays_date=datetime.date.today()-datetime.timedelta(1)
 box_date=yesterdays_date.strftime("%Y%m%d")
@@ -67,7 +68,7 @@ def averages(year):
 	year_average=chart(rows)
 
 	with open("/home/austinc/public_html/OMEGA/averages/%s_pickle" % (year),'wb') as f:
-		pickle.dump(my_list,f)
+		pickle.dump(year_average,f)
 		# writer=csv.writer(csvfile)
 		# for row in year_average:
 		# 	writer.writerow(row)
