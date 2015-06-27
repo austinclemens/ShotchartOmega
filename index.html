@@ -39,7 +39,7 @@ $(document).ready(function () {
 </script>
 
 <div class="container"><p></p><div class="text-center"><h1>Swish<br><small>NBA Shot Charts by <a href="http://www.austinclemens.com">Austin Clemens</a></small></h1></div>
-<div role="tabpanel">
+
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
@@ -85,6 +85,7 @@ $(document).ready(function () {
 				<select class="form-control" id="season_1">
 					<option>Regular season</option>
 					<option>Playoffs</option>
+					<option>All Star</option>
 				</select>
 			</div>
 		</div>
@@ -275,6 +276,7 @@ $(document).ready(function () {
 				<select class="form-control" id="season_3">
 					<option>Regular season</option>
 					<option>Playoffs</option>
+					<option>All Star</option>
 				</select>
 			</div>
 		</div>
@@ -378,6 +380,7 @@ $("#year_1").change(function() {
 	}
 });
 
+
 $("#year_2").change(function() {
     var e = document.getElementById("year_2");
     var u_year = e.options[e.selectedIndex].value;
@@ -403,23 +406,130 @@ $("#year_3").change(function() {
     var e = document.getElementById("year_3");
     var u_year = e.options[e.selectedIndex].value;
 
+    var e = document.getElementById("season_3");
+    var u_season = e.options[e.selectedIndex].value;
+
     if (u_year=='off') {
 		$('#team_select').prop('disabled',true);
 		$('#run_3').prop('disabled',true)
     }
 
-    if (u_year!='off') {
+    if (u_year!='off' & u_season!='All Star') {
     	$('#team_select').prop('disabled',false)
     	y_update=[]
 		y_update.push({year:u_year,pl:0})
 		load_teammenu(y_update[0])	
     }
+
+        if (u_year!='off' & u_season=='All Star') {
+    	$('#team_select').prop('disabled',false)
+    }
+
+});
+
+$("#season_1").change(function() {
+    var e = document.getElementById("season_1");
+    var u_season = e.options[e.selectedIndex].value;
+
+	if (u_season=='All Star') { 
+		$('#player').prop('disabled',false)
+		$('#year_1').prop('disabled',true)
+		$("#year_1").val('career')
+		y_update=[]
+		y_update.push({year:'career',pl:1})
+		load_playermenu_as(y_update[0])
+	}
+});
+
+
+$("#season_3").change(function() {
+    var e = document.getElementById("season_3");
+    var u_season = e.options[e.selectedIndex].value;
+
+	if (u_season!='All Star') { 
+		// update team menu, remove all years option from years_3
+
+		var e = document.getElementById("year_3");
+    	var u_year = e.options[e.selectedIndex].value;
+
+    	var x = document.getElementById("year_3");
+		if (x.length > 0) {
+    	x.remove(x.length-1);
+		}
+
+	    if (u_year!='off') {
+	    	$('#team_select').prop('disabled',false)
+	    	y_update=[]
+			y_update.push({year:u_year,pl:0})
+			load_teammenu(y_update[0])	
+	    }
+	}
+
+	if (u_season=='All Star') { 
+		// empty team menu, add east and west, add all years option to years_3
+		$("#team_select").empty()
+
+		var select=document.getElementById('team_select');
+
+		var el=document.createElement("option")
+		el.textContent='Choose a team'
+		el.value='off'
+		select.appendChild(el)
+		
+		var el=document.createElement("option");
+		el.textContent='East All Stars';
+		el.value='East All Stars';
+		select.appendChild(el)
+
+		var el=document.createElement("option");
+		el.textContent='West All Stars';
+		el.value='West All Stars';
+		select.appendChild(el)
+
+		var select=document.getElementById('year_3');
+
+		var el=document.createElement("option");
+		el.textContent='All Years';
+		el.value='career';
+		select.appendChild(el)
+	}
+
 });
 
 // Function to call update_players.py and get list for dropdown
 function load_playermenu(y_update) {
 	$.ajax({
 	url: "http://www.austinclemens.com/cgi-bin/update_players.py",
+	type: "post",
+	datatype: "html",
+	data: y_update,
+	success: function(response){
+		var menu_data = eval("(" + response + ")");
+		var select=document.getElementById('player');
+		var s_option=select.options[select.selectedIndex].value
+		$("#player").empty()
+		var el=document.createElement("option")
+		el.textContent='Choose a player'
+		el.value='off'
+		select.appendChild(el)
+		for (var i=1; i<menu_data.length;i++) {
+			var opt=menu_data[i]
+			var el=document.createElement("option");
+			el.textContent=opt;
+			el.value=opt;
+			select.appendChild(el)
+		}
+
+		if($("#player option[value='"+s_option+"']").length>0){
+			$("#player").val(s_option)
+		}
+	}
+	});
+}
+
+function load_playermenu_as(y_update) {
+	$.ajax({
+	url: "http://www.austinclemens.com/cgi-bin/update_players_as.py",
 	type: "post",
 	datatype: "html",
 	data: y_update,

@@ -30,7 +30,7 @@ def chart(shots,average_data,efficiency):
 def circle_chunk(shots_temp,efficiency,average_data):
 	# This function takes a raw collection of shots and chunks them into 1,600 locations around the court (1ft x 1ft boxes)
 	# box_matrix gives top right and bottom left coordinates for all boxes. For each box, we need a number of shots, a volume of shots in the surrounding area, a weighted FG% based on inverse distance, and a raw FG%
-	output=empty([1600, 7])
+	output=empty([1600, 8])
 	total=len(shots_temp)
 	# append=output.append
 	# format of shots_temp is: [3pt dummy, made shot dummy, x, y]
@@ -63,6 +63,10 @@ def circle_chunk(shots_temp,efficiency,average_data):
 				shots_made_smooth=sumc(c2,0)
 				num_shots_smooth=sumc(c1,0)
 
+				# weighting for distance
+				c3=c1*manip[:,4:5]
+				distance_weight=sumc(c3,0)
+
 				# unweighted fg%
 				shots_made_raw=manip[:,1].sum()
 				num_shots_raw=lenc(manip)
@@ -76,8 +80,9 @@ def circle_chunk(shots_temp,efficiency,average_data):
 				if int(box[4]) not in three_regions:
 					pps_made_smooth=shots_made_smooth
 				smooth_fg=2*pps_made_smooth/num_shots_smooth
+				smooth_distance=distance_weight/num_shots_smooth
 
-				output[i]=array([box[0],box[1],num_shots,smooth_fg,per_5box,raw_fg])
+				output[i]=array([box[0],box[1],num_shots,smooth_fg,per_5box,raw_fg,distance_weight])
 				# coord, coord, number of shots, smooth_fg, percent of shots within 3 feet, pure_fg
 			
 			if num_shots==0:
@@ -100,10 +105,14 @@ def circle_chunk(shots_temp,efficiency,average_data):
 				per_5box=lenc(manip)/total
 				
 				# weighting procedure for weighted fg%
-				c1=1/sqrt(manip[:,4:5])
+				c1=1/sqrt(manip[:,5:6])
 				c2=c1*manip[:,1:2]
 				shots_made_smooth=sumc(c2,0)
 				num_shots_smooth=sumc(c1,0)
+
+				# weighting for distance
+				c3=c1*manip[:,4:5]
+				distance_weight=sumc(c3,0)/num_shots_smooth
 
 				# unweighted fg%
 				shots_made_raw=manip[:,1].sum()
@@ -114,10 +123,10 @@ def circle_chunk(shots_temp,efficiency,average_data):
 
 				# output[i]=array([box[0],box[1],num_shots,smooth_fg,per_5box,raw_fg])
 				# coord, coord, number of shots, smooth_fg over average, smooth_Fg, percent of shots within 3 feet, pure_fg
-				output[i]=array([box[0],box[1],num_shots,smooth_fg-average_data[i][2],smooth_fg,per_5box,raw_fg])
+				output[i]=array([box[0],box[1],num_shots,smooth_fg-average_data[i][2],smooth_fg,per_5box,raw_fg,distance_weight])
 			
 			if num_shots==0:
-				output[i]=array([box[0],box[1],0,0,0,0,0])
+				output[i]=array([box[0],box[1],0,0,0,0,0,0])
 	
 	return output
 
@@ -151,28 +160,36 @@ if season=="Regular season":
 	season2=0
 if season=="Playoffs":
 	season2=1
+if season=="All Star":
+	season2=3
 
 if int(chart_type)==3:
 	append=""
 	append2=""
 	pre_append=""
 	post_append=""
-	year3="%02d" % (int(year[2:4])+1,)
-	year2=year+'-'+year3[-2:]
+	if year!='career':
+		year3="%02d" % (int(year[2:4])+1,)
+		year2=year+'-'+year3[-2:]
+		y_string="='%s'" % (year)
+
+	if year=='career':
+		y_string=">'1999'"
+		year2='career'
 
 	if int(offense_defense)==0:
 		if startdate!=None and enddate!=None:
 			string="defense_team='%s'" % (team)
 			add='defense'
 		if startdate==None or enddate==None:
-			string="defense_team='%s' AND year=%s AND season_type='%s'" % (team,year,season2)
+			string="defense_team='%s' AND year%s AND season_type='%s'" % (team,y_string,season2)
 			add='defense'
 	if int(offense_defense)==1:
 		if startdate!=None and enddate!=None:
 			string="offense_team='%s'" % (team)
 			add='offense'
 		if startdate==None or enddate==None:
-			string="offense_team='%s' AND year=%s AND season_type='%s'" % (team,year,season2)
+			string="offense_team='%s' AND year%s AND season_type='%s'" % (team,y_string,season2)
 			add='offense'
 
 	players=team
@@ -206,7 +223,7 @@ if int(chart_type)==3:
 		details=details+", between %s and %s" % (startdate,enddate)
 
 	if startdate==None or enddate==None:
-		string=string+' AND year=%s AND season_type=%s' % (year,season2)
+		string=string
 
 	string=string+append+post_append
 
@@ -300,9 +317,9 @@ if int(chart_type)==2:
 con=MySQLdb.connect(read_default_file="/home/austinc/etc/my.cnf", host='localhost', db='austinc_allshotdata')
 cur=con.cursor()
 if startdate==None or enddate==None:
-	cur.execute("""SELECT three,made,x,y FROM shots WHERE %s""" % (string))
+	cur.execute("""SELECT three,made,x,y,d_distance FROM shots_distance WHERE %s""" % (string))
 if startdate!=None and enddate!=None:
-	cur.execute("SELECT three,made,x,y FROM shots "+pre_append+" WHERE %s" % (string))
+	cur.execute("SELECT three,made,x,y,d_distance FROM shots_distance "+pre_append+" WHERE %s" % (string))
 
 rows=cur.fetchall()
 con.close()
